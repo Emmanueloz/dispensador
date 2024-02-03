@@ -1,7 +1,6 @@
 #include <Arduino.h>
-#include <Servo.h>
-#include <NewPing.h>
 #include "Dispensador.h"
+#include "Sonares.h"
 // Pines
 const byte pinLevelWater = A15; // Replace A15 with the corresponding pin number
 
@@ -21,7 +20,7 @@ const byte pinButtonFood = 3;
 const int maxSonarWater = 400;
 const int maxSonarFood = 400;
 const int timeOpenFood = 5000;
-const int limitlWaterRecipient = 350;
+const int limitWaterRecipient = 350;
 const int limitWaterDispenser = 12;
 const int limitFoodDispenser = 12;
 const int delayInfo = 2000;
@@ -31,24 +30,15 @@ const String COMMAND_TIME_OPEN_WATER_DISPENSER = "timeOWD";
 const String COMMAND_TIME_OPEN_FOOD_DISPENSER = "timeOFD";
 const String COMMAND_OPEN_WATER_DISPENSER = "openWD";
 const String COMMAND_OPEN_FOOD_DISPENSER = "openFD";
-enum STATES
-{
-  CLOSE,
-  OPEN
-};
-STATES stateWaterDispenser = CLOSE;
-STATES stateFoodDispenser = CLOSE;
-
-// Servos
-// Servo waterServo;
-// Servo foodServo;
 
 Dispensador waterDispenser;
 Dispensador foodDispenser;
 
 // Ultrasonicos
-NewPing sonarWater(pinTriggerWater, pinEchoWater, maxSonarWater);
-NewPing sonarFood(pinTriggerFood, pinEchoFood, maxSonarFood);
+// NewPing sonarWater(pinTriggerWater, pinEchoWater, maxSonarWater);
+// NewPing sonarFood(pinTriggerFood, pinEchoFood, maxSonarFood);
+
+Sonares sonarWater(pinTriggerWater, pinEchoWater, maxSonarWater, limitWaterDispenser);
 
 void setup()
 {
@@ -76,5 +66,15 @@ void loop()
       int result = waterDispenser.getPosition();
       Serial.println(result == 90 ? "1" : "0");
     }
+    else if (command == "4")
+    {
+      Serial.println(sonarWater.getDistance());
+    }
+  }
+
+  if (sonarWater.isDistanceLimit() && waterDispenser.isOpen())
+  {
+    Serial.println("contW:0");
+    waterDispenser.close();
   }
 }

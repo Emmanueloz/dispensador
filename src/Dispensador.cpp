@@ -1,9 +1,5 @@
 #include "Dispensador.h"
 
-Dispensador::Dispensador()
-{
-}
-
 void Dispensador::setup(byte pin, int openValue, int closeValue)
 {
     this->servo.attach(pin);
@@ -44,4 +40,9 @@ int Dispensador::close()
     this->servo.write(this->closeValue);
     this->position = this->closeValue;
     return this->position;
+}
+
+bool Dispensador::isOpen()
+{
+    return this->position == this->openValue;
 }
