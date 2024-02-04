@@ -11,4 +11,5 @@ private:
 public:
     ControllerDispenser(Dispensador &dispensador, String command);
     void processCommand(String command, String value);
+    void closeAutomatic();
 };

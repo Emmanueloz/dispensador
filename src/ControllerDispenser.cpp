@@ -25,3 +25,7 @@ void ControllerDispenser::processCommand(String command, String value)
         }
     }
 }
+
+void ControllerDispenser::closeAutomatic()
+{
+}
