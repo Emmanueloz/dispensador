@@ -1,5 +1,4 @@
 #include <Arduino.h>
-#include "Sonares.h"
 #include "ControllerDispenser.h"
 // Pines
 const byte pinLevelWater = A15; // Replace A15 with the corresponding pin number
@@ -37,8 +36,8 @@ Dispensador foodDispenser;
 Sonares sonarWater(pinTriggerWater, pinEchoWater, maxSonarWater, limitWaterDispenser);
 Sonares sonarFood(pinTriggerFood, pinEchoFood, maxSonarFood, limitFoodDispenser);
 
-ControllerDispenser waterDispenserController(waterDispenser, COMMAND_WATER_DISPENSER);
-ControllerDispenser foodDispenserController(foodDispenser, COMMAND_FOOD_DISPENSER);
+ControllerDispenser waterDispenserController(waterDispenser, sonarWater, COMMAND_WATER_DISPENSER);
+ControllerDispenser foodDispenserController(foodDispenser, sonarFood, COMMAND_FOOD_DISPENSER);
 
 void setup()
 {
@@ -71,9 +70,6 @@ void loop()
     foodDispenserController.processCommand(command, value);
   }
 
-  if (sonarWater.isDistanceLimit() && waterDispenser.isOpen())
-  {
-    Serial.println("contW:0");
-    waterDispenser.close();
-  }
+  waterDispenserController.closeAutomatic();
+  foodDispenserController.closeAutomatic();
 }

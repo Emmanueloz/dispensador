@@ -1,8 +1,7 @@
 // ControllerDispenser.cpp
 #include "ControllerDispenser.h"
 
-ControllerDispenser::ControllerDispenser(Dispensador &dispensador, String command)
-    : dispensador(dispensador), command(command)
+ControllerDispenser::ControllerDispenser(Dispensador &dispensador, Sonares &sonar, String command) : dispensador(dispensador), sonar(sonar), command(command)
 {
 }
 
@@ -28,4 +27,10 @@ void ControllerDispenser::processCommand(String command, String value)
 
 void ControllerDispenser::closeAutomatic()
 {
+
+    if (sonar.isDistanceLimit() && dispensador.isOpen())
+    {
+        Serial.println(this->command + "Count:0");
+        this->dispensador.close();
+    }
 }
