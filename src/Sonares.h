@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include <NewPing.h>
 
+#ifndef SONARES_H
+#define SONARES_H
 class Sonares
 {
 private:
@@ -13,3 +15,5 @@ public:
     bool isDistanceLimit();
     int getLimit();
 };
+
+#endif // SONARES_H

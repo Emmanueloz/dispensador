@@ -1,8 +1,9 @@
-// ControllerDispenser.h
 #include <Arduino.h>
 #include "Dispensador.h"
 #include "Sonares.h"
 
+#ifndef CONTROLLER_DISPENSER_H
+#define CONTROLLER_DISPENSER_H
 class ControllerDispenser
 {
 private:
@@ -15,3 +16,5 @@ public:
     void processCommand(String command, String value);
     void closeAutomatic();
 };
+
+#endif // CONTROLLER_DISPENSER_H

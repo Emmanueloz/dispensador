@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Servo.h>
-
+#ifndef DISPENSADOR_H
+#define DISPENSADOR_H
 class Dispensador
 {
 private:
@@ -16,3 +17,5 @@ public:
     int close();
     bool isOpen();
 };
+
+#endif // DISPENSADOR_H
