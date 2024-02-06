@@ -66,7 +66,7 @@ Circuit Id: TextComponent-100
 
 Unique  Id: Potentiometer-152: 
 Circuit Id: Potentiometer-135
-<item id="Potentiometer-135" valLabRot="0" vflip="1" Unit=" kΩ" labelx="-16" mainComp="false" Value_Ohm="192" valLabelx="17" boardPos="-1e+06,-1e+06" objectName="Potentiometer-152" Show_res="true" itemtype="Potentiometer" Resistance="1" boardRot="-1e+06" circPos="0,0" labely="-40" valLabely="-25" y="-476" x="-44" rotation="0" circRot="0" hflip="1" labelrot="0" Show_id="false"/>
+<item id="Potentiometer-135" valLabRot="0" vflip="1" Unit=" kΩ" labelx="-16" mainComp="false" Value_Ohm="223" valLabelx="17" boardPos="-1e+06,-1e+06" objectName="Potentiometer-152" Show_res="true" itemtype="Potentiometer" Resistance="1" boardRot="-1e+06" circPos="0,0" labely="-40" valLabely="-25" y="-476" x="-44" rotation="0" circRot="0" hflip="1" labelrot="0" Show_id="false"/>
 
 Unique  Id: Arduino Mega-153: 
 Circuit Id: Arduino Mega-1

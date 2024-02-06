@@ -3,7 +3,7 @@
 #include "ControllerTimeDispenser.h"
 #include "ControllerSonar.h"
 // Pines
-const byte pinLevelWater = A15; // Replace A15 with the corresponding pin number
+const byte pinLevelWater = A15;
 
 const byte pinWaterServo = 13;
 const byte pinFoodServo = 12;
@@ -110,6 +110,12 @@ void loop()
   if (foodDispenser.isOpen() && !sonarFoodLevel.isDistanceLimit())
   {
     foodDispenser.close();
+  }
+
+  if (waterDispenser.isOpen() && analogRead(pinLevelWater) > limitWaterRecipient)
+  {
+    Serial.println(analogRead(pinLevelWater));
+    waterDispenser.close();
   }
 
   waterDispenserTimeController.update();
