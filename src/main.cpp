@@ -24,12 +24,12 @@ const int maxSonarWater = 400;
 const int maxSonarFood = 400;
 const int limitWaterRecipient = 350;
 const int limitWaterDispenser = 12;
-const int limitFoodRecipient = 12;
+const int limitFoodRecipient = 40;
 const int limitFoodDispenser = 12;
 
 // Constantes de tiempos por defecto
-const long defaultTimeOpenWater = 8000;
-const long defaultTimeOpenFood = 8000;
+const long defaultTimeOpenWater = 4000;
+const long defaultTimeOpenFood = 4000;
 
 // Constantes de comandos
 const String COMMAND_TIME_OPEN_WATER_DISPENSER = "wdT";
@@ -53,7 +53,7 @@ ControllerDispenser foodDispenserController(foodDispenser, sonarFood, COMMAND_FO
 
 void callbackWaterDispenser()
 {
-  if (!dOpenR)
+  if (!dOpenR && !waterDispenser.isOpen() && !sonarWater.isDistanceLimit())
   {
     int result = waterDispenser.open();
     Serial.println(COMMAND_TIME_OPEN_WATER_DISPENSER + "result:" + result);
@@ -62,7 +62,7 @@ void callbackWaterDispenser()
 
 void callbackFoodDispenser()
 {
-  if (!dOpenR)
+  if (!dOpenR && !foodDispenser.isOpen() && !sonarFood.isDistanceLimit())
   {
     int result = foodDispenser.open();
     Serial.println(COMMAND_TIME_OPEN_FOOD_DISPENSER + "result:" + result);
@@ -114,5 +114,11 @@ void loop()
     foodDispenserController.processCommand(command, value);
     waterDispenserTimeController.processCommand(command, value);
     foodDispenserTimeController.processCommand(command, value);
+  }
+
+  if (foodDispenser.isOpen() && !sonarFoodLevel.isDistanceLimit())
+  {
+    Serial.println(sonarFoodLevel.getDistance());
+    foodDispenser.close();
   }
 }
