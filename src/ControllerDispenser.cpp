@@ -30,7 +30,6 @@ void ControllerDispenser::closeAutomatic()
 
     if (sonar.isDistanceLimit() && dispensador.isOpen())
     {
-        Serial.println(sonar.isDistanceLimit() && dispensador.isOpen());
         Serial.println(this->command + "Count:0");
         this->dispensador.close();
     }

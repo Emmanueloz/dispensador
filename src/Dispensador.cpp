@@ -44,5 +44,6 @@ int Dispensador::close()
 
 bool Dispensador::isOpen()
 {
+    this->position = this->getPosition();
     return this->position == this->openValue;
 }

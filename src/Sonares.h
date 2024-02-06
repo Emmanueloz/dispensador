@@ -10,7 +10,7 @@ private:
     int limit;
 
 public:
-    Sonares(int pinTrigger, int pinEcho, int maxSonar, int limit);
+    Sonares(byte pinTrigger, byte pinEcho, int maxSonar, int limit);
     int getDistance();
     bool isDistanceLimit();
     int getLimit();

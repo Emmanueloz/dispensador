@@ -7,11 +7,13 @@ const byte pinLevelWater = A15; // Replace A15 with the corresponding pin number
 const byte pinWaterServo = 13;
 const byte pinFoodServo = 12;
 
-const int pinEchoWater = 10;
-const int pinTriggerWater = 9;
+const byte pinEchoWater = 10;
+const byte pinTriggerWater = 9;
+const byte pinEchoFood = 7;
+const byte pinTriggerFood = 6;
 
-const int pinEchoFood = 6;
-const int pinTriggerFood = 5;
+const byte pinEchoFoodLevel = 5;
+const byte pinTriggerFoodLevel = 4;
 
 // pin de los botones
 const byte pinButtonWater = 2;
@@ -22,6 +24,7 @@ const int maxSonarWater = 400;
 const int maxSonarFood = 400;
 const int limitWaterRecipient = 350;
 const int limitWaterDispenser = 12;
+const int limitFoodRecipient = 12;
 const int limitFoodDispenser = 12;
 
 // Constantes de tiempos por defecto
@@ -34,29 +37,40 @@ const String COMMAND_TIME_OPEN_FOOD_DISPENSER = "fdT";
 const String COMMAND_WATER_DISPENSER = "wd";
 const String COMMAND_FOOD_DISPENSER = "fd";
 
+// Estado del dispensador
+bool dOpenR = false; // Si el dispensador completo esta abierto para rellenar
+
 Dispensador waterDispenser;
 Dispensador foodDispenser;
 
 Sonares sonarWater(pinTriggerWater, pinEchoWater, maxSonarWater, limitWaterDispenser);
 Sonares sonarFood(pinTriggerFood, pinEchoFood, maxSonarFood, limitFoodDispenser);
 
+Sonares sonarFoodLevel(pinTriggerFoodLevel, pinEchoFoodLevel, maxSonarFood, limitFoodRecipient);
+
 ControllerDispenser waterDispenserController(waterDispenser, sonarWater, COMMAND_WATER_DISPENSER);
 ControllerDispenser foodDispenserController(foodDispenser, sonarFood, COMMAND_FOOD_DISPENSER);
 
 void callbackWaterDispenser()
 {
-  int result = waterDispenser.open();
-  Serial.println(COMMAND_TIME_OPEN_WATER_DISPENSER + "Task:" + result);
+  if (!dOpenR)
+  {
+    int result = waterDispenser.open();
+    Serial.println(COMMAND_TIME_OPEN_WATER_DISPENSER + "result:" + result);
+  }
 }
 
 void callbackFoodDispenser()
 {
-  int result = foodDispenser.open();
-  Serial.println(COMMAND_TIME_OPEN_FOOD_DISPENSER + "Task:" + result);
+  if (!dOpenR)
+  {
+    int result = foodDispenser.open();
+    Serial.println(COMMAND_TIME_OPEN_FOOD_DISPENSER + "result:" + result);
+  }
 }
 
-ControllerTimeDispenser waterDispenserTimeController(COMMAND_TIME_OPEN_WATER_DISPENSER, defaultTimeOpenWater, callbackWaterDispenser);
-ControllerTimeDispenser foodDispenserTimeController(COMMAND_TIME_OPEN_FOOD_DISPENSER, defaultTimeOpenFood, callbackFoodDispenser);
+ControllerTimeDispenser waterDispenserTimeController(COMMAND_TIME_OPEN_WATER_DISPENSER, defaultTimeOpenWater, 's', callbackWaterDispenser);
+ControllerTimeDispenser foodDispenserTimeController(COMMAND_TIME_OPEN_FOOD_DISPENSER, defaultTimeOpenFood, 's', callbackFoodDispenser);
 
 void setup()
 {
