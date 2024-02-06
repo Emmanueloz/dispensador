@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "ControllerDispenser.h"
 #include "ControllerTimeDispenser.h"
+#include "ControllerSonar.h"
 // Pines
 const byte pinLevelWater = A15; // Replace A15 with the corresponding pin number
 
@@ -23,9 +24,9 @@ const byte pinButtonFood = 3;
 const int maxSonarWater = 400;
 const int maxSonarFood = 400;
 const int limitWaterRecipient = 350;
-const int limitWaterDispenser = 12;
+const int limitWaterDispenser = 40;
 const int limitFoodRecipient = 40;
-const int limitFoodDispenser = 12;
+const int limitFoodDispenser = 40;
 
 // Constantes de tiempos por defecto
 const long defaultTimeOpenWater = 4000;
@@ -36,6 +37,8 @@ const String COMMAND_TIME_OPEN_WATER_DISPENSER = "wdT";
 const String COMMAND_TIME_OPEN_FOOD_DISPENSER = "fdT";
 const String COMMAND_WATER_DISPENSER = "wd";
 const String COMMAND_FOOD_DISPENSER = "fd";
+const String COMMAND_WATER_LEVEL = "wdR";
+const String COMMAND_FOOD_LEVEL = "fdR";
 
 // Estado del dispensador
 bool dOpenR = false; // Si el dispensador completo esta abierto para rellenar
@@ -50,6 +53,9 @@ Sonares sonarFoodLevel(pinTriggerFoodLevel, pinEchoFoodLevel, maxSonarFood, limi
 
 ControllerDispenser waterDispenserController(waterDispenser, sonarWater, COMMAND_WATER_DISPENSER);
 ControllerDispenser foodDispenserController(foodDispenser, sonarFood, COMMAND_FOOD_DISPENSER);
+
+ControllerSonar sonarWaterController(sonarWater, COMMAND_WATER_LEVEL);
+ControllerSonar sonarFoodController(sonarFood, COMMAND_FOOD_LEVEL);
 
 void callbackWaterDispenser()
 {
@@ -96,29 +102,34 @@ String getValue(String value)
 void loop()
 {
   /**
-   * ! Evitar que se ejecute la tarea si el dispensador esta vació para evitar que el cerrado automático se active
+   * Todo: hacer funcionar los botones manuales
    */
-  waterDispenserTimeController.update();
-  foodDispenserTimeController.update();
-
   waterDispenserController.closeAutomatic();
   foodDispenserController.closeAutomatic();
+
+  if (foodDispenser.isOpen() && !sonarFoodLevel.isDistanceLimit())
+  {
+    foodDispenser.close();
+  }
+
+  waterDispenserTimeController.update();
+  foodDispenserTimeController.update();
 
   if (Serial.available() > 0)
   {
     String result = Serial.readString();
     String command = getCommand(result);
     String value = getValue(result);
-    // Controladores
+    // # Controladores
+    // ## Dispensadores
     waterDispenserController.processCommand(command, value);
     foodDispenserController.processCommand(command, value);
+    // ## Timers
     waterDispenserTimeController.processCommand(command, value);
     foodDispenserTimeController.processCommand(command, value);
-  }
 
-  if (foodDispenser.isOpen() && !sonarFoodLevel.isDistanceLimit())
-  {
-    Serial.println(sonarFoodLevel.getDistance());
-    foodDispenser.close();
+    // ## Sonares
+    sonarWaterController.processCommand(command, value);
+    sonarFoodController.processCommand(command, value);
   }
 }

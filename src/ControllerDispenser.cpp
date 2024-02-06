@@ -22,6 +22,10 @@ void ControllerDispenser::processCommand(String command, String value)
         {
             Serial.println(dispensador.getPosition());
         }
+        else
+        {
+            Serial.println(this->command + ":notFound");
+        }
     }
 }
 

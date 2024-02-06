@@ -98,7 +98,7 @@ void ControllerTimeDispenser::processCommand(String command, String value)
         }
         else
         {
-            Serial.println(this->command + ":error");
+            Serial.println(this->command + ":notFound");
         }
     }
 }
