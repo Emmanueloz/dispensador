@@ -56,7 +56,7 @@ ControllerSonar sonarFoodController(sonarFood, COMMAND_FOOD_LEVEL);
 
 void callbackWaterDispenser()
 {
-  if (!waterDispenser.isOpen() && !sonarWater.isDistanceLimit())
+  if (!waterDispenser.isOpen() && !sonarWater.isDistanceLimit() && analogRead(pinLevelWater) < limitWaterRecipient)
   {
     int result = waterDispenser.open();
     Serial.println(COMMAND_TIME_OPEN_WATER_DISPENSER + "result:" + result);
@@ -65,7 +65,7 @@ void callbackWaterDispenser()
 
 void callbackFoodDispenser()
 {
-  if (!foodDispenser.isOpen() && !sonarFood.isDistanceLimit())
+  if (!foodDispenser.isOpen() && !sonarFood.isDistanceLimit() && sonarFoodLevel.isDistanceLimit())
   {
     int result = foodDispenser.open();
     Serial.println(COMMAND_TIME_OPEN_FOOD_DISPENSER + "result:" + result);
