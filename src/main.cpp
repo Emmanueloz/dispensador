@@ -103,9 +103,6 @@ String getValue(String value)
 
 void loop()
 {
-  /**
-   * Todo: hacer funcionar los botones manuales
-   */
   waterDispenserController.closeAutomatic();
   foodDispenserController.closeAutomatic();
 
