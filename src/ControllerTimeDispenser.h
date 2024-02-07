@@ -23,7 +23,7 @@ public:
     ControllerTimeDispenser(String command, unsigned long timeOpen, char typeTime, void (*callback)());
     void start();
     void update();
-    void processCommand(String command, String value);
+    void processCommand(String value);
 };
 
 #endif // CONTROLLER_TIME_DISPENSER_H

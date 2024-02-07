@@ -12,7 +12,7 @@ private:
 
 public:
     ControllerSonar(Sonares &sonar, String command);
-    void processCommand(String command, String value);
+    void processCommand(String value);
 };
 
 #endif // CONTROLLER_SONAR_H

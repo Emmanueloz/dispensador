@@ -10,11 +10,13 @@ private:
     Dispensador &dispensador;
     Sonares &sonar;
     String command;
+    byte pinButton;
 
 public:
-    ControllerDispenser(Dispensador &dispensador, Sonares &sonar, String command);
-    void processCommand(String command, String value);
+    ControllerDispenser(Dispensador &dispensador, Sonares &sonar, String command, byte pinButton);
+    void processCommand(String value);
     void closeAutomatic();
+    void listenButton();
 };
 
 #endif // CONTROLLER_DISPENSER_H
