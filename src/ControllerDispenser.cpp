@@ -47,7 +47,7 @@ void ControllerDispenser::listenButton()
         }
         else
         {
-            dispensador.open()
+            dispensador.open();
         }
     }
 }

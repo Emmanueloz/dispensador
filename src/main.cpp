@@ -40,9 +40,6 @@ const String COMMAND_FOOD_DISPENSER = "fd";
 const String COMMAND_WATER_LEVEL = "wdR";
 const String COMMAND_FOOD_LEVEL = "fdR";
 
-// Estado del dispensador
-bool dOpenR = false; // Si el dispensador completo esta abierto para rellenar
-
 Dispensador waterDispenser;
 Dispensador foodDispenser;
 
@@ -59,7 +56,7 @@ ControllerSonar sonarFoodController(sonarFood, COMMAND_FOOD_LEVEL);
 
 void callbackWaterDispenser()
 {
-  if (!dOpenR && !waterDispenser.isOpen() && !sonarWater.isDistanceLimit())
+  if (!waterDispenser.isOpen() && !sonarWater.isDistanceLimit())
   {
     int result = waterDispenser.open();
     Serial.println(COMMAND_TIME_OPEN_WATER_DISPENSER + "result:" + result);
@@ -68,7 +65,7 @@ void callbackWaterDispenser()
 
 void callbackFoodDispenser()
 {
-  if (!dOpenR && !foodDispenser.isOpen() && !sonarFood.isDistanceLimit())
+  if (!foodDispenser.isOpen() && !sonarFood.isDistanceLimit())
   {
     int result = foodDispenser.open();
     Serial.println(COMMAND_TIME_OPEN_FOOD_DISPENSER + "result:" + result);
