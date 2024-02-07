@@ -10,16 +10,32 @@ class ConexionArduino:
         self.time = time
 
     def conectar(self):
-        self.arduino = serial.Serial(self.puerto, self.velocidad)
-        time(2)
+        try:
+            self.arduino = serial.Serial(self.puerto, self.velocidad)
+            time.sleep(2)
+        except serial.SerialException as e:
+            return f"Error en la conexion: {e}"
 
     def enviar_dato(self, dato):
-        self.arduino.write(dato.encode())
+        try:
+            self.arduino.write(dato.encode())
+        except Exception as e:  
+            return f"Error el arduino no esta conectado: {e}"
 
     def recibir_dato(self):
-        recibir_dato = self.arduino.readline().decode().strip()
-        return recibir_dato
+        try:
+            recibir_dato = self.arduino.readline().decode().strip()
+            return recibir_dato
+        except Exception as e:
+            return f"Error al recibir los datos: {e}" 
     
     def cerrar_arduino(self):
-        self.arduino.close()
+        if self.arduino is not None:
+            if self.arduino.is_open:
+                self.arduino.close()
+                return "Conexion cerrada"
+            else:
+                return "El puerto ya esta cerrado"
+        else:
+            return "Arduino no conectado"
 
