@@ -51,8 +51,8 @@ Sonares sonarFood(pinTriggerFood, pinEchoFood, maxSonarFood, limitFoodDispenser)
 
 Sonares sonarFoodLevel(pinTriggerFoodLevel, pinEchoFoodLevel, maxSonarFood, limitFoodRecipient);
 
-ControllerDispenser waterDispenserController(waterDispenser, sonarWater, COMMAND_WATER_DISPENSER);
-ControllerDispenser foodDispenserController(foodDispenser, sonarFood, COMMAND_FOOD_DISPENSER);
+ControllerDispenser waterDispenserController(waterDispenser, sonarWater, COMMAND_WATER_DISPENSER, pinButtonWater);
+ControllerDispenser foodDispenserController(foodDispenser, sonarFood, COMMAND_FOOD_DISPENSER, pinButtonFood);
 
 ControllerSonar sonarWaterController(sonarWater, COMMAND_WATER_LEVEL);
 ControllerSonar sonarFoodController(sonarFood, COMMAND_FOOD_LEVEL);
@@ -85,6 +85,8 @@ void setup()
   foodDispenser.setup(pinFoodServo, 90, 0);
   waterDispenserTimeController.start();
   foodDispenserTimeController.start();
+  pinMode(pinButtonWater, INPUT);
+  pinMode(pinButtonFood, INPUT);
 }
 
 String getCommand(String value)
@@ -114,12 +116,14 @@ void loop()
 
   if (waterDispenser.isOpen() && analogRead(pinLevelWater) > limitWaterRecipient)
   {
-    Serial.println(analogRead(pinLevelWater));
     waterDispenser.close();
   }
 
   waterDispenserTimeController.update();
   foodDispenserTimeController.update();
+
+  waterDispenserController.listenButton();
+  foodDispenserController.listenButton();
 
   if (Serial.available() > 0)
   {
@@ -127,15 +131,30 @@ void loop()
     String command = getCommand(result);
     String value = getValue(result);
     // # Controladores
-    // ## Dispensadores
-    waterDispenserController.processCommand(command, value);
-    foodDispenserController.processCommand(command, value);
-    // ## Timers
-    waterDispenserTimeController.processCommand(command, value);
-    foodDispenserTimeController.processCommand(command, value);
 
-    // ## Sonares
-    sonarWaterController.processCommand(command, value);
-    sonarFoodController.processCommand(command, value);
+    if (command == COMMAND_WATER_DISPENSER)
+    {
+      waterDispenserController.processCommand(value);
+    }
+    else if (command == COMMAND_FOOD_DISPENSER)
+    {
+      foodDispenserController.processCommand(value);
+    }
+    else if (command == COMMAND_TIME_OPEN_WATER_DISPENSER)
+    {
+      waterDispenserTimeController.processCommand(value);
+    }
+    else if (command == COMMAND_TIME_OPEN_FOOD_DISPENSER)
+    {
+      foodDispenserTimeController.processCommand(value);
+    }
+    else if (command == COMMAND_WATER_LEVEL)
+    {
+      sonarWaterController.processCommand(value);
+    }
+    else if (command == COMMAND_FOOD_LEVEL)
+    {
+      sonarFoodController.processCommand(value);
+    }
   }
 }

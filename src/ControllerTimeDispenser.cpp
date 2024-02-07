@@ -77,28 +77,25 @@ void ControllerTimeDispenser::update()
     this->ticker->update();
 }
 
-void ControllerTimeDispenser::processCommand(String command, String value)
+void ControllerTimeDispenser::processCommand(String value)
 {
-    if (command == this->command)
+    if (this->getTypeTime(value) != 'N')
     {
-        if (this->getTypeTime(value) != 'N')
-        {
-            this->typeTime = this->getTypeTime(value);
-            this->timeOpen = this->convertTimeToMillis(value, this->typeTime);
-            this->ticker->interval(this->timeOpen);
-            Serial.println(this->command + "set:" + value);
-        }
-        else if (value == "1")
-        {
-            Serial.println(this->command + "repeat:" + this->ticker->counter());
-        }
-        else if (value == "2")
-        {
-            Serial.println(this->command + "get:" + this->convertMillisToTime() + this->typeTime);
-        }
-        else
-        {
-            Serial.println(this->command + ":notFound");
-        }
+        this->typeTime = this->getTypeTime(value);
+        this->timeOpen = this->convertTimeToMillis(value, this->typeTime);
+        this->ticker->interval(this->timeOpen);
+        Serial.println(this->command + "set:" + value);
+    }
+    else if (value == "1")
+    {
+        Serial.println(this->command + "repeat:" + this->ticker->counter());
+    }
+    else if (value == "2")
+    {
+        Serial.println(this->command + "get:" + this->convertMillisToTime() + this->typeTime);
+    }
+    else
+    {
+        Serial.println(this->command + ":notFound");
     }
 }
