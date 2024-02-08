@@ -32,11 +32,11 @@ class Crud:
         except mysql.connector.Error as error:
             return f"Error al consultar la base de datos: {error}"
 
-    def consultar_registros(self, tabla):
+    def consultar_registros(self, tabla, idRegistro):
         try:
-            instruccion = f"SELECT * FROM {tabla}"
+            instruccion = f"SELECT * FROM {tabla} WHERE idRegistro = &s"
             consulta = self.conexion.cursor()
-            consulta.execute(instruccion)
+            consulta.execute(instruccion, (idRegistro,))
             resultado = ""
             for (idRegistro, estado, fecha, hora) in consulta:
                 resultado += "{}\t{}\t{}\t{}\n".format(
