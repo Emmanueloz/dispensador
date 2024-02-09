@@ -13,7 +13,8 @@ class Controller:
             self.db.conectar_BD(host=host, user=user, passwd=passwd, database=database)
 
             # Conectar a Arduino
-            self.arduino.conectar()  # método en ConnectionArduino
+            if not self.arduino.esta_conectado():
+                self.arduino.conectar()  # Asegúrate de implementar este método en ConnectionArduino
             return "Conexión exitosa a la base de datos y Arduino."
         except Exception as e:
             return f"Error en la conexión: {e}"
@@ -24,72 +25,86 @@ class Controller:
             self.db.cerrar_conexion()
 
             # Cerrar conexión con Arduino
-            self.arduino.cerrar_arduino()  #método en ConnectionArduino
+            if self.arduino.esta_conectado():
+                self.arduino.cerrar()  # Asegúrate de implementar este método en ConnectionArduino
             return "Conexiones cerradas correctamente."
         except Exception as e:
             return f"Error al cerrar las conexiones: {e}"
 
-    def validar_tarea(self, idSensor, tipo, tiempo, unidadtiempo):
-        # Agregar aquí tu lógica de validación
-        if not all([idSensor, tipo, tiempo, unidadtiempo]):
-            return False, "Todos los campos son obligatorios."
-        # Puedes agregar más validaciones según tus necesidades, por ejemplo:
-        if not isinstance(idSensor, int):
-            return False, "El ID del sensor debe ser un número entero."
-        # Validar otros campos como tipo, tiempo, etc.
-
-        # Si todas las validaciones pasan, retornar True y un mensaje de éxito
-        return True, "Datos válidos."
-
-    def insertar_tarea(self, idSensor, tipo, tiempo, unidadtiempo):
-        # Validar los datos de la tarea antes de insertarlos en la base de datos
-        valido, mensaje = self.validar_tarea(idSensor, tipo, tiempo, unidadtiempo)
-        if valido:
-            try:
-                # Enviar el comando a Arduino para realizar la tarea
-                if tipo == "agua":
-                    comando = "wd"  # Comando para dispensar agua
-                elif tipo == "comida":
-                    comando = "fd"  # Comando para dispensar comida
-                else:
-                    return "Tipo de tarea no válido."
-
-                # Enviar el comando a Arduino
-                self.arduino.enviar_comando(comando)
-
-                # Si el comando se envió correctamente, insertar la tarea en la base de datos
-                self.db.insertar_tarea(idSensor, tipo, tiempo, unidadtiempo)
-                return "Tarea insertada correctamente."
-            except Exception as error:
-                return f"Error al insertar la tarea: {error}"
-        else:
-            return mensaje
-
-    def insertar_registro(self, idRegistro, estado):
+    def abrir_dispensador_agua(self):
         try:
-            # Insertar el registro en la base de datos
-            self.db.insertar_registro(idRegistro, estado)
-            return "Registro insertado correctamente."
+            # Verificar si la conexión con Arduino está establecida
+            if not self.arduino.esta_conectado():
+                return "Error: No se puede abrir el dispensador de agua. La conexión con Arduino no está establecida."
+
+            # Enviar comando al Arduino para abrir el dispensador de agua
+            comando = "wd"
+            respuesta = self.arduino.enviar_comando(comando)
+            return respuesta  # Puedes ajustar la respuesta según la lógica de tu aplicación
         except Exception as error:
-            return f"Error al insertar el registro: {error}"
+            return f"Error al abrir el dispensador de agua: {error}"
 
-    def consultar_datos(self, idRegistro, tipo):
-        """
-        Consulta datos en la base de datos.
+    def abrir_dispensador_alimento(self):
+        try:
+            # Verificar si la conexión con Arduino está establecida
+            if not self.arduino.esta_conectado():
+                return "Error: No se puede abrir el dispensador de alimento. La conexión con Arduino no está establecida."
 
-        Parameters:
-        - idRegistro: ID del sensor o registro.
-        - tipo: "sensor" o "registro" para indicar el tipo de consulta.
+            # Enviar comando al Arduino para abrir el dispensador de alimento
+            comando = "fd"
+            respuesta = self.arduino.enviar_comando(comando)
+            return respuesta  # Puedes ajustar la respuesta según la lógica de tu aplicación
+        except Exception as error:
+            return f"Error al abrir el dispensador de alimento: {error}"
 
-        Returns:
-        - Resultado de la consulta o un mensaje indicando que no se encontraron resultados.
-        """
-        # Realizar la consulta según el tipo especificado
-        if tipo == "sensor":
-            # Consultar datos de tarea
-            return self.db.consultar_tarea(idRegistro)
-        elif tipo == "registro":
-            # Consultar datos de registro
-            return self.db.consultar_registro(idRegistro)
-        else:
-            return "Tipo de consulta no válido. Use 'sensor' o 'registro'."
+    def obtener_posicion_servo_agua(self):
+        try:
+            # Verificar si la conexión con Arduino está establecida
+            if not self.arduino.esta_conectado():
+                return "Error: No se puede obtener la posición del servo de agua. La conexión con Arduino no está establecida."
+
+            # Enviar comando al Arduino para obtener la posición del servo de agua
+            comando = "posA"
+            respuesta = self.arduino.enviar_comando(comando)
+            return respuesta  # Puedes ajustar la respuesta según la lógica de tu aplicación
+        except Exception as error:
+            return f"Error al obtener la posición del servo de agua: {error}"
+
+    def obtener_posicion_servo_alimento(self):
+        try:
+            # Verificar si la conexión con Arduino está establecida
+            if not self.arduino.esta_conectado():
+                return "Error: No se puede obtener la posición del servo de alimento. La conexión con Arduino no está establecida."
+
+            # Enviar comando al Arduino para obtener la posición del servo de alimento
+            comando = "posF"
+            respuesta = self.arduino.enviar_comando(comando)
+            return respuesta  # Puedes ajustar la respuesta según la lógica de tu aplicación
+        except Exception as error:
+            return f"Error al obtener la posición del servo de alimento: {error}"
+
+    def obtener_distancia_ultrasonico_agua(self):
+        try:
+            # Verificar si la conexión con Arduino está establecida
+            if not self.arduino.esta_conectado():
+                return "Error: No se puede obtener la distancia con el sensor ultrasónico de agua. La conexión con Arduino no está establecida."
+
+            # Enviar comando al Arduino para obtener la distancia con el sensor ultrasónico de agua
+            comando = "distA"
+            respuesta = self.arduino.enviar_comando(comando)
+            return respuesta  # Puedes ajustar la respuesta según la lógica de tu aplicación
+        except Exception as error:
+            return f"Error al obtener la distancia con el sensor ultrasónico de agua: {error}"
+
+    def obtener_distancia_ultrasonico_alimento(self):
+        try:
+            # Verificar si la conexión con Arduino está establecida
+            if not self.arduino.esta_conectado():
+                return "Error: No se puede obtener la distancia con el sensor ultrasónico de alimento. La conexión con Arduino no está establecida."
+
+            # Enviar comando al Arduino para obtener la distancia con el sensor ultrasónico de alimento
+            comando = "distF"
+            respuesta = self.arduino.enviar_comando(comando)
+            return respuesta  # Puedes ajustar la respuesta según la lógica de tu aplicación
+        except Exception as error:
+            return f"Error al obtener la distancia con el sensor ultrasónico de alimento: {error}"
