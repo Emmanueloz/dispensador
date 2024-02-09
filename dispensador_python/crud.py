@@ -29,8 +29,8 @@ class Crud:
             consulta.execute(instruccion, (idTarea,))
             resultado = ""
             for (idTarea, idSensor, tipo, fechaRegistro, horaRegistro, tiempo, unidadtiempo) in consulta:
-                resultado += f"{idTarea}\t{idSensor}\t{tipo}\t{
-                    fechaRegistro}\t{horaRegistro}\t{tiempo}\t{unidadtiempo}\n"
+                resultado += f"""{idTarea}\t{idSensor}\t{tipo}\t{fechaRegistro}
+                    \t{horaRegistro}\t{tiempo}\t{unidadtiempo}\n"""
             consulta.close()
             return resultado if resultado else "No se encontraron resultados."
         except mysql.connector.Error as error:
