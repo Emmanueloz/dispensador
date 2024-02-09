@@ -1,15 +1,18 @@
 import mysql.connector
 from datetime import datetime
 
-class Crud:
-    def __init__(self):
-        self.conexion = self.conectar_BD()
 
-    def conectar_BD(self):
+class Crud:
+    def __init__(self, host, user, passwd, database):
+        self.conexion = self.conectar_BD(
+            user=user, passwd=passwd, host=host, database=database)
+
+    def conectar_BD(self, host, user, passwd, database):
         try:
-            return mysql.connector.connect(host="localhost", user="root", passwd="", database="dispensadorBD")
+            return mysql.connector.connect(host=host, user=user, passwd=passwd, database=database)
         except mysql.connector.Error as error:
-            raise RuntimeError(f"Error al conectar a la base de datos: {error}")
+            raise RuntimeError(
+                f"Error al conectar a la base de datos: {error}")
 
     def cerrar_conexion(self):
         try:
@@ -26,7 +29,8 @@ class Crud:
             consulta.execute(instruccion, (idTarea,))
             resultado = ""
             for (idTarea, idSensor, tipo, fechaRegistro, horaRegistro, tiempo, unidadtiempo) in consulta:
-                resultado += f"{idTarea}\t{idSensor}\t{tipo}\t{fechaRegistro}\t{horaRegistro}\t{tiempo}\t{unidadtiempo}\n"
+                resultado += f"{idTarea}\t{idSensor}\t{tipo}\t{
+                    fechaRegistro}\t{horaRegistro}\t{tiempo}\t{unidadtiempo}\n"
             consulta.close()
             return resultado if resultado else "No se encontraron resultados."
         except mysql.connector.Error as error:
@@ -49,7 +53,8 @@ class Crud:
         try:
             fecha_hora = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             instruccion = "INSERT INTO registros (idRegistro, estado, fecha, hora) VALUES (%s, %s, %s, %s)"
-            valores = (idRegistro, estado, fecha_hora.split()[0], fecha_hora.split()[1])
+            valores = (idRegistro, estado, fecha_hora.split()
+                       [0], fecha_hora.split()[1])
             consulta = self.conexion.cursor()
             consulta.execute(instruccion, valores)
             self.conexion.commit()
@@ -62,7 +67,8 @@ class Crud:
         try:
             fecha_hora = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             instruccion = "INSERT INTO tareas (idTarea, idSensor, tipo, fechaRegistro, horaRegistro, tiempo, unidadtiempo) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-            valores = (idTarea, idSensor, tipo, fecha_hora.split()[0], fecha_hora.split()[1], tiempo, unidadtiempo)
+            valores = (idTarea, idSensor, tipo, fecha_hora.split()[
+                       0], fecha_hora.split()[1], tiempo, unidadtiempo)
             consulta = self.conexion.cursor()
             consulta.execute(instruccion, valores)
             self.conexion.commit()
@@ -70,4 +76,3 @@ class Crud:
             return "Tarea insertada correctamente."
         except mysql.connector.Error as error:
             raise RuntimeError(f"Error al insertar en la tabla: {error}")
-
