@@ -3,13 +3,12 @@ from datetime import datetime
 
 
 class Crud:
-    def __init__(self, host, user, passwd, database):
-        self.conexion = self.conectar_BD(
-            user=user, passwd=passwd, host=host, database=database)
+    conexion = None
 
     def conectar_BD(self, host, user, passwd, database):
         try:
-            return mysql.connector.connect(host=host, user=user, passwd=passwd, database=database)
+            self.conexion = mysql.connector.connect(
+                host=host, user=user, passwd=passwd, database=database)
         except mysql.connector.Error as error:
             raise RuntimeError(
                 f"Error al conectar a la base de datos: {error}")
