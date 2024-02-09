@@ -14,7 +14,7 @@ class Controller:
 
             # Conectar a Arduino
             if not self.arduino.esta_conectado():
-                self.arduino.conectar()  # Asegúrate de implementar este método en ConnectionArduino
+                self.arduino.conectar()  
             return "Conexión exitosa a la base de datos y Arduino."
         except Exception as e:
             return f"Error en la conexión: {e}"
@@ -26,21 +26,25 @@ class Controller:
 
             # Cerrar conexión con Arduino
             if self.arduino.esta_conectado():
-                self.arduino.cerrar()  # Asegúrate de implementar este método en ConnectionArduino
+                self.arduino.cerrar() 
             return "Conexiones cerradas correctamente."
         except Exception as e:
             return f"Error al cerrar las conexiones: {e}"
 
+
     def abrir_dispensador_agua(self):
         try:
             # Verificar si la conexión con Arduino está establecida
-            if not self.arduino.esta_conectado():
+            if not self.arduino.esta_conectado():##compurba la conxion al arduino
                 return "Error: No se puede abrir el dispensador de agua. La conexión con Arduino no está establecida."
 
             # Enviar comando al Arduino para abrir el dispensador de agua
+            #despues envia los datos al aduino
+            #despues returna el resultado en este caso la variable de respuesta 
             comando = "wd"
             respuesta = self.arduino.enviar_comando(comando)
-            return respuesta  # Puedes ajustar la respuesta según la lógica de tu aplicación
+            return respuesta
+        ##si esto es falso o ocurre un error manda este mensaje 
         except Exception as error:
             return f"Error al abrir el dispensador de agua: {error}"
 
@@ -50,10 +54,9 @@ class Controller:
             if not self.arduino.esta_conectado():
                 return "Error: No se puede abrir el dispensador de alimento. La conexión con Arduino no está establecida."
 
-            # Enviar comando al Arduino para abrir el dispensador de alimento
             comando = "fd"
             respuesta = self.arduino.enviar_comando(comando)
-            return respuesta  # Puedes ajustar la respuesta según la lógica de tu aplicación
+            return respuesta 
         except Exception as error:
             return f"Error al abrir el dispensador de alimento: {error}"
 
