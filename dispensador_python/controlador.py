@@ -5,13 +5,16 @@ class Controller:
     def __init__(self):
         # Crear instancias de las clases Crud y ConnectionArduino
         self.db = Crud()
-        self.arduino = None  # La conexión se establecerá cuando sea necesario
+        self.arduino = ConnectionArduino()  # La conexión se establecerá cuando sea necesario
 
     def conectar_todo(self, host="localhost", user="root", passwd="", database="dispensadorBD"):
         try:
             # Conectar a la base de datos
             self.db.conectar_BD(host=host, user=user, passwd=passwd, database=database)
-            return "Conexión exitosa a la base de datos."
+
+            # Conectar a Arduino
+            self.arduino.conectar()  # método en ConnectionArduino
+            return "Conexión exitosa a la base de datos y Arduino."
         except Exception as e:
             return f"Error en la conexión: {e}"
 
@@ -19,9 +22,12 @@ class Controller:
         try:
             # Cerrar conexión con la base de datos
             self.db.cerrar_conexion()
-            return "Conexión cerrada correctamente."
+
+            # Cerrar conexión con Arduino
+            self.arduino.cerrar_arduino()  #método en ConnectionArduino
+            return "Conexiones cerradas correctamente."
         except Exception as e:
-            return f"Error al cerrar la conexión: {e}"
+            return f"Error al cerrar las conexiones: {e}"
 
     def validar_tarea(self, idSensor, tipo, tiempo, unidadtiempo):
         # Agregar aquí tu lógica de validación
@@ -40,13 +46,32 @@ class Controller:
         valido, mensaje = self.validar_tarea(idSensor, tipo, tiempo, unidadtiempo)
         if valido:
             try:
-                # Intentar insertar la tarea en la base de datos
+                # Enviar el comando a Arduino para realizar la tarea
+                if tipo == "agua":
+                    comando = "wd"  # Comando para dispensar agua
+                elif tipo == "comida":
+                    comando = "fd"  # Comando para dispensar comida
+                else:
+                    return "Tipo de tarea no válido."
+
+                # Enviar el comando a Arduino
+                self.arduino.enviar_comando(comando)
+
+                # Si el comando se envió correctamente, insertar la tarea en la base de datos
                 self.db.insertar_tarea(idSensor, tipo, tiempo, unidadtiempo)
                 return "Tarea insertada correctamente."
             except Exception as error:
                 return f"Error al insertar la tarea: {error}"
         else:
             return mensaje
+
+    def insertar_registro(self, idRegistro, estado):
+        try:
+            # Insertar el registro en la base de datos
+            self.db.insertar_registro(idRegistro, estado)
+            return "Registro insertado correctamente."
+        except Exception as error:
+            return f"Error al insertar el registro: {error}"
 
     def consultar_datos(self, idRegistro, tipo):
         """
