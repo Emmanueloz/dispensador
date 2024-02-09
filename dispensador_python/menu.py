@@ -38,19 +38,27 @@ while True:
             continue  # Regresar al menú principal
 
         elif opcion_secundaria.lower() == 'a' or opcion_secundaria.lower() == 'b':
-            print(tiempo)
-            option_tiempo = input(
-                f"{Fore.GREEN}Seleccione una opción (A-B-M):{Fore.RESET}")
-
-            if option_tiempo.lower() == 'm':
-                continue  # Regresar al menú principal
-
             if opcion_principal == '1':
                 print(f'Abrir dispensador de {Fore.BLUE}{opcion_secundaria}{Fore.RESET} cada {Fore.BLUE}{Fore.RESET}')
             elif opcion_principal == '2':
                 print(f'{Fore.MAGENTA}Consultar dispensador de {Fore.BLUE}{opcion_secundaria}{Fore.RESET} cada {Fore.BLUE}{Fore.RESET}')
             elif opcion_principal == '3':
-                print(f'Consultar tiempo del dispensador de {Fore.BLUE}{opcion_secundaria}{Fore.RESET} cada {Fore.BLUE}{option_tiempo}{Fore.RESET}')
+                print(tiempo)
+                option_tiempo = input(
+                    f"{Fore.GREEN}Seleccione una opción (A-B-M):{Fore.RESET}")
+
+                if option_tiempo.lower() == 'a' or option_tiempo.lower() == 'b':
+                    valor_tiempo = input(
+                        f"{Fore.GREEN}Inserte el valor para el dispensador en {option_tiempo.capitalize()}:{Fore.RESET}")
+
+                    if valor_tiempo.isdigit():
+                        print(f'Consultar tiempo del dispensador de {Fore.BLUE}{opcion_secundaria}{Fore.RESET} cada {Fore.BLUE}{valor_tiempo} {option_tiempo}{Fore.RESET}')
+                    else:
+                        print(f"{Back.RED}Error: El valor debe ser un número entero{Back.RESET}")
+                        continue  # Regresar al menú principal
+
+                elif option_tiempo.lower() == 'm':
+                    continue  # Regresar al menú principal
 
     elif opcion_principal.lower() == 's':
         print("Saliendo del programa. ¡Hasta luego!")
