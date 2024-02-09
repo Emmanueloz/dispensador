@@ -1,11 +1,14 @@
 -- Crear la base de datos
 CREATE DATABASE IF NOT EXISTS dispensadorBD;
 
--- Crear la tabla Sensores
-CREATE TABLE IF NOT EXISTS Sensores (
-    idSensor INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255),
-    uso VARCHAR(255)
+CREATE TABLE tareas (
+    idTarea INT PRIMARY KEY,
+    idSensor INT,
+    tipo VARCHAR(255),
+    fechaRegistro DATE,
+    horaRegistro TIME,
+    tiempo INT,
+    unidadtiempo VARCHAR(50)
 );
 
 -- Crear la tabla Registros
