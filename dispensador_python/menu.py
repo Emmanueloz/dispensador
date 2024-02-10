@@ -1,9 +1,10 @@
 from colorama import init, Fore, Back
 from controlador import Controller
 
-
+# Inicializar Colorama
 init(autoreset=True)
 
+# Crear una instancia del controlador
 controller = Controller()
 
 menu = f'''
@@ -43,20 +44,16 @@ while True:
         elif opcion_secundaria.lower() == 'a' or opcion_secundaria.lower() == 'b':
             if opcion_principal == '1':
                 if opcion_secundaria.lower() == 'a':
-                    # Llamar a la función correspondiente del controlador
                     respuesta = controller.abrir_dispensador_agua()
                     print(respuesta)
                 elif opcion_secundaria.lower() == 'b':
-                    # Llamar a la función correspondiente del controlador
                     respuesta = controller.abrir_dispensador_alimento()
                     print(respuesta)
             elif opcion_principal == '2':
                 if opcion_secundaria.lower() == 'a':
-                    # Llamar a la función correspondiente del controlador
                     respuesta = controller.consultar_registro(idSensor="1")
                     print(respuesta)
                 elif opcion_secundaria.lower() == 'b':
-                    # Llamar a la función correspondiente del controlador
                     respuesta = controller.consultar_registro(idSensor="2")
                     print(respuesta)
             elif opcion_principal == '3':
@@ -70,11 +67,9 @@ while True:
 
                     if valor_tiempo.isdigit():
                         if opcion_secundaria.lower() == 'a':
-                            # Llamar a la función correspondiente del controlador
                             respuesta = controller.definir_intervalo_tiempo_agua(tiempo=valor_tiempo, unidad=option_tiempo.lower())
                             print(respuesta)
                         elif opcion_secundaria.lower() == 'b':
-                            # Llamar a la función correspondiente del controlador
                             respuesta = controller.definir_intervalo_tiempo_comida(tiempo=valor_tiempo, unidad=option_tiempo.lower())
                             print(respuesta)
                     else:
@@ -85,7 +80,6 @@ while True:
                     continue  # Regresar al menú principal
 
     elif opcion_principal.lower() == 's':
-        # Llamar a la función correspondiente del controlador
         respuesta = controller.cerrar_todo()
         print(respuesta)
         print("Saliendo del programa. ¡Hasta luego!")
