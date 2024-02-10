@@ -1,5 +1,5 @@
-from crud import Crud
-from conexion_serial import ConnectionArduino
+from dispensador_python.crud import Crud
+from dispensador_python.conexion_serial import ConnectionArduino
 
 
 class Controller:

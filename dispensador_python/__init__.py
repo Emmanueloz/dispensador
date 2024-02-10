@@ -1,10 +1,12 @@
 from colorama import init, Fore, Back
-from controlador import Controller
+from .controlador import Controller
 
 
 init(autoreset=True)
 
 controller = Controller()
+
+controller.conectar_todo()
 
 menu = f'''
 =========[Dispensadores]=============================
@@ -71,14 +73,17 @@ while True:
                     if valor_tiempo.isdigit():
                         if opcion_secundaria.lower() == 'a':
                             # Llamar a la función correspondiente del controlador
-                            respuesta = controller.definir_intervalo_tiempo_agua(tiempo=valor_tiempo, unidad=option_tiempo.lower())
+                            respuesta = controller.definir_intervalo_tiempo_agua(
+                                tiempo=valor_tiempo, unidad=option_tiempo.lower())
                             print(respuesta)
                         elif opcion_secundaria.lower() == 'b':
                             # Llamar a la función correspondiente del controlador
-                            respuesta = controller.definir_intervalo_tiempo_comida(tiempo=valor_tiempo, unidad=option_tiempo.lower())
+                            respuesta = controller.definir_intervalo_tiempo_comida(
+                                tiempo=valor_tiempo, unidad=option_tiempo.lower())
                             print(respuesta)
                     else:
-                        print(f"{Back.RED}Error: El valor debe ser un número entero{Back.RESET}")
+                        print(f"{Back.RED}Error: El valor debe ser un número entero{
+                              Back.RESET}")
                         continue  # Regresar al menú principal
 
                 elif option_tiempo.lower() == 'm':
