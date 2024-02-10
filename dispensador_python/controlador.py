@@ -31,7 +31,7 @@ class Controller:
 
     def abrir_dispensador_agua(self):
         try:
-            comando = "wd"
+            comando = "wd:1"
             self.arduino.enviar_dato(comando)
             respuesta_arduino = self.arduino.recibir_dato()
             if "wd" in respuesta_arduino:
@@ -44,7 +44,7 @@ class Controller:
 
     def abrir_dispensador_alimento(self):
         try:
-            comando = "fd"
+            comando = "fd:1"
             self.arduino.enviar_dato(comando)
             respuesta_arduino = self.arduino.recibir_dato()
             if "fd" in respuesta_arduino:
@@ -57,7 +57,7 @@ class Controller:
 
     def obtener_posicion_servo_agua(self):
         try:
-            comando = "wdR"
+            comando = "wdR:1"
             self.arduino.enviar_dato(comando)
             respuesta_arduino = self.arduino.recibir_dato()
             return respuesta_arduino
@@ -66,7 +66,7 @@ class Controller:
 
     def obtener_posicion_servo_alimento(self):
         try:
-            comando = "fdR"
+            comando = "fd:2"
             self.arduino.enviar_dato(comando)
             respuesta_arduino = self.arduino.recibir_dato()
             return respuesta_arduino
@@ -75,7 +75,7 @@ class Controller:
 
     def obtener_distancia_ultrasonico_agua(self):
         try:
-            comando = "wdR"
+            comando = "wdR:1"
             self.arduino.enviar_dato(comando)
             respuesta_arduino = self.arduino.recibir_dato()
             return respuesta_arduino
@@ -84,7 +84,7 @@ class Controller:
 
     def obtener_distancia_ultrasonico_alimento(self):
         try:
-            comando = "fdR"
+            comando = "fdR:1"
             self.arduino.enviar_dato(comando)
             respuesta_arduino = self.arduino.recibir_dato()
             return respuesta_arduino
@@ -102,15 +102,15 @@ class Controller:
             return self.db.consultar_registro(idRegistro)
         except Exception as error:
             return f"Error al consultar el registro: {error}"
-
-    def insertar_tarea(self, idTarea, idSensor, tipo, tiempo, unidadtiempo):
+        
+    def definir_intervalo_tiempo_agua(self, tiempo, unidad):
         try:
-            return self.db.insertar_tarea(idTarea, idSensor, tipo, tiempo, unidadtiempo)
+            if unidad not in ['s', 'm']:
+                raise ValueError("Unidad de tiempo no válida. Debe ser 's' para segundos, 'm' para minutos.")
+            
+            comando = f"wdT:{tiempo}{unidad}"
+            self.arduino.enviar_dato(comando)
+            respuesta_arduino = self.arduino.recibir_dato()
+            return respuesta_arduino
         except Exception as error:
-            return f"Error al insertar la tarea: {error}"
-
-    def insertar_registro(self, idRegistro, estado):
-        try:
-            return self.db.insertar_registro(idRegistro, estado)
-        except Exception as error:
-            return f"Error al insertar el registro: {error}"
+            return f"Error al definir el intervalo de tiempo para el dispensador de agua: {error}"
