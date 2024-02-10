@@ -65,7 +65,7 @@ class Crud:
     def insertar_tarea(self, idSensor, tipo, tiempo, unidadtiempo):
         try:
             fecha_hora = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            instruccion = "INSERT INTO tareas (idSensor, tipo, fechaRegistro, horaRegistro, tiempo, unidadtiempo) VALUES (%s, %s, %s, %s, %s, %s)"
+            instruccion = "INSERT INTO tareas (idTarea,idSensor, tipo, fechaRegistro, horaRegistro, tiempo, unidadtiempo) VALUES (NULL,%s, %s, %s, %s, %s, %s)"
             valores = (idSensor, tipo, fecha_hora.split()[
                 0], fecha_hora.split()[1], tiempo, unidadtiempo)
             consulta = self.conexion.cursor()

@@ -2,7 +2,7 @@
 CREATE DATABASE IF NOT EXISTS dispensadorBD;
 
 CREATE TABLE tareas (
-    idTarea INT PRIMARY KEY,
+    idTarea INT AUTO_INCREMENT PRIMARY KEY,
     idSensor TEXT,
     tipo VARCHAR(255),
     fechaRegistro DATE,

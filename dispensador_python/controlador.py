@@ -139,7 +139,7 @@ class Controller:
             respuesta_arduino = self.arduino.recibir_dato()
 
             # Guardar la respuesta en la tabla de registros de tareas si es correcta
-            if "fdT" in respuesta_arduino:
+            if "fdTresult:90" in respuesta_arduino:
                 respuesta_db = self.db.insertar_tarea(
                     idSensor="2", tipo="Alimento", tiempo=tiempo, unidadtiempo=unidad)
                 return respuesta_db
