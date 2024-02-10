@@ -25,7 +25,6 @@ subMenu = f'''
 '''
 
 tiempo = f'''
-{Back.RED}Advertencia: Solo se podrá insertar o enviar una petición mediante una de las siguientes opciones. No se podrá realizar todo al mismo tiempo (minuto, segundo){Back.RESET}
 ||      {Back.GREEN}A.{Back.RESET}{Fore.BLUE} Minuto {Fore.RESET}                     ||
 ||      {Back.GREEN}B.{Back.RESET}{Fore.YELLOW} Segundo {Fore.RESET}                   ||
 ||      {Back.GREEN}M.{Back.RESET}{Fore.RED} Volver al Menú Principal {Fore.RESET} ||
@@ -68,26 +67,20 @@ while True:
                         f"{Fore.GREEN}Inserte el valor para el dispensador en {option_tiempo.capitalize()}:{Fore.RESET}")
 
                     if valor_tiempo.isdigit():
+                        unidad_tiempo = 'm' if option_tiempo.lower() == 'a' else 's'
+
                         if opcion_secundaria.lower() == 'a':
-<<<<<<< HEAD:dispensador_python/menu.py
-                            respuesta = controller.definir_intervalo_tiempo_agua(tiempo=valor_tiempo, unidad=option_tiempo.lower())
-                            print(respuesta)
-                        elif opcion_secundaria.lower() == 'b':
-                            respuesta = controller.definir_intervalo_tiempo_comida(tiempo=valor_tiempo, unidad=option_tiempo.lower())
-=======
                             # Llamar a la función correspondiente del controlador
                             respuesta = controller.definir_intervalo_tiempo_agua(
-                                tiempo=valor_tiempo, unidad=option_tiempo.lower())
+                                tiempo=valor_tiempo, unidad=unidad_tiempo)
                             print(respuesta)
                         elif opcion_secundaria.lower() == 'b':
                             # Llamar a la función correspondiente del controlador
                             respuesta = controller.definir_intervalo_tiempo_comida(
-                                tiempo=valor_tiempo, unidad=option_tiempo.lower())
->>>>>>> main:dispensador_python/__init__.py
+                                tiempo=valor_tiempo, unidad=unidad_tiempo)
                             print(respuesta)
                     else:
-                        print(f"{Back.RED}Error: El valor debe ser un número entero{
-                              Back.RESET}")
+                        print(f"{Back.RED}Error: El valor debe ser un número entero{Back.RESET}")
                         continue  # Regresar al menú principal
 
                 elif option_tiempo.lower() == 'm':
