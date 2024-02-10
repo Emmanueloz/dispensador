@@ -5,7 +5,7 @@ class Controller:
     def __init__(self):
         # Crear instancias de las clases Crud y ConnectionArduino
         self.db = Crud()
-        self.arduino = ConnectionArduino()  # La conexión se establecerá cuando sea necesario
+        self.arduino = ConnectionArduino(puerto="")  # Especifica el puerto correcto
 
     def conectar_todo(self, host="localhost", user="root", passwd="", database="dispensadorBD"):
         try:
@@ -24,16 +24,17 @@ class Controller:
             self.db.cerrar_conexion()
 
             # Cerrar conexión con Arduino
-            self.arduino.cerrar() 
+            self.arduino.cerrar_arduino() 
             return "Conexiones cerradas correctamente."
         except Exception as e:
             return f"Error al cerrar las conexiones: {e}"
+
     def abrir_dispensador_agua(self):
         try:
-            comando = "wd:1"
-            self.arduino.enviar_comando(comando)
-            respuesta_arduino = self.arduino.leer_respuesta_serial()
-            if "correcto" in respuesta_arduino:
+            comando = "wd"
+            self.arduino.enviar_dato(comando)
+            respuesta_arduino = self.arduino.recibir_dato()
+            if "wd" in respuesta_arduino:
                 respuesta_db = self.db.insertar_registro(idRegistro="ID_AGUA", estado="ABIERTO")
                 return respuesta_db
             else:
@@ -43,10 +44,10 @@ class Controller:
 
     def abrir_dispensador_alimento(self):
         try:
-            comando = "fd:1"
-            self.arduino.enviar_comando(comando)
-            respuesta_arduino = self.arduino.leer_respuesta_serial()
-            if "correcto" in respuesta_arduino:
+            comando = "fd"
+            self.arduino.enviar_dato(comando)
+            respuesta_arduino = self.arduino.recibir_dato()
+            if "fd" in respuesta_arduino:
                 respuesta_db = self.db.insertar_registro(idRegistro="ID_ALIMENTO", estado="ABIERTO")
                 return respuesta_db
             else:
@@ -57,8 +58,8 @@ class Controller:
     def obtener_posicion_servo_agua(self):
         try:
             comando = "wdR"
-            self.arduino.enviar_comando(comando)
-            respuesta_arduino = self.arduino.leer_respuesta_serial()
+            self.arduino.enviar_dato(comando)
+            respuesta_arduino = self.arduino.recibir_dato()
             return respuesta_arduino
         except Exception as error:
             return f"Error al obtener la posición del servo de agua: {error}"
@@ -66,27 +67,50 @@ class Controller:
     def obtener_posicion_servo_alimento(self):
         try:
             comando = "fdR"
-            self.arduino.enviar_comando(comando)
-            respuesta_arduino = self.arduino.leer_respuesta_serial()
+            self.arduino.enviar_dato(comando)
+            respuesta_arduino = self.arduino.recibir_dato()
             return respuesta_arduino
         except Exception as error:
             return f"Error al obtener la posición del servo de alimento: {error}"
 
     def obtener_distancia_ultrasonico_agua(self):
         try:
-            comando = "wdT"
-            self.arduino.enviar_comando(comando)
-            respuesta_arduino = self.arduino.leer_respuesta_serial()
+            comando = "wdR"
+            self.arduino.enviar_dato(comando)
+            respuesta_arduino = self.arduino.recibir_dato()
             return respuesta_arduino
         except Exception as error:
             return f"Error al obtener la distancia con el sensor ultrasónico de agua: {error}"
 
     def obtener_distancia_ultrasonico_alimento(self):
         try:
-            comando = "fdT"
-            self.arduino.enviar_comando(comando)
-            respuesta_arduino = self.arduino.leer_respuesta_serial()
+            comando = "fdR"
+            self.arduino.enviar_dato(comando)
+            respuesta_arduino = self.arduino.recibir_dato()
             return respuesta_arduino
         except Exception as error:
             return f"Error al obtener la distancia con el sensor ultrasónico de alimento: {error}"
-   
+        
+    def consultar_tarea(self, idTarea):
+        try:
+            return self.db.consultar_tarea(idTarea)
+        except Exception as error:
+            return f"Error al consultar la tarea: {error}"
+
+    def consultar_registro(self, idRegistro):
+        try:
+            return self.db.consultar_registro(idRegistro)
+        except Exception as error:
+            return f"Error al consultar el registro: {error}"
+
+    def insertar_tarea(self, idTarea, idSensor, tipo, tiempo, unidadtiempo):
+        try:
+            return self.db.insertar_tarea(idTarea, idSensor, tipo, tiempo, unidadtiempo)
+        except Exception as error:
+            return f"Error al insertar la tarea: {error}"
+
+    def insertar_registro(self, idRegistro, estado):
+        try:
+            return self.db.insertar_registro(idRegistro, estado)
+        except Exception as error:
+            return f"Error al insertar el registro: {error}"
