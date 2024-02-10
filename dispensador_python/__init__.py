@@ -67,20 +67,21 @@ while True:
                         f"{Fore.GREEN}Inserte el valor para el dispensador en {option_tiempo.capitalize()}:{Fore.RESET}")
 
                     if valor_tiempo.isdigit():
-                        unidad_tiempo = 'm' if option_tiempo.lower() == 'a' else 's'
+                        # unidad_tiempo = 'm' if option_tiempo.lower() == 'a' else 's'
 
                         if opcion_secundaria.lower() == 'a':
                             # Llamar a la función correspondiente del controlador
                             respuesta = controller.definir_intervalo_tiempo_agua(
-                                tiempo=valor_tiempo, unidad=unidad_tiempo)
+                                tiempo=valor_tiempo, unidad="m")
                             print(respuesta)
                         elif opcion_secundaria.lower() == 'b':
                             # Llamar a la función correspondiente del controlador
                             respuesta = controller.definir_intervalo_tiempo_comida(
-                                tiempo=valor_tiempo, unidad=unidad_tiempo)
+                                tiempo=valor_tiempo, unidad="s")
                             print(respuesta)
                     else:
-                        print(f"{Back.RED}Error: El valor debe ser un número entero{Back.RESET}")
+                        print(f"""{Back.RED}Error: El valor debe ser un número entero{
+                              Back.RESET}""")
                         continue  # Regresar al menú principal
 
                 elif option_tiempo.lower() == 'm':
