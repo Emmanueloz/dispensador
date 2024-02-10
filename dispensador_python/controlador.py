@@ -111,6 +111,30 @@ class Controller:
             comando = f"wdT:{tiempo}{unidad}"
             self.arduino.enviar_dato(comando)
             respuesta_arduino = self.arduino.recibir_dato()
-            return respuesta_arduino
+            
+            # Guardar la respuesta en la tabla de registros de tareas si es correcta
+            if "wdT" in respuesta_arduino:
+                respuesta_db = self.db.insertar_registro(idRegistro="ID_INTERVALO_AGUA", estado=respuesta_arduino)
+                return respuesta_db
+            else:
+                return f"Error al definir el intervalo de tiempo para el dispensador de agua: {respuesta_arduino}"
         except Exception as error:
             return f"Error al definir el intervalo de tiempo para el dispensador de agua: {error}"
+
+    def definir_intervalo_tiempo_comida(self, tiempo, unidad):
+        try:
+            if unidad not in ['s', 'm']:
+                raise ValueError("Unidad de tiempo no válida. Debe ser 's' para segundos, 'm' para minutos.")
+            
+            comando = f"fdT:{tiempo}{unidad}"
+            self.arduino.enviar_dato(comando)
+            respuesta_arduino = self.arduino.recibir_dato()
+            
+            # Guardar la respuesta en la tabla de registros de tareas si es correcta
+            if "fdT" in respuesta_arduino:
+                respuesta_db = self.db.insertar_registro(idRegistro="ID_INTERVALO_COMIDA", estado=respuesta_arduino)
+                return respuesta_db
+            else:
+                return f"Error al definir el intervalo de tiempo para el dispensador de comida: {respuesta_arduino}"
+        except Exception as error:
+            return f"Error al definir el intervalo de tiempo para el dispensador de comida: {error}"
