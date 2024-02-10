@@ -1,7 +1,11 @@
+from crud import Crud
+from conexion_serial import ConnectionArduino
+
 class Controller:
-    def __init__(self, crud_instance, arduino_instance):
-        self.db = crud_instance
-        self.arduino = arduino_instance
+    def __init__(self):
+        # Crear instancias de las clases Crud y ConnectionArduino
+        self.db = Crud()
+        self.arduino = ConnectionArduino()  # La conexión se establecerá cuando sea necesario
 
     def conectar_todo(self, host="localhost", user="root", passwd="", database="dispensadorBD"):
         try:
@@ -24,55 +28,65 @@ class Controller:
             return "Conexiones cerradas correctamente."
         except Exception as e:
             return f"Error al cerrar las conexiones: {e}"
-
     def abrir_dispensador_agua(self):
         try:
-            respuesta = self.db.insertar_registro(idRegistro="ID_AGUA", estado="ABIERTO")
-            if "correctamente" in respuesta:
-                comando = "wd:1"
-                respuesta_arduino = self.arduino.enviar_comando(comando)
-                return respuesta_arduino
+            comando = "wd:1"
+            self.arduino.enviar_comando(comando)
+            respuesta_arduino = self.arduino.leer_respuesta_serial()
+            if "correcto" in respuesta_arduino:
+                respuesta_db = self.db.insertar_registro(idRegistro="ID_AGUA", estado="ABIERTO")
+                return respuesta_db
             else:
-                return respuesta
+                return f"Error al abrir el dispensador de agua en el Arduino: {respuesta_arduino}"
         except Exception as error:
             return f"Error al abrir el dispensador de agua: {error}"
 
     def abrir_dispensador_alimento(self):
         try:
-            respuesta = self.db.insertar_registro(idRegistro="ID_ALIMENTO", estado="ABIERTO")
-            if "correctamente" in respuesta:
-                comando = "fd:1"
-                respuesta_arduino = self.arduino.enviar_comando(comando)
-                return respuesta_arduino
+            comando = "fd:1"
+            self.arduino.enviar_comando(comando)
+            respuesta_arduino = self.arduino.leer_respuesta_serial()
+            if "correcto" in respuesta_arduino:
+                respuesta_db = self.db.insertar_registro(idRegistro="ID_ALIMENTO", estado="ABIERTO")
+                return respuesta_db
             else:
-                return respuesta
+                return f"Error al abrir el dispensador de alimento en el Arduino: {respuesta_arduino}"
         except Exception as error:
             return f"Error al abrir el dispensador de alimento: {error}"
 
     def obtener_posicion_servo_agua(self):
         try:
-            respuesta_arduino = self.arduino.enviar_comando("posA")
+            comando = "wdR"
+            self.arduino.enviar_comando(comando)
+            respuesta_arduino = self.arduino.leer_respuesta_serial()
             return respuesta_arduino
         except Exception as error:
             return f"Error al obtener la posición del servo de agua: {error}"
 
     def obtener_posicion_servo_alimento(self):
         try:
-            respuesta_arduino = self.arduino.enviar_comando("posF")
+            comando = "fdR"
+            self.arduino.enviar_comando(comando)
+            respuesta_arduino = self.arduino.leer_respuesta_serial()
             return respuesta_arduino
         except Exception as error:
             return f"Error al obtener la posición del servo de alimento: {error}"
 
     def obtener_distancia_ultrasonico_agua(self):
         try:
-            respuesta_arduino = self.arduino.enviar_comando("distA")
+            comando = "wdT"
+            self.arduino.enviar_comando(comando)
+            respuesta_arduino = self.arduino.leer_respuesta_serial()
             return respuesta_arduino
         except Exception as error:
             return f"Error al obtener la distancia con el sensor ultrasónico de agua: {error}"
 
     def obtener_distancia_ultrasonico_alimento(self):
         try:
-            respuesta_arduino = self.arduino.enviar_comando("distF")
+            comando = "fdT"
+            self.arduino.enviar_comando(comando)
+            respuesta_arduino = self.arduino.leer_respuesta_serial()
             return respuesta_arduino
         except Exception as error:
             return f"Error al obtener la distancia con el sensor ultrasónico de alimento: {error}"
+   
