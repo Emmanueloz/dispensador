@@ -1,13 +1,16 @@
 from colorama import init, Fore, Back
+from controlador import Controller
 
-# Inicializar Colorama
+
 init(autoreset=True)
+
+controller = Controller()
 
 menu = f'''
 =========[Dispensadores]=============================
 || {Back.GREEN}1{Back.RESET} - {Fore.CYAN}Dispensar Agua o Comida{Fore.RESET}                      ||
 || {Back.GREEN}2{Back.RESET} - {Fore.MAGENTA}Consulta Contenedores{Fore.RESET}                        ||
-|| {Back.GREEN}3{Back.RESET} - {Fore.BLUE}Dispensar automatico{Fore.RESET}                      ||
+|| {Back.GREEN}3{Back.RESET} - {Fore.BLUE}Dispensar automático{Fore.RESET}                      ||
 || {Back.GREEN}s{Back.RESET} - {Fore.RED}Salir{Fore.RESET}                                        ||
 ======================================================
 '''
@@ -39,9 +42,23 @@ while True:
 
         elif opcion_secundaria.lower() == 'a' or opcion_secundaria.lower() == 'b':
             if opcion_principal == '1':
-                print(f'Abrir dispensador de {Fore.BLUE}{opcion_secundaria}{Fore.RESET} cada {Fore.BLUE}{Fore.RESET}')
+                if opcion_secundaria.lower() == 'a':
+                    # Llamar a la función correspondiente del controlador
+                    respuesta = controller.abrir_dispensador_agua()
+                    print(respuesta)
+                elif opcion_secundaria.lower() == 'b':
+                    # Llamar a la función correspondiente del controlador
+                    respuesta = controller.abrir_dispensador_alimento()
+                    print(respuesta)
             elif opcion_principal == '2':
-                print(f'{Fore.MAGENTA}Consultar dispensador de {Fore.BLUE}{opcion_secundaria}{Fore.RESET} cada {Fore.BLUE}{Fore.RESET}')
+                if opcion_secundaria.lower() == 'a':
+                    # Llamar a la función correspondiente del controlador
+                    respuesta = controller.consultar_registro(idSensor="1")
+                    print(respuesta)
+                elif opcion_secundaria.lower() == 'b':
+                    # Llamar a la función correspondiente del controlador
+                    respuesta = controller.consultar_registro(idSensor="2")
+                    print(respuesta)
             elif opcion_principal == '3':
                 print(tiempo)
                 option_tiempo = input(
@@ -52,7 +69,14 @@ while True:
                         f"{Fore.GREEN}Inserte el valor para el dispensador en {option_tiempo.capitalize()}:{Fore.RESET}")
 
                     if valor_tiempo.isdigit():
-                        print(f'Consultar tiempo del dispensador de {Fore.BLUE}{opcion_secundaria}{Fore.RESET} cada {Fore.BLUE}{valor_tiempo} {option_tiempo}{Fore.RESET}')
+                        if opcion_secundaria.lower() == 'a':
+                            # Llamar a la función correspondiente del controlador
+                            respuesta = controller.definir_intervalo_tiempo_agua(tiempo=valor_tiempo, unidad=option_tiempo.lower())
+                            print(respuesta)
+                        elif opcion_secundaria.lower() == 'b':
+                            # Llamar a la función correspondiente del controlador
+                            respuesta = controller.definir_intervalo_tiempo_comida(tiempo=valor_tiempo, unidad=option_tiempo.lower())
+                            print(respuesta)
                     else:
                         print(f"{Back.RED}Error: El valor debe ser un número entero{Back.RESET}")
                         continue  # Regresar al menú principal
@@ -61,6 +85,9 @@ while True:
                     continue  # Regresar al menú principal
 
     elif opcion_principal.lower() == 's':
+        # Llamar a la función correspondiente del controlador
+        respuesta = controller.cerrar_todo()
+        print(respuesta)
         print("Saliendo del programa. ¡Hasta luego!")
         break
     else:

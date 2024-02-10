@@ -7,7 +7,7 @@ class Controller:
         # Crear instancias de las clases Crud y ConnectionArduino
         self.db = Crud()
         # Especifica el puerto correcto
-        self.arduino = ConnectionArduino(puerto="")
+        self.arduino = ConnectionArduino(puerto="COM1")
 
     def conectar_todo(self, host="localhost", user="root", passwd="", database="dispensadorBD"):
         try:
