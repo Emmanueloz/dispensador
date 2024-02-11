@@ -95,7 +95,9 @@ String getCommand(String value)
 String getValue(String value)
 {
   int index = value.indexOf(":");
-  return value.substring(index + 1);
+  String resul = value.substring(index + 1);
+  resul.trim();
+  return resul;
 }
 
 void loop()
