@@ -19,7 +19,7 @@ menu = f'''
 || {Back.GREEN}5{Back.RESET} - {Fore.MAGENTA}Consulta Dispensador{Fore.RESET}                        ||
 || {Back.GREEN}6{Back.RESET} - {Fore.MAGENTA}Consulta Contenedores{Fore.RESET}                        ||
 || {Back.GREEN}7{Back.RESET} - {Fore.MAGENTA}Consultar intervalo{Fore.RESET}                        ||
-|| {Back.GREEN}8{Back.RESET} - {Fore.RED}Salir{Fore.RESET}                                        ||
+|| {Back.GREEN}s{Back.RESET} - {Fore.RED}Salir{Fore.RESET}                                        ||
 ======================================================
 '''
 
@@ -134,7 +134,7 @@ while True:
                     respuesta = controller.obtener_distancia_ultrasonico_alimento()
                     print(respuesta)
             
-            elif opcion_principal == '6':
+            elif opcion_principal == '7':
                 if opcion_secundaria.lower() == 'a':
                     respuesta = controller.definir_intervalo_tiempo_agua()
                     print(respuesta)
