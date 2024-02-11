@@ -91,6 +91,10 @@ while True:
                     continue  # Regresar al menú principal
 
             elif opcion_principal == '4':
+                """
+                ! al entrar en esta opción, se valida si es para el agua o alimento, como lo haces manda los dos mensajes y no se puede el resultado
+                ! no conviertas el valor a entero, ya que el valor que se obtiene es un string con un mensaje, compara el resultado con un string 
+                """
                 estado_agua = controller.obtener_posicion_servo_agua()
                 estado_alimento = controller.obtener_posicion_servo_alimento()
 
