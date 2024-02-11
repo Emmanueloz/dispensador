@@ -1,6 +1,17 @@
 from dispensador_python.crud import Crud
 from dispensador_python.conexion_serial import ConnectionArduino
 from time import sleep
+from re import match, search
+
+
+def validar_string(prefijo, valor):
+    """Función para validar un string con un prefijo y un número entero."""
+    patron = rf"^{prefijo}:\d+$"
+
+    if match(patron, valor):
+        return True
+    else:
+        return False
 
 
 class Controller:
@@ -37,7 +48,7 @@ class Controller:
         try:
             comando = "wd:1"
             self.arduino.enviar_dato(comando)
-            sleep(1)
+            sleep(2)
             respuesta_arduino = self.arduino.recibir_dato()
             if "90" in respuesta_arduino:
                 respuesta_db = self.db.insertar_registro(
@@ -56,7 +67,7 @@ class Controller:
         try:
             comando = "wd:0"
             self.arduino.enviar_dato(comando)
-            sleep(1)
+            sleep(2)
             respuesta_arduino = self.arduino.recibir_dato()
             if "0" in respuesta_arduino:
                 respuesta_db = self.db.insertar_registro(
@@ -75,7 +86,7 @@ class Controller:
         try:
             comando = "fd:1"
             self.arduino.enviar_dato(comando)
-            sleep(1)
+            sleep(2)
             respuesta_arduino = self.arduino.recibir_dato()
             if "90" in respuesta_arduino:
                 respuesta_db = self.db.insertar_registro(
@@ -94,7 +105,7 @@ class Controller:
         try:
             comando = "fd:0"
             self.arduino.enviar_dato(comando)
-            sleep(1)
+            sleep(2)
             respuesta_arduino = self.arduino.recibir_dato()
             if "0" in respuesta_arduino:
                 respuesta_db = self.db.insertar_registro(
@@ -113,8 +124,10 @@ class Controller:
         try:
             comando = "wd:2"
             self.arduino.enviar_dato(comando)
-            sleep(1)
+            sleep(2)
             respuesta_arduino = self.arduino.recibir_dato()
+            if respuesta_arduino not in ["0", "90"]:
+                return "Error al obtener la posición del servo de agua."
             return respuesta_arduino
         except Exception as error:
             return f"Error al obtener la posición del servo de agua: {error}"
@@ -123,8 +136,10 @@ class Controller:
         try:
             comando = "fd:2"
             self.arduino.enviar_dato(comando)
-            sleep(1)
+            sleep(2)
             respuesta_arduino = self.arduino.recibir_dato()
+            if respuesta_arduino not in ["0", "90"]:
+                return "Error al obtener la posición del servo de alimento."
             return respuesta_arduino
         except Exception as error:
             return f"Error al obtener la posición del servo de alimento: {error}"
@@ -133,8 +148,12 @@ class Controller:
         try:
             comando = "wdR:1"
             self.arduino.enviar_dato(comando)
-            sleep(1)
+            sleep(2)
             respuesta_arduino = self.arduino.recibir_dato()
+
+            if not validar_string("wdRget", respuesta_arduino):
+                return "Error al obtener la distancia con el sensor ultrasónico de agua:"
+
             return respuesta_arduino
         except Exception as error:
             return f"Error al obtener la distancia con el sensor ultrasónico de agua: {error}"
@@ -143,8 +162,10 @@ class Controller:
         try:
             comando = "fdR:1"
             self.arduino.enviar_dato(comando)
-            sleep(1)
+            sleep(2)
             respuesta_arduino = self.arduino.recibir_dato()
+            if not validar_string("fdRget", respuesta_arduino):
+                return "Error al obtener la distancia con el sensor ultrasónico de alimento:"
             return respuesta_arduino
         except Exception as error:
             return f"Error al obtener la distancia con el sensor ultrasónico de alimento: {error}"
@@ -161,6 +182,30 @@ class Controller:
         except Exception as error:
             return f"Error al consultar el registro: {error}"
 
+    def consultar_intervalo_tiempo_agua(self):
+        try:
+            commad = "wdT:2"
+            self.arduino.enviar_dato(commad)
+            sleep(2)
+            respuesta_arduino = self.arduino.recibir_dato()
+            if not validar_string("wdTget", respuesta_arduino):
+                return "Error al obtener el intervalo de tiempo para el dispensador de agua."
+            return respuesta_arduino
+        except Exception as error:
+            return f"Error al obtener el intervalo de tiempo para el dispensador de agua en el arduino: {error}"
+
+    def consultar_intervalo_tiempo_comida(self):
+        try:
+            commad = "fdT:2"
+            self.arduino.enviar_dato(commad)
+            sleep(2)
+            respuesta_arduino = self.arduino.recibir_dato()
+            if not validar_string("fdTget", respuesta_arduino):
+                return "Error al obtener el intervalo de tiempo para el dispensador de comida."
+            return respuesta_arduino
+        except Exception as error:
+            return f"Error al obtener el intervalo de tiempo para el dispensador de comida en el arduino: {error}"
+
     def definir_intervalo_tiempo_agua(self, tiempo, unidad):
         try:
             if unidad not in ['s', 'm']:
@@ -169,7 +214,7 @@ class Controller:
 
             comando = f"wdT:{tiempo}{unidad}"
             self.arduino.enviar_dato(comando)
-            sleep(1)
+            sleep(2)
             respuesta_arduino = self.arduino.recibir_dato()
 
             # Guardar la respuesta en la tabla de registros de tareas si es correcta
@@ -190,7 +235,7 @@ class Controller:
 
             comando = f"fdT:{tiempo}{unidad}"
             self.arduino.enviar_dato(comando)
-            sleep(1)
+            sleep(2)
             respuesta_arduino = self.arduino.recibir_dato()
 
             # Guardar la respuesta en la tabla de registros de tareas si es correcta
