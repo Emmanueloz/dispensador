@@ -8,7 +8,7 @@ class Crud:
     def conectar_BD(self, host, user, passwd, database):
         try:
             self.conexion = mysql.connector.connect(
-                host=host, user=user, passwd=passwd, database=database)
+                host=host, user=user, password=passwd, database=database)
         except mysql.connector.Error as error:
             raise RuntimeError(
                 f"Error al conectar a la base de datos: {error}")

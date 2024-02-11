@@ -1,5 +1,6 @@
 from dispensador_python.crud import Crud
 from dispensador_python.conexion_serial import ConnectionArduino
+from time import sleep
 
 
 class Controller:
@@ -36,8 +37,9 @@ class Controller:
         try:
             comando = "wd:1"
             self.arduino.enviar_dato(comando)
+            sleep(1)
             respuesta_arduino = self.arduino.recibir_dato()
-            if "wd" in respuesta_arduino:
+            if "wd:90" in respuesta_arduino:
                 respuesta_db = self.db.insertar_registro(
                     idSensor="1", estado="ABIERTO")
                 return respuesta_db
@@ -50,8 +52,9 @@ class Controller:
         try:
             comando = "fd:1"
             self.arduino.enviar_dato(comando)
+            sleep(1)
             respuesta_arduino = self.arduino.recibir_dato()
-            if "fd" in respuesta_arduino:
+            if "fd:90" in respuesta_arduino:
                 respuesta_db = self.db.insertar_registro(
                     idSensor="2", estado="ABIERTO")
                 return respuesta_db
@@ -64,6 +67,7 @@ class Controller:
         try:
             comando = "wd:2"
             self.arduino.enviar_dato(comando)
+            sleep(1)
             respuesta_arduino = self.arduino.recibir_dato()
             return respuesta_arduino
         except Exception as error:
@@ -73,6 +77,7 @@ class Controller:
         try:
             comando = "fd:2"
             self.arduino.enviar_dato(comando)
+            sleep(1)
             respuesta_arduino = self.arduino.recibir_dato()
             return respuesta_arduino
         except Exception as error:
@@ -82,6 +87,7 @@ class Controller:
         try:
             comando = "wdR:1"
             self.arduino.enviar_dato(comando)
+            sleep(1)
             respuesta_arduino = self.arduino.recibir_dato()
             return respuesta_arduino
         except Exception as error:
@@ -91,6 +97,7 @@ class Controller:
         try:
             comando = "fdR:1"
             self.arduino.enviar_dato(comando)
+            sleep(1)
             respuesta_arduino = self.arduino.recibir_dato()
             return respuesta_arduino
         except Exception as error:
@@ -116,10 +123,11 @@ class Controller:
 
             comando = f"wdT:{tiempo}{unidad}"
             self.arduino.enviar_dato(comando)
+            sleep(1)
             respuesta_arduino = self.arduino.recibir_dato()
 
             # Guardar la respuesta en la tabla de registros de tareas si es correcta
-            if "wdT" in respuesta_arduino:
+            if f"wdTset:{tiempo}{unidad}" in respuesta_arduino:
                 respuesta_db = self.db.insertar_tarea(
                     idSensor="1", tipo="Agua", tiempo=tiempo, unidadtiempo=unidad)
                 return respuesta_db
@@ -136,10 +144,11 @@ class Controller:
 
             comando = f"fdT:{tiempo}{unidad}"
             self.arduino.enviar_dato(comando)
+            sleep(1)
             respuesta_arduino = self.arduino.recibir_dato()
 
             # Guardar la respuesta en la tabla de registros de tareas si es correcta
-            if "fdTresult:90" in respuesta_arduino:
+            if f"fdTset:{tiempo}{unidad}" in respuesta_arduino:
                 respuesta_db = self.db.insertar_tarea(
                     idSensor="2", tipo="Alimento", tiempo=tiempo, unidadtiempo=unidad)
                 return respuesta_db

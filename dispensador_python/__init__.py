@@ -7,7 +7,7 @@ init(autoreset=True)
 # Crear una instancia del controlador
 controller = Controller()
 
-controller.conectar_todo()
+result = controller.conectar_todo()
 
 menu = f'''
 =========[Dispensadores]=============================
@@ -33,10 +33,11 @@ tiempo = f'''
 '''
 
 while True:
+    print(result)
     print(menu)
     opcion_principal = input(f"{Fore.GREEN}Seleccione una opción (1-3, s): ")
 
-    if opcion_principal == '1' or opcion_principal == '2' or opcion_principal == '3'  or opcion_principal == '4'  or opcion_principal == '5':
+    if opcion_principal == '1' or opcion_principal == '2' or opcion_principal == '3' or opcion_principal == '4' or opcion_principal == '5':
         print(subMenu)
         opcion_secundaria = input(
             f"{Fore.GREEN}Seleccione una opción (A-B-M):{Fore.RESET}")
@@ -88,7 +89,7 @@ while True:
 
                 elif option_tiempo.lower() == 'm':
                     continue  # Regresar al menú principal
-                
+
             elif opcion_principal == '4':
                 estado_agua = controller.obtener_posicion_servo_agua()
                 estado_alimento = controller.obtener_posicion_servo_alimento()
@@ -105,7 +106,7 @@ while True:
                         print(f"El dispensador de alimento está abierto.")
                 elif opcion_secundaria.lower() == 'm':
                     continue  # Regresar al menú principal
-                
+
             elif opcion_principal == '5':
                 if opcion_secundaria.lower() == 'a':
                     respuesta = controller.obtener_distancia_ultrasonico_agua()
