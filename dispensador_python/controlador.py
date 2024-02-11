@@ -1,17 +1,28 @@
 from dispensador_python.crud import Crud
 from dispensador_python.conexion_serial import ConnectionArduino
 from time import sleep
-from re import match
+from re import match, search
 
 
 def validar_string(prefijo, valor):
     """Función para validar un string con un prefijo y un número entero."""
-    patron = rf"^{prefijo}: \d+$"
+    patron = rf"^{prefijo}:\d+$"
 
     if match(patron, valor):
         return True
     else:
         return False
+
+
+def obtener_valor(valor):
+    # Utilizamos una expresión regular para encontrar el número después de "wdRget:"
+    match = search(r"wdRget:(\d+)", valor)
+    if match:
+        # Si se encuentra el número, lo retornamos como un entero
+        return match.group(1)
+    else:
+        # Si no se encuentra, retornamos None o lanzamos una excepción según tus necesidades
+        return None
 
 
 class Controller:
@@ -154,7 +165,7 @@ class Controller:
             if not validar_string("wdRget", respuesta_arduino):
                 return "Error al obtener la distancia con el sensor ultrasónico de agua:"
 
-            return respuesta_arduino
+            return obtener_valor(respuesta_arduino)
         except Exception as error:
             return f"Error al obtener la distancia con el sensor ultrasónico de agua: {error}"
 
@@ -166,7 +177,7 @@ class Controller:
             respuesta_arduino = self.arduino.recibir_dato()
             if not validar_string("fdRget", respuesta_arduino):
                 return "Error al obtener la distancia con el sensor ultrasónico de alimento:"
-            return respuesta_arduino
+            return obtener_valor(respuesta_arduino)
         except Exception as error:
             return f"Error al obtener la distancia con el sensor ultrasónico de alimento: {error}"
 
