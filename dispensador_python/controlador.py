@@ -62,7 +62,7 @@ class Controller:
 
     def obtener_posicion_servo_agua(self):
         try:
-            comando = "wdR:1"
+            comando = "wd:2"
             self.arduino.enviar_dato(comando)
             respuesta_arduino = self.arduino.recibir_dato()
             return respuesta_arduino
