@@ -39,14 +39,37 @@ class Controller:
             self.arduino.enviar_dato(comando)
             sleep(1)
             respuesta_arduino = self.arduino.recibir_dato()
-            if "wd:90" in respuesta_arduino:
+            if "90" in respuesta_arduino:
                 respuesta_db = self.db.insertar_registro(
                     idSensor="1", estado="ABIERTO")
                 return respuesta_db
+            elif "wdCount:0" == respuesta_arduino:
+                return "El contenedor de agua está vacío."
+            elif "-1" == respuesta_arduino:
+                return "El dispensador de agua ya está abierto."
             else:
                 return f"Error al abrir el dispensador de agua en el Arduino: {respuesta_arduino}"
         except Exception as error:
             return f"Error al abrir el dispensador de agua: {error}"
+
+    def cerrar_dispensador_agua(self):
+        try:
+            comando = "wd:0"
+            self.arduino.enviar_dato(comando)
+            sleep(1)
+            respuesta_arduino = self.arduino.recibir_dato()
+            if "0" in respuesta_arduino:
+                respuesta_db = self.db.insertar_registro(
+                    idSensor="1", estado="CERRADO")
+                return respuesta_db
+            elif "wdCount:0" == respuesta_arduino:
+                return "El contenedor de agua está vacío."
+            elif "-1" == respuesta_arduino:
+                return "El dispensador de agua ya está cerrado."
+            else:
+                return f"Error al cerrar el dispensador de agua en el Arduino: {respuesta_arduino}"
+        except Exception as error:
+            return f"Error al cerrar el dispensador de agua: {error}"
 
     def abrir_dispensador_alimento(self):
         try:
@@ -54,14 +77,37 @@ class Controller:
             self.arduino.enviar_dato(comando)
             sleep(1)
             respuesta_arduino = self.arduino.recibir_dato()
-            if "fd:90" in respuesta_arduino:
+            if "90" in respuesta_arduino:
                 respuesta_db = self.db.insertar_registro(
                     idSensor="2", estado="ABIERTO")
                 return respuesta_db
+            elif "fdCount:0" == respuesta_arduino:
+                return "El contenedor de alimento está vacío."
+            elif "-1" == respuesta_arduino:
+                return "El dispensador de alimento ya está abierto."
             else:
                 return f"Error al abrir el dispensador de alimento en el Arduino: {respuesta_arduino}"
         except Exception as error:
             return f"Error al abrir el dispensador de alimento: {error}"
+
+    def cerrar_dispensador_alimento(self):
+        try:
+            comando = "fd:0"
+            self.arduino.enviar_dato(comando)
+            sleep(1)
+            respuesta_arduino = self.arduino.recibir_dato()
+            if "0" in respuesta_arduino:
+                respuesta_db = self.db.insertar_registro(
+                    idSensor="2", estado="CERRADO")
+                return respuesta_db
+            elif "fdCount:0" == respuesta_arduino:
+                return "El contenedor de alimento está vacío."
+            elif "-1" == respuesta_arduino:
+                return "El dispensador de cerrado ya está abierto."
+            else:
+                return f"Error al cerrar el dispensador de alimento en el Arduino: {respuesta_arduino}"
+        except Exception as error:
+            return f"Error al cerrar el dispensador de alimento: {error}"
 
     def obtener_posicion_servo_agua(self):
         try:
