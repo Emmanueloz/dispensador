@@ -182,6 +182,30 @@ class Controller:
         except Exception as error:
             return f"Error al consultar el registro: {error}"
 
+    def consultar_intervalo_tiempo_agua(self):
+        try:
+            commad = "wdT:2"
+            self.arduino.enviar_dato(commad)
+            sleep(2)
+            respuesta_arduino = self.arduino.recibir_dato()
+            if not validar_string("wdTget", respuesta_arduino):
+                return "Error al obtener el intervalo de tiempo para el dispensador de agua."
+            return respuesta_arduino
+        except Exception as error:
+            return f"Error al obtener el intervalo de tiempo para el dispensador de agua en el arduino: {error}"
+
+    def consultar_intervalo_tiempo_comida(self):
+        try:
+            commad = "fdT:2"
+            self.arduino.enviar_dato(commad)
+            sleep(2)
+            respuesta_arduino = self.arduino.recibir_dato()
+            if not validar_string("fdTget", respuesta_arduino):
+                return "Error al obtener el intervalo de tiempo para el dispensador de comida."
+            return respuesta_arduino
+        except Exception as error:
+            return f"Error al obtener el intervalo de tiempo para el dispensador de comida en el arduino: {error}"
+
     def definir_intervalo_tiempo_agua(self, tiempo, unidad):
         try:
             if unidad not in ['s', 'm']:
