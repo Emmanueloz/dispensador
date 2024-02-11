@@ -50,9 +50,17 @@ while True:
                 if opcion_secundaria.lower() == 'a':
                     respuesta = controller.abrir_dispensador_agua()
                     print(respuesta)
+                    cerrar_dispensador = input("¿Desea cerrar el dispensador? (s/n): ").lower()
+                    if cerrar_dispensador == 's':
+                        respuesta_cerrar = controller.cerrar_dispensador_agua()
+                        print(respuesta_cerrar)
                 elif opcion_secundaria.lower() == 'b':
                     respuesta = controller.abrir_dispensador_alimento()
                     print(respuesta)
+                    cerrar_dispensador = input("¿Desea cerrar el dispensador? (s/n): ").lower()
+                    if cerrar_dispensador == 's':
+                        respuesta_cerrar = controller.cerrar_dispensador_alimento()
+                        print(respuesta_cerrar)
             elif opcion_principal == '2':
                 if opcion_secundaria.lower() == 'a':
                     respuesta = controller.consultar_registro(idSensor="1")
