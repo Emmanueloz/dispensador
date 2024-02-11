@@ -93,15 +93,15 @@ while True:
             elif opcion_principal == '4':
                 if opcion_secundaria.lower() == 'a':
                     estado_agua = controller.obtener_posicion_servo_agua()
-                    if "cerrado" in estado_agua.lower():
+                    if int(estado_agua) == "0":
                         print(f"El dispensador de agua está cerrado.")
-                    elif "abierto" in estado_agua.lower():
+                    elif int(estado_agua) == "1":
                         print(f"El dispensador de agua está abierto.")
                 elif opcion_secundaria.lower() == 'b':
                     estado_alimento = controller.obtener_posicion_servo_alimento()
-                    if "cerrado" in estado_alimento.lower():
+                    if int(estado_alimento) == "0":
                         print(f"El dispensador de alimento está cerrado.")
-                    elif "abierto" in estado_alimento.lower():
+                    elif int(estado_alimento) == "1":
                         print(f"El dispensador de alimento está abierto.")
                 elif opcion_secundaria.lower() == 'm':
                     continue  # Regresar al menú principal
