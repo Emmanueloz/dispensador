@@ -8,6 +8,7 @@ init(autoreset=True)
 controller = Controller()
 
 result = controller.conectar_todo()
+print(result)
 
 menu = f'''
 =========[Dispensadores]=============================
@@ -33,7 +34,6 @@ tiempo = f'''
 '''
 
 while True:
-    print(result)
     print(menu)
     opcion_principal = input(f"{Fore.GREEN}Seleccione una opción (1-3, s): ")
 
