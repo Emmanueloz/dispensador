@@ -88,7 +88,7 @@ while True:
                         continue  # Regresar al menú principal
 
                 elif option_tiempo.lower() == 'm':
-                    continue 
+                    continue
 
             elif opcion_principal == '4':
                 if opcion_secundaria.lower() == 'a':
