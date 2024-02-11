@@ -39,7 +39,7 @@ while True:
     print(menu)
     opcion_principal = input(f"{Fore.GREEN}Seleccione una opción (1-3, s): ")
 
-    if opcion_principal == '1' or opcion_principal == '2' or opcion_principal == '3' or opcion_principal == '4' or opcion_principal == '5':
+    if opcion_principal in ["1","2","3","4","5","6","7"]:
         print(subMenu)
         opcion_secundaria = input(
             f"{Fore.GREEN}Seleccione una opción (A-B-M):{Fore.RESET}")
