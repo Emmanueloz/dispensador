@@ -88,25 +88,20 @@ while True:
                         continue  # Regresar al menú principal
 
                 elif option_tiempo.lower() == 'm':
-                    continue  # Regresar al menú principal
+                    continue 
 
             elif opcion_principal == '4':
-                """
-                ! al entrar en esta opción, se valida si es para el agua o alimento, como lo haces manda los dos mensajes y no se puede el resultado
-                ! no conviertas el valor a entero, ya que el valor que se obtiene es un string con un mensaje, compara el resultado con un string 
-                """
-                estado_agua = controller.obtener_posicion_servo_agua()
-                estado_alimento = controller.obtener_posicion_servo_alimento()
-
                 if opcion_secundaria.lower() == 'a':
-                    if int(estado_agua) == 0:
+                    estado_agua = controller.obtener_posicion_servo_agua()
+                    if "cerrado" in estado_agua.lower():
                         print(f"El dispensador de agua está cerrado.")
-                    elif int(estado_agua) == 90:
+                    elif "abierto" in estado_agua.lower():
                         print(f"El dispensador de agua está abierto.")
                 elif opcion_secundaria.lower() == 'b':
-                    if int(estado_alimento) == 0:
+                    estado_alimento = controller.obtener_posicion_servo_alimento()
+                    if "cerrado" in estado_alimento.lower():
                         print(f"El dispensador de alimento está cerrado.")
-                    elif int(estado_alimento) == 90:
+                    elif "abierto" in estado_alimento.lower():
                         print(f"El dispensador de alimento está abierto.")
                 elif opcion_secundaria.lower() == 'm':
                     continue  # Regresar al menú principal
