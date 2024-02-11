@@ -13,11 +13,12 @@ print(result)
 menu = f'''
 =========[Dispensadores]=============================
 || {Back.GREEN}1{Back.RESET} - {Fore.CYAN}Dispensar Agua o Comida{Fore.RESET}                      ||
-|| {Back.GREEN}2{Back.RESET} - {Fore.MAGENTA}Consulta Registros{Fore.RESET}                        ||
-|| {Back.GREEN}3{Back.RESET} - {Fore.BLUE}Dispensar automático{Fore.RESET}                      ||
-|| {Back.GREEN}4{Back.RESET} - {Fore.MAGENTA}Consulta Dispensador{Fore.RESET}                        ||
-|| {Back.GREEN}5{Back.RESET} - {Fore.MAGENTA}Consulta Contenedores{Fore.RESET}                        ||
-|| {Back.GREEN}s{Back.RESET} - {Fore.RED}Salir{Fore.RESET}                                        ||
+|| {Back.GREEN}2{Back.RESET} - {Fore.CYAN}Cerrar dispensador{Fore.RESET}                      ||
+|| {Back.GREEN}3{Back.RESET} - {Fore.MAGENTA}Consulta Registros{Fore.RESET}                        ||
+|| {Back.GREEN}4{Back.RESET} - {Fore.BLUE}Dispensar automático{Fore.RESET}                      ||
+|| {Back.GREEN}5{Back.RESET} - {Fore.MAGENTA}Consulta Dispensador{Fore.RESET}                        ||
+|| {Back.GREEN}6{Back.RESET} - {Fore.MAGENTA}Consulta Contenedores{Fore.RESET}                        ||
+|| {Back.GREEN}7{Back.RESET} - {Fore.RED}Salir{Fore.RESET}                                        ||
 ======================================================
 '''
 
@@ -48,27 +49,47 @@ while True:
         elif opcion_secundaria.lower() == 'a' or opcion_secundaria.lower() == 'b':
             if opcion_principal == '1':
                 if opcion_secundaria.lower() == 'a':
-                    respuesta = controller.abrir_dispensador_agua()
-                    print(respuesta)
-                    cerrar_dispensador = input("¿Desea cerrar el dispensador? (s/n): ").lower()
-                    if cerrar_dispensador == 's':
-                        respuesta_cerrar = controller.cerrar_dispensador_agua()
-                        print(respuesta_cerrar)
+                        respuesta = controller.abrir_dispensador_agua()
+                        print(respuesta)
+                        cerrar_dispensador = input("¿Desea cerrar el dispensador? (s/n): ").lower()
+                        if cerrar_dispensador == 's':
+                            respuesta_cerrar = controller.cerrar_dispensador_agua()
+                            print(respuesta_cerrar)
                 elif opcion_secundaria.lower() == 'b':
-                    respuesta = controller.abrir_dispensador_alimento()
-                    print(respuesta)
-                    cerrar_dispensador = input("¿Desea cerrar el dispensador? (s/n): ").lower()
-                    if cerrar_dispensador == 's':
-                        respuesta_cerrar = controller.cerrar_dispensador_alimento()
-                        print(respuesta_cerrar)
+                        respuesta = controller.abrir_dispensador_alimento()
+                        print(respuesta)
+
+                        cerrar_dispensador = input("¿Desea cerrar el dispensador? (s/n): ").lower()
+                        if cerrar_dispensador == 's':
+                            respuesta_cerrar = controller.cerrar_dispensador_alimento()
+                            print(respuesta_cerrar)
+                elif opcion_secundaria.lower() == 'm':
+                    continue 
+                
             elif opcion_principal == '2':
+                if opcion_secundaria.lower() == 'a':
+                        cerrar_dispensador = input("¿Desea cerrar el dispensador? (s/n): ").lower()
+                        if cerrar_dispensador == 's':
+                            respuesta_cerrar = controller.cerrar_dispensador_agua()
+                            print(respuesta_cerrar)
+                        else:
+                            print("El dispensador ya esta cerrado")   
+                elif opcion_secundaria.lower() == 'b':
+                        cerrar_dispensador = input("¿Desea cerrar el dispensador? (s/n): ").lower()
+                        if cerrar_dispensador == 's':
+                            respuesta_cerrar = controller.cerrar_dispensador_alimento()
+                            print(respuesta_cerrar)
+                        else:
+                            print("El despensador de alimento esta cerrdo")
+            elif opcion_principal == '3':
                 if opcion_secundaria.lower() == 'a':
                     respuesta = controller.consultar_registro(idSensor="1")
                     print(respuesta)
                 elif opcion_secundaria.lower() == 'b':
                     respuesta = controller.consultar_registro(idSensor="2")
                     print(respuesta)
-            elif opcion_principal == '3':
+                    
+            elif opcion_principal == '4':
                 print(tiempo)
                 option_tiempo = input(
                     f"{Fore.GREEN}Seleccione una opción (A-B-M):{Fore.RESET}")
@@ -98,7 +119,7 @@ while True:
                 elif option_tiempo.lower() == 'm':
                     continue
 
-            elif opcion_principal == '4':
+            elif opcion_principal == '5':
                 if opcion_secundaria.lower() == 'a':
                     estado_agua = controller.obtener_posicion_servo_agua()
                     if int(estado_agua) == "0":
@@ -114,7 +135,7 @@ while True:
                 elif opcion_secundaria.lower() == 'm':
                     continue  # Regresar al menú principal
 
-            elif opcion_principal == '5':
+            elif opcion_principal == '6':
                 if opcion_secundaria.lower() == 'a':
                     respuesta = controller.obtener_distancia_ultrasonico_agua()
                     print(respuesta)
