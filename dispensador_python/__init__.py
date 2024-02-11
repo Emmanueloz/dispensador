@@ -12,6 +12,9 @@ controller.conectar_todo()
 menu = f'''
 =========[Dispensadores]=============================
 || {Back.GREEN}1{Back.RESET} - {Fore.CYAN}Dispensar Agua o Comida{Fore.RESET}                      ||
+|| {Back.GREEN}2{Back.RESET} - {Fore.MAGENTA}Consulta Registros{Fore.RESET}                        ||
+|| {Back.GREEN}2{Back.RESET} - {Fore.MAGENTA}cerrar Dispensador{Fore.RESET}                        ||
+|| {Back.GREEN}2{Back.RESET} - {Fore.MAGENTA}Consulta Dispensador{Fore.RESET}                        ||
 || {Back.GREEN}2{Back.RESET} - {Fore.MAGENTA}Consulta Contenedores{Fore.RESET}                        ||
 || {Back.GREEN}3{Back.RESET} - {Fore.BLUE}Dispensar automático{Fore.RESET}                      ||
 || {Back.GREEN}s{Back.RESET} - {Fore.RED}Salir{Fore.RESET}                                        ||
