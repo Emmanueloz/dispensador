@@ -26,8 +26,12 @@ class ConnectionArduino:
 
     def recibir_dato(self):
         try:
-            recibir_dato = self.arduino.readline().decode().strip()
-            return recibir_dato
+            # recibir_dato = self.arduino.readline().decode().strip()
+            result = []
+            while self.arduino.in_waiting > 0:
+                result.append(self.arduino.readline().decode("utf-8").strip())
+            # print(result)
+            return result[-1]
         except Exception as e:
             return f"Error al recibir los datos: {e}"
 
