@@ -1,10 +1,9 @@
 // ControllerDispenser.cpp
 #include "ControllerDispenser.h"
 
-ControllerDispenser::ControllerDispenser(Dispensador &dispensador, Sonares &sonar, String command, byte pinButton) : dispensador(dispensador), sonar(sonar)
+ControllerDispenser::ControllerDispenser(Dispensador &dispensador, Sonares &sonar, String command) : dispensador(dispensador), sonar(sonar)
 {
     this->command = command;
-    this->pinButton = pinButton;
 }
 
 void ControllerDispenser::processCommand(String value)
@@ -32,22 +31,7 @@ void ControllerDispenser::closeAutomatic()
 
     if (sonar.isDistanceLimit() && dispensador.isOpen())
     {
-        Serial.println(this->command + "Count:0");
+        Serial.println(this->command + "A:0");
         this->dispensador.close();
-    }
-}
-
-void ControllerDispenser::listenButton()
-{
-    if (digitalRead(this->pinButton) == HIGH && !sonar.isDistanceLimit())
-    {
-        if (dispensador.isOpen())
-        {
-            dispensador.close();
-        }
-        else
-        {
-            dispensador.open();
-        }
     }
 }
