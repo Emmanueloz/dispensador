@@ -10,19 +10,22 @@ void ControllerDispenser::processCommand(String value)
 {
     if (value == "0")
     {
-        Serial.println(dispensador.close());
+        int result = dispensador.close();
+        Serial.println(this->command + "R:" + String(result));
     }
     else if (value == "1")
     {
-        Serial.println(dispensador.open());
+        int result = dispensador.open();
+        Serial.println(this->command + "R:" + String(result));
     }
     else if (value == "2")
     {
-        Serial.println(dispensador.getPosition());
+        int result = dispensador.getPosition();
+        Serial.println(this->command + "P:" + String(result));
     }
     else
     {
-        Serial.println(this->command + ":notFound");
+        Serial.println(this->command + ":notFound")
     }
 }
 
