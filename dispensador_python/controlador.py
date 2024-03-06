@@ -88,7 +88,7 @@ class Controller:
             self.arduino.enviar_dato(comando)
             sleep(2)
             respuesta_arduino = self.arduino.recibir_dato()
-            if "90" in respuesta_arduino:
+            if "0" in respuesta_arduino:
                 respuesta_db = self.db.insertar_registro(
                     idSensor="2", estado="ABIERTO")
                 return respuesta_db
@@ -107,7 +107,7 @@ class Controller:
             self.arduino.enviar_dato(comando)
             sleep(2)
             respuesta_arduino = self.arduino.recibir_dato()
-            if "0" in respuesta_arduino:
+            if "90" in respuesta_arduino:
                 respuesta_db = self.db.insertar_registro(
                     idSensor="2", estado="CERRADO")
                 return respuesta_db

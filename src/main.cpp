@@ -16,10 +16,6 @@ const byte pinTriggerFood = 6;
 const byte pinEchoFoodLevel = 5;
 const byte pinTriggerFoodLevel = 4;
 
-// pin de los botones
-const byte pinButtonWater = 2;
-const byte pinButtonFood = 3;
-
 // Constantes enteras
 const int maxSonarWater = 400;
 const int maxSonarFood = 400;
@@ -37,8 +33,8 @@ const String COMMAND_TIME_OPEN_WATER_DISPENSER = "wdT";
 const String COMMAND_TIME_OPEN_FOOD_DISPENSER = "fdT";
 const String COMMAND_WATER_DISPENSER = "wd";
 const String COMMAND_FOOD_DISPENSER = "fd";
-const String COMMAND_WATER_LEVEL = "wdR";
-const String COMMAND_FOOD_LEVEL = "fdR";
+const String COMMAND_WATER_LEVEL = "wdS";
+const String COMMAND_FOOD_LEVEL = "fdS";
 
 Dispensador waterDispenser;
 Dispensador foodDispenser;
@@ -48,8 +44,8 @@ Sonares sonarFood(pinTriggerFood, pinEchoFood, maxSonarFood, limitFoodDispenser)
 
 Sonares sonarFoodLevel(pinTriggerFoodLevel, pinEchoFoodLevel, maxSonarFood, limitFoodRecipient);
 
-ControllerDispenser waterDispenserController(waterDispenser, sonarWater, COMMAND_WATER_DISPENSER, pinButtonWater);
-ControllerDispenser foodDispenserController(foodDispenser, sonarFood, COMMAND_FOOD_DISPENSER, pinButtonFood);
+ControllerDispenser waterDispenserController(waterDispenser, sonarWater, COMMAND_WATER_DISPENSER);
+ControllerDispenser foodDispenserController(foodDispenser, sonarFood, COMMAND_FOOD_DISPENSER);
 
 ControllerSonar sonarWaterController(sonarWater, COMMAND_WATER_LEVEL);
 ControllerSonar sonarFoodController(sonarFood, COMMAND_FOOD_LEVEL);
@@ -82,8 +78,6 @@ void setup()
   foodDispenser.setup(pinFoodServo, 90, 0);
   waterDispenserTimeController.start();
   foodDispenserTimeController.start();
-  pinMode(pinButtonWater, INPUT);
-  pinMode(pinButtonFood, INPUT);
 }
 
 String getCommand(String value)
@@ -117,9 +111,6 @@ void loop()
 
   waterDispenserTimeController.update();
   foodDispenserTimeController.update();
-
-  waterDispenserController.listenButton();
-  foodDispenserController.listenButton();
 
   if (Serial.available() > 0)
   {
