@@ -314,14 +314,14 @@ def actualizar_tablas():
     for registro in registros_agua:
         # Modificar la columna "id" con "Servo1"
         registro = list(registro)
-        registro[0] = "Servo1" if registro[0] == 1 else "Servo2"
+        registro[0] = "Servo1" if registro[0] == 1 else "Servo1"
         agua.insert("", "end", values=registro)
 
     # Actualizar tabla de comida
     for registro in registros_comida:
         # Modificar la columna "id" con "Servo1"
         registro = list(registro)
-        registro[0] = "Servo1" if registro[0] == 1 else "Servo2"
+        registro[0] = "Servo2" if registro[0] == 1 else "Servo2"
         comida.insert("", "end", values=registro)
         
     agua.after(100000, actualizar_tablas)
