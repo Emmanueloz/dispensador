@@ -2,6 +2,7 @@ from tkinter import Tk, Frame, Button, Label, Entry, StringVar, IntVar, Scale, P
 from tkinter import Tk, Frame, Label, StringVar, Listbox, Scrollbar
 import threading
 import tkinter
+from serial import SerialException
 from .controlador import Controller
 import time
 
@@ -20,34 +21,12 @@ def dispensar_comida_var():
         resultado_dispensar_comida = controlador.abrir_dispensador_alimento()
     else:
         resultado_dispensar_comida = controlador.cerrar_dispensador_alimento()
-        
-    obtener_posicion_servo_alimento_y_actualizar_estado(lbl_estado_comidaIni)
+    
 
     return resultado_dispensar_comida
 
-# Función para obtener la posición del servo y actualizar el estado del recipiente
-def obtener_posicion_servo_alimento_y_actualizar_estado(etiqueta_estado):
-    try:
-        # Llama a la función para obtener la posición del servo de alimento
-        print("Antes de obtener la posición del servo")
-        posicion_servo = controlador.obtener_posicion_servo_alimento()
-        print(f"Posición del servo de alimento: {posicion_servo}")
-
-        mapa_posiciones = {"0": "Cerrado", "90": "Abierto"}
-
-        estado_actual = mapa_posiciones.get(posicion_servo, "Desconocido")
-
-
-        etiqueta_estado.config(text=f" {estado_actual}")
-        print("Después de actualizar el estado del dispensador")
-
-    except SerialException as serial_error:
-        etiqueta_estado.config(text=f"Error de comunicación serial: {str(serial_error)}")
-        print(f"Error de comunicación serial: {str(serial_error)}")
-    except Exception as error:
-        etiqueta_estado.config(text=f"Error inesperado al obtener la posición del servo de alimento: {str(error)}")
     
-      
+    
 def dispensar_agua_var():
     estado_agua = var_dispensar_agua.get()
 
@@ -55,10 +34,7 @@ def dispensar_agua_var():
         resultado_dispensar_agua = controlador.abrir_dispensador_agua()
     else:
         resultado_dispensar_agua = controlador.cerrar_dispensador_agua()
-        
-        
-    obtener_posicion_servo_alimento_y_actualizar_estado(lbl_estado_agua)
-    
+
     return("Dispensar Comida", resultado_dispensar_agua)
 
 
@@ -73,7 +49,7 @@ def enviar_tiempo_comida():
         
         lbl_estado_comida.config(text=f"Tiempo de comida: {tiempo_visual}")
         controlador.definir_intervalo_tiempo_comida(tiempo, unidad_visual)
-        obtener_posicion_servo_agua_y_actualizar_estado(lbl_estado_comidaIni)
+
         
     else:
         messagebox.showwarning("Advertencia", "Selecciona unidad y tiempo antes de enviar.")
@@ -111,25 +87,8 @@ def monitorear_estado_servo(etiqueta_estado):
         except Exception as error:
             etiqueta_estado.config(text=f"Error inesperado al obtener la posición del servo de alimento: {str(error)}")
 
-        time.sleep(10)
+        time.sleep(8)
 
-
-def obtener_posicion_servo_agua_y_actualizar_estado(etiqueta_estado):
-    try:
-  
-        posicion_servo = controlador.obtener_posicion_servo_agua()
-
-        mapa_posiciones = {"0": "Cerrado", "90": "Abierto"}
-
-
-        estado_actual = mapa_posiciones.get(posicion_servo, "...Esperando..")
-
-        etiqueta_estado.config(text=f"{estado_actual}")
-
-    except SerialException as serial_error:
-        etiqueta_estado.config(text=f"Error de comunicación serial: {str(serial_error)}")
-    except Exception as error:
-        etiqueta_estado.config(text=f"Error inesperado al obtener la posición del servo de agua: {str(error)}")
 
 
 def monitorear_estado_servo_agua(etiqueta_estado):
@@ -149,7 +108,7 @@ def monitorear_estado_servo_agua(etiqueta_estado):
         except Exception as error:
             etiqueta_estado.config(text=f"Error inesperado al obtener la posición del servo de agua: {str(error)}")
 
-        time.sleep(13)
+        time.sleep(11)
 
 
 
@@ -277,8 +236,6 @@ lbl_estado_comida.place(x=200,y=450)
 
 
 conectar_todo()
-obtener_posicion_servo_agua_y_actualizar_estado(lbl_estado_aguaT)
-obtener_posicion_servo_alimento_y_actualizar_estado(lbl_estado_comidaT)
 hilo_monitoreo = threading.Thread(target=monitorear_estado_servo, args=(lbl_estado_comidaIni,))
 hilo_monitoreo.start()
 hilo_monitoreo_agua = threading.Thread(target=monitorear_estado_servo_agua, args=(lbl_estado_agua,))
@@ -367,8 +324,8 @@ def actualizar_tablas():
         registro[0] = "Servo1" if registro[0] == 1 else "Servo2"
         comida.insert("", "end", values=registro)
         
-    agua.after(8000, actualizar_tablas)
-    comida.after(8000,actualizar_tablas)
+    agua.after(100000, actualizar_tablas)
+    comida.after(10000,actualizar_tablas)
 
 actualizar_tablas()
 
