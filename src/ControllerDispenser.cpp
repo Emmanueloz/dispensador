@@ -25,7 +25,7 @@ void ControllerDispenser::processCommand(String value)
     }
     else
     {
-        Serial.println(this->command + ":notFound")
+        Serial.println(this->command + ":notFound");
     }
 }
 

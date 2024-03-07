@@ -19,9 +19,9 @@ class Controller:
         # Crear instancias de las clases Crud y ConnectionArduino
         self.db = Crud()
         # Especifica el puerto correcto
-        self.arduino = ConnectionArduino(puerto="COM1")
+        self.arduino = ConnectionArduino(puerto="COM2")
 
-    def conectar_todo(self, host="localhost", user="root", passwd="", database="dispensadorBD"):
+    def conectar_todo(self, host="localhost", user="root", passwd="tavo", database="dispensadorBD"):
         try:
             # Conectar a la base de datos
             self.db.conectar_BD(host=host, user=user,
@@ -52,7 +52,7 @@ class Controller:
             respuesta_arduino = self.arduino.recibir_dato()
             if "90" in respuesta_arduino:
                 respuesta_db = self.db.insertar_registro(
-                    idSensor="1", estado="ABIERTO")
+                    idComponente="1", estado="ABIERTO")
                 return respuesta_db
             elif "wdCount:0" == respuesta_arduino:
                 return "El contenedor de agua está vacío."
@@ -71,7 +71,7 @@ class Controller:
             respuesta_arduino = self.arduino.recibir_dato()
             if "0" in respuesta_arduino:
                 respuesta_db = self.db.insertar_registro(
-                    idSensor="1", estado="CERRADO")
+                    idComponente="1", estado="CERRADO")
                 return respuesta_db
             elif "wdCount:0" == respuesta_arduino:
                 return "El contenedor de agua está vacío."
@@ -90,7 +90,7 @@ class Controller:
             respuesta_arduino = self.arduino.recibir_dato()
             if "0" in respuesta_arduino:
                 respuesta_db = self.db.insertar_registro(
-                    idSensor="2", estado="ABIERTO")
+                    idComponente="2", estado="ABIERTO")
                 return respuesta_db
             elif "fdCount:0" == respuesta_arduino:
                 return "El contenedor de alimento está vacío."
@@ -109,7 +109,7 @@ class Controller:
             respuesta_arduino = self.arduino.recibir_dato()
             if "90" in respuesta_arduino:
                 respuesta_db = self.db.insertar_registro(
-                    idSensor="2", estado="CERRADO")
+                    idComponente="2", estado="CERRADO")
                 return respuesta_db
             elif "fdCount:0" == respuesta_arduino:
                 return "El contenedor de alimento está vacío."
@@ -120,27 +120,44 @@ class Controller:
         except Exception as error:
             return f"Error al cerrar el dispensador de alimento: {error}"
 
+
     def obtener_posicion_servo_agua(self):
         try:
             comando = "wd:2"
             self.arduino.enviar_dato(comando)
             sleep(2)
             respuesta_arduino = self.arduino.recibir_dato()
-            if respuesta_arduino not in ["0", "90"]:
-                return "Error al obtener la posición del servo de agua."
-            return respuesta_arduino
+            
+            if respuesta_arduino.startswith("wdP:"):
+                posicion_servo = respuesta_arduino.split(":")[1]
+                return posicion_servo
+            return "Error al obtener la posición del servo de gua."
+            
         except Exception as error:
             return f"Error al obtener la posición del servo de agua: {error}"
 
+
+
+
     def obtener_posicion_servo_alimento(self):
+        """
+        Obtiene la posición actual del servo de alimentación.
+
+        Returns:
+            str: Posición actual del servo (0 o 90) o mensaje de error.
+        """
         try:
             comando = "fd:2"
             self.arduino.enviar_dato(comando)
             sleep(2)
             respuesta_arduino = self.arduino.recibir_dato()
-            if respuesta_arduino not in ["0", "90"]:
-                return "Error al obtener la posición del servo de alimento."
-            return respuesta_arduino
+
+            if respuesta_arduino.startswith("fdP:"):
+            # Extrae el valor numérico después de "fdP:"
+                posicion_servo = respuesta_arduino.split(":")[1]
+                return posicion_servo
+
+            return "Error al obtener la posición del servo de alimento."
         except Exception as error:
             return f"Error al obtener la posición del servo de alimento: {error}"
 
@@ -157,30 +174,42 @@ class Controller:
             return respuesta_arduino
         except Exception as error:
             return f"Error al obtener la distancia con el sensor ultrasónico de agua: {error}"
-
+        
+        
+        ''' No funciona los comanodos, no me regresa nada  y un 0 y 90 '''
     def obtener_distancia_ultrasonico_alimento(self):
         try:
             comando = "fdR:1"
             self.arduino.enviar_dato(comando)
             sleep(2)
             respuesta_arduino = self.arduino.recibir_dato()
-            if not validar_string("fdRget", respuesta_arduino):
-                return "Error al obtener la distancia con el sensor ultrasónico de alimento:"
-            return respuesta_arduino
-        except Exception as error:
-            return f"Error al obtener la distancia con el sensor ultrasónico de alimento: {error}"
 
+            if not validar_string("fdRget", respuesta_arduino):
+                print(f"Respuesta no válida: {respuesta_arduino}")
+                return "Error al obtener la distancia con el sensor ultrasónico de alimento: Respuesta no válida."
+
+            return respuesta_arduino
+        except SerialException as serial_error:
+            print(f"Error de comunicación serial: {str(serial_error)}")
+            return f"Error de comunicación serial: {str(serial_error)}"
+        except Exception as error:
+            print(f"Error inesperado: {str(error)}")
+            return f"Error inesperado: {str(error)}"
+        
+        
     def consultar_tarea(self, idTarea):
         try:
             return self.db.consultar_tarea(idTarea)
         except Exception as error:
             return f"Error al consultar la tarea: {error}"
+        
 
-    def consultar_registro(self, idSensor):
+    def consultar_registro(self, idComponente):
         try:
-            return self.db.consultar_registro(idSensor)
+            return self.db.consultar_registro(idComponente)
         except Exception as error:
             return f"Error al consultar el registro: {error}"
+        
 
     def consultar_intervalo_tiempo_agua(self):
         try:
@@ -220,7 +249,7 @@ class Controller:
             # Guardar la respuesta en la tabla de registros de tareas si es correcta
             if f"wdTset:{tiempo}{unidad}" in respuesta_arduino:
                 respuesta_db = self.db.insertar_tarea(
-                    idSensor="1", tipo="Agua", tiempo=tiempo, unidadtiempo=unidad)
+                    idComponente="1", tipo="Agua", tiempo=tiempo, unidadtiempo=unidad)
                 return respuesta_db
             else:
                 return f"Error al definir el intervalo de tiempo para el dispensador de agua: {respuesta_arduino}"
@@ -241,7 +270,7 @@ class Controller:
             # Guardar la respuesta en la tabla de registros de tareas si es correcta
             if f"fdTset:{tiempo}{unidad}" in respuesta_arduino:
                 respuesta_db = self.db.insertar_tarea(
-                    idSensor="2", tipo="Alimento", tiempo=tiempo, unidadtiempo=unidad)
+                    idComponente="2", tipo="Alimento", tiempo=tiempo, unidadtiempo=unidad)
                 return respuesta_db
             else:
                 return f"Error al definir el intervalo de tiempo para el dispensador de comida: {respuesta_arduino}"

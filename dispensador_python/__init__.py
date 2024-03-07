@@ -2,12 +2,167 @@ from tkinter import Tk, Frame, Button, Label, Entry, StringVar, IntVar, Scale, P
 from tkinter import Tk, Frame, Label, StringVar, Listbox, Scrollbar
 import threading
 import tkinter
+from .controlador import Controller
+import time
+
+controlador = Controller()
+
+def conectar_todo():
+    resultado_conexion = controlador.conectar_todo()
+    messagebox.showinfo("Conexión", resultado_conexion)
+    
+    
+    
+def dispensar_comida_var():
+    estado_comida = var_dispensar_comida.get()
+
+    if estado_comida == 1:
+        resultado_dispensar_comida = controlador.abrir_dispensador_alimento()
+    else:
+        resultado_dispensar_comida = controlador.cerrar_dispensador_alimento()
+        
+    obtener_posicion_servo_alimento_y_actualizar_estado(lbl_estado_comidaIni)
+
+    return resultado_dispensar_comida
+
+# Función para obtener la posición del servo y actualizar el estado del recipiente
+def obtener_posicion_servo_alimento_y_actualizar_estado(etiqueta_estado):
+    try:
+        # Llama a la función para obtener la posición del servo de alimento
+        print("Antes de obtener la posición del servo")
+        posicion_servo = controlador.obtener_posicion_servo_alimento()
+        print(f"Posición del servo de alimento: {posicion_servo}")
+
+        mapa_posiciones = {"0": "Cerrado", "90": "Abierto"}
+
+        estado_actual = mapa_posiciones.get(posicion_servo, "Desconocido")
+
+
+        etiqueta_estado.config(text=f" {estado_actual}")
+        print("Después de actualizar el estado del dispensador")
+
+    except SerialException as serial_error:
+        etiqueta_estado.config(text=f"Error de comunicación serial: {str(serial_error)}")
+        print(f"Error de comunicación serial: {str(serial_error)}")
+    except Exception as error:
+        etiqueta_estado.config(text=f"Error inesperado al obtener la posición del servo de alimento: {str(error)}")
+    
+      
+def dispensar_agua_var():
+    estado_agua = var_dispensar_agua.get()
+
+    if estado_agua == 1:
+        resultado_dispensar_agua = controlador.abrir_dispensador_agua()
+    else:
+        resultado_dispensar_agua = controlador.cerrar_dispensador_agua()
+        
+        
+    obtener_posicion_servo_alimento_y_actualizar_estado(lbl_estado_agua)
+    
+    return("Dispensar Comida", resultado_dispensar_agua)
+
+
+
+def enviar_tiempo_comida():
+    unidad = selec_comida.get()
+    tiempo = tiempo_comida_var.get()
+
+    if unidad and tiempo:
+        unidad_visual = 'm' if unidad == 'Minuto' else 's'
+        tiempo_visual = f"{tiempo} {unidad_visual}"
+        
+        lbl_estado_comida.config(text=f"Tiempo de comida: {tiempo_visual}")
+        controlador.definir_intervalo_tiempo_comida(tiempo, unidad_visual)
+        obtener_posicion_servo_agua_y_actualizar_estado(lbl_estado_comidaIni)
+        
+    else:
+        messagebox.showwarning("Advertencia", "Selecciona unidad y tiempo antes de enviar.")
+        
+        
+        
+def enviar_tiempo_agua():
+    unidad = selec_agua.get()
+    tiempo = tiempo_agua_var.get()
+
+    if unidad and tiempo:
+        unidad_visual = 'm' if unidad == 'Minuto' else 's'
+        tiempo_visual = f"{tiempo} {unidad_visual}"
+        
+        lbl_estado_comida.config(text=f"Tiempo de comida: {tiempo_visual}")
+        controlador.definir_intervalo_tiempo_agua(tiempo, unidad_visual)
+        
+    else:
+        messagebox.showwarning("Advertencia", "Selecciona unidad y tiempo antes de enviar.")
+
+
+def monitorear_estado_servo(etiqueta_estado):
+    while True:
+        try:
+            posicion_servo = controlador.obtener_posicion_servo_alimento()
+
+            mapa_posiciones = {"0": "Cerrado", "90": "Abierto"}
+
+            estado_actual = mapa_posiciones.get(posicion_servo, "...Esperando..")
+
+            etiqueta_estado.config(text=f"{estado_actual}")
+
+        except SerialException as serial_error:
+            etiqueta_estado.config(text=f"Error de comunicación serial: {str(serial_error)}")
+        except Exception as error:
+            etiqueta_estado.config(text=f"Error inesperado al obtener la posición del servo de alimento: {str(error)}")
+
+        time.sleep(10)
+
+
+def obtener_posicion_servo_agua_y_actualizar_estado(etiqueta_estado):
+    try:
+  
+        posicion_servo = controlador.obtener_posicion_servo_agua()
+
+        mapa_posiciones = {"0": "Cerrado", "90": "Abierto"}
+
+
+        estado_actual = mapa_posiciones.get(posicion_servo, "...Esperando..")
+
+        etiqueta_estado.config(text=f"{estado_actual}")
+
+    except SerialException as serial_error:
+        etiqueta_estado.config(text=f"Error de comunicación serial: {str(serial_error)}")
+    except Exception as error:
+        etiqueta_estado.config(text=f"Error inesperado al obtener la posición del servo de agua: {str(error)}")
+
+
+def monitorear_estado_servo_agua(etiqueta_estado):
+    while True:
+        try:
+
+            posicion_servo_agua = controlador.obtener_posicion_servo_agua()
+
+            mapa_posiciones_agua = {"0": "Cerrado", "90": "Abierto"}
+
+            estado_actual_agua = mapa_posiciones_agua.get(posicion_servo_agua, "...Esperando..")
+
+            etiqueta_estado.config(text=f"{estado_actual_agua}")
+
+        except SerialException as serial_error:
+            etiqueta_estado.config(text=f"Error de comunicación serial: {str(serial_error)}")
+        except Exception as error:
+            etiqueta_estado.config(text=f"Error inesperado al obtener la posición del servo de agua: {str(error)}")
+
+        time.sleep(13)
+
+
+
+
+
 
 miVentana = Tk()
 miVentana.title("Gustavo Alexander Medina Cifuentes")
 miVentana.resizable(0, 0)
 miVentana.geometry("700x600")
 miVentana.grid_propagate(0)
+
+
 
 notebook = ttk.Notebook(miVentana)
 notebook.pack(fill='both', expand=True)
@@ -32,12 +187,12 @@ lbl_titulo = Label(inicio, text="..:: Encender Dispensador ::..")
 lbl_titulo.place(x=250,y=0)
 
 ##barra de estado(servo)
-lbl_estado_agua = Label(inicio, text="Estado del agua", fg="red", font=("Courier New", 14, "bold"))
-lbl_estado_agua.place(x=400,y=40)
+lbl_estado_agua = Label(inicio, fg="red", font=("Courier New", 14, "bold"))
+lbl_estado_agua.place(x=100,y=40)
 
 
-lbl_estado_comida = Label(inicio, text="Estado decomida", fg="red", font=("Courier New", 14, "bold"))
-lbl_estado_comida.place(x=100,y=40)
+lbl_estado_comidaIni = Label(inicio, fg="red", font=("Courier New", 14, "bold"))
+lbl_estado_comidaIni.place(x=400,y=40)
 
 #imagen de agua
 im_agua = Label(inicio,image=imagen_agua)
@@ -50,35 +205,27 @@ im_comida.place(x=370,y=100)
 
 
 ##botones para dispnsar el agua(servo)
-Checkbutton(inicio, text="Dispensar agua", onvalue=1,offvalue=0, ).place(x=450,y=350)
+var_dispensar_agua = IntVar()
+Checkbutton(inicio, text="Dispensar agua", onvalue=1,offvalue=0, variable=var_dispensar_agua, command=dispensar_agua_var ).place(x=150, y=350)
 
 
-##botones para dispnsar el comida(servo)
-Checkbutton(inicio, text="Dispensar comida", onvalue=1,offvalue=0, ).place(x=150,y=350)
+var_dispensar_comida = IntVar()
+checkbutton_comida = Checkbutton(inicio,text="Dispensar Comida", onvalue=1, offvalue=0, variable=var_dispensar_comida, command=dispensar_comida_var)
+checkbutton_comida.place(x=450, y=350)
 
 
 
-lbl_estado_comida = Label(inicio, text="si esta abierto o cerrado", fg="red", font=("Courier New", 14, "bold"))
-lbl_estado_comida.place(x=200,y=400)
 
 
-##recibir datos pel contenedor de agua
-scroll_conte = Scrollbar(inicio, orient="vertical")
-lstbox_conte = Listbox(inicio, height=5,width=43 ,yscrollcommand=scroll_conte.set)
 
-scroll_conte.place(x=300, y=490)
-lstbox_conte.place(x=15,y=470)
-scroll_conte.configure(command=lstbox_conte.yview)
+lbl_contene_comida = Label(inicio, fg="blue", font=("Courier New", 10, "bold"))
+lbl_contene_comida.place(x=30,y=500)
+
 
 
 ##recibir datos pel contenedor de agua
-scroll_conte_come = Scrollbar(inicio, orient="vertical")
-lstbox_conte_come = Listbox(inicio, height=5,width=43,  yscrollcommand=scroll_conte_come .set)
-
-scroll_conte_come.place(x=674, y=490)
-lstbox_conte_come.place(x=400,y=470)
-scroll_conte_come.configure(command=lstbox_conte_come.yview)
-
+lbl_contene_agua = Label(inicio, fg="blue", font=("Courier New", 14, "bold"))
+lbl_contene_agua.place(x=390,y=500)
 ##Timpo
 
 
@@ -86,15 +233,18 @@ lbl_titulo = Label(tiempo, text="..:: Tiempo para dispensar ::..")
 lbl_titulo.grid(row=0, column=0,columnspan=6,padx=10,pady=5,sticky="we")
 
 ##barra de estado(servo)
-lbl_estado_agua = Label(tiempo, text="Estado del agua", fg="red", font=("Courier New", 14, "bold"))
-lbl_estado_agua.grid(row=1, column=2, columnspan=2, padx=5, pady=5)
+lbl_estado_aguaT = Label(tiempo, fg="red", font=("Courier New", 14, "bold"))
+lbl_estado_aguaT.grid(row=1, column=2, columnspan=2, padx=5, pady=5)
 
 
-lbl_estado_comida = Label(tiempo, text="Estado decomida", fg="red", font=("Courier New", 14, "bold"))
-lbl_estado_comida.grid(row=1, column=4, columnspan=1, padx=5, pady=5)
+lbl_estado_comidaT = Label(tiempo, fg="red", font=("Courier New", 14, "bold"))
+lbl_estado_comidaT.grid(row=1, column=4, columnspan=1, padx=5, pady=5)
 
-Scale(tiempo,  from_=0, to=60, orient="vertical", tickinterval=30, length=200).grid(row=1, column=0, rowspan=4, padx=5, pady=5)
-Scale(tiempo,  from_=0, to=60, orient="vertical", tickinterval=30, length=200).grid(row=1, column=5, rowspan=4, padx=5, pady=5)
+
+tiempo_agua_var = IntVar()
+tiempo_agua=Scale(tiempo,  from_=0, to=60, orient="vertical", tickinterval=30, length=200,variable=tiempo_agua_var).grid(row=1, column=0, rowspan=4, padx=5, pady=5)
+tiempo_comida_var = IntVar()  # Variable para almacenar el valor de la escala
+tiempo_comida = Scale(tiempo, from_=0, to=60, orient="vertical", tickinterval=30, length=200, variable=tiempo_comida_var).grid(row=1, column=5, rowspan=4, padx=5, pady=5)
 
 
 #imagen de agua
@@ -110,19 +260,29 @@ im_comida.grid(row=2, column=4)
 
     
 selec_agua = ttk.Combobox(tiempo,values=["Minuto", "Segundo"])
-selec_agua.bind("<<ComboboxSelected>>")
 selec_agua.grid(row=4,column=2)
 
 selec_comida = ttk.Combobox(tiempo,values=["Minuto", "Segundo"])
-selec_comida.bind("<<ComboboxSelected>>")
 selec_comida.grid(row=4,column=4)
 
-Button(tiempo, width=8, text="Enviar").place(x=150,y=350)
-Button(tiempo, width=8, text="Enviar").place(x=400,y=350)
+enviar_agua=Button(tiempo, width=8, text="Enviar",command=enviar_tiempo_agua).place(x=150,y=350)
 
-lbl_estado_comida = Label(tiempo, text="si esta abierto o cerrado", fg="red", font=("Courier New", 14, "bold"))
+enviar_comida=Button(tiempo, width=8, text="Enviar",command=enviar_tiempo_comida).place(x=400,y=350)
+
+
+
+lbl_estado_comida = Label(tiempo, fg="red", font=("Courier New", 14, "bold"))
 lbl_estado_comida.place(x=200,y=450)
 
+
+
+conectar_todo()
+obtener_posicion_servo_agua_y_actualizar_estado(lbl_estado_aguaT)
+obtener_posicion_servo_alimento_y_actualizar_estado(lbl_estado_comidaT)
+hilo_monitoreo = threading.Thread(target=monitorear_estado_servo, args=(lbl_estado_comidaIni,))
+hilo_monitoreo.start()
+hilo_monitoreo_agua = threading.Thread(target=monitorear_estado_servo_agua, args=(lbl_estado_agua,))
+hilo_monitoreo_agua.start()
 
 
 ##Pestaña de registros en la base de datos
@@ -139,18 +299,20 @@ scroll_dato_agua.configure(command=agua.yview)
 agua.place(x=10,y=30)
 
 
-agua["columns"] = ("Servo", "Valor", "Fecha", "Hora")
+agua["columns"] = ("Servo" ,"id","Estado", "Hora", "Fecha")
 agua.column("#0", width=0, stretch="no")
 agua.column("Servo", anchor="center", width=60)
-agua.column("Fecha", anchor="center", width=50)
-agua.column("Hora", anchor="center", width=450)
-agua.column("Valor", anchor="center", width=80)
+agua.column("id", anchor="center", width=60)
+agua.column("Estado", anchor="center", width=50)
+agua.column("Hora", anchor="center", width=200)
+agua.column("Fecha", anchor="center", width=200)
 
 agua.heading("#0", text="", anchor="w")
 agua.heading("Servo", text="Servo")
-agua.heading("Valor", text="Valor")
-agua.heading("Fecha", text="Fecha")
+agua.heading("id", text="id")
+agua.heading("Estado", text="Estado")
 agua.heading("Hora", text="Hora")
+agua.heading("Fecha", text="Fecha")
 
 
 
@@ -165,18 +327,49 @@ scroll_dato_comida.configure(command=comida.yview)
 comida.place(x=10,y=340)
 
 
-comida["columns"] = ("Servo", "Valor", "Fecha", "Hora")
+##trecera pestaña 
+
+comida["columns"] = ("Servo" ,"id","Estado", "Hora", "Fecha")
 comida.column("#0", width=0, stretch="no")
 comida.column("Servo", anchor="center", width=60)
-comida.column("Fecha", anchor="center", width=50)
-comida.column("Hora", anchor="center", width=450)
-comida.column("Valor", anchor="center", width=80)
+comida.column("id", anchor="center", width=60)
+comida.column("Estado", anchor="center", width=50)
+comida.column("Hora", anchor="center", width=200)
+comida.column("Fecha", anchor="center", width=200)
 
 comida.heading("#0", text="", anchor="w")
 comida.heading("Servo", text="Servo")
-comida.heading("Valor", text="Valor")
-comida.heading("Fecha", text="Fecha")
+comida.heading("id", text="id")
+comida.heading("Estado", text="Estado")
 comida.heading("Hora", text="Hora")
+comida.heading("Fecha", text="Fecha")
 
+
+def actualizar_tablas():
+    registros_agua = controlador.consultar_registro(idComponente=1)
+    registros_comida = controlador.consultar_registro(idComponente=2)
+
+    # Limpiar tablas
+    agua.delete(*agua.get_children())
+    comida.delete(*comida.get_children())
+
+    # Actualizar tabla de agua
+    for registro in registros_agua:
+        # Modificar la columna "id" con "Servo1"
+        registro = list(registro)
+        registro[0] = "Servo1" if registro[0] == 1 else "Servo2"
+        agua.insert("", "end", values=registro)
+
+    # Actualizar tabla de comida
+    for registro in registros_comida:
+        # Modificar la columna "id" con "Servo1"
+        registro = list(registro)
+        registro[0] = "Servo1" if registro[0] == 1 else "Servo2"
+        comida.insert("", "end", values=registro)
+        
+    agua.after(8000, actualizar_tablas)
+    comida.after(8000,actualizar_tablas)
+
+actualizar_tablas()
 
 miVentana.mainloop()
