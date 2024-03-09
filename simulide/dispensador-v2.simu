@@ -22,7 +22,7 @@ Circuit Id: Arduino Mega-1
 
 Unique  Id: Potentiometer-152: 
 Circuit Id: Potentiometer-135
-<item itemtype="Potentiometer" boardPos="-1e+06,-1e+06" valLabely="-25" mainComp="false" id="Potentiometer-135" Show_id="false" circPos="0,0" labelx="-16" Show_res="true" circRot="0" Resistance="1" Value_Ohm="133" boardRot="-1e+06" valLabelx="17" objectName="Potentiometer-152" vflip="1" rotation="0" valLabRot="0" y="-492" hflip="1" Unit=" kΩ" labely="-40" labelrot="0" x="248"/>
+<item itemtype="Potentiometer" boardPos="-1e+06,-1e+06" valLabely="-25" mainComp="false" id="Potentiometer-135" Show_id="false" circPos="0,0" labelx="-16" Show_res="true" circRot="0" Resistance="1" Value_Ohm="169" boardRot="-1e+06" valLabelx="17" objectName="Potentiometer-152" vflip="1" rotation="0" valLabRot="0" y="-492" hflip="1" Unit=" kΩ" labely="-40" labelrot="0" x="248"/>
 
 Unique  Id: TextComponent-151: 
 Circuit Id: TextComponent-100
@@ -76,10 +76,6 @@ Unique  Id: SerialPort-317:
 Circuit Id: SerialPort-317
 <item itemtype="SerialPort" boardPos="-1e+06,-1e+06" valLabely="0" mainComp="false" id="SerialPort-317" FlowControl="0" Show_id="false" Parity="0" circPos="0,0" labelx="-34" Auto_Open="false" circRot="0" Mcu_Id="Arduino Mega-153" StopBits="1" boardRot="-1e+06" valLabelx="0" objectName="SerialPort-317" vflip="1" Mcu_Uart="1" rotation="0" valLabRot="0" y="-544" hflip="1" DataBits="8" BaudRate="9600" labely="-20" labelrot="0" x="-20" Port_Name="COM1"/>
 
-Unique  Id: SerialTerm-442: 
-Circuit Id: SerialTerm-442
-<item itemtype="SerialTerm" boardPos="-1e+06,-1e+06" valLabely="0" mainComp="false" id="SerialTerm-442" posy="668" Show_id="false" sizey="267" sizex="640" posx="1509" circPos="0,0" labelx="-16" circRot="0" Mcu_Id="Arduino Mega-153" boardRot="-1e+06" valLabelx="0" objectName="SerialTerm-442" vflip="1" Mcu_Uart="1" rotation="0" valLabRot="0" y="-380" hflip="1" labely="-24" labelrot="0" x="36"/>
-
 Unique  Id: Connector-156: 
 Circuit Id: Connector-20
 <item itemtype="Connector" boardPos="-1e+06,-1e+06" valLabely="0" startpinid="Arduino Mega-153-PH6" mainComp="false" id="Connector-20" Show_id="false" enodeid="Circ_eNode-416" endpinid="SR04-149-trigpin" circPos="0,0" labelx="-16" circRot="0" boardRot="-1e+06" pointList="44,-180,-700,-180,-700,-392" valLabelx="0" objectName="Connector-156" vflip="1" rotation="0" valLabRot="0" y="-180" hflip="1" labely="-24" labelrot="0" x="44"/>
@@ -110,7 +106,7 @@ Circuit Id: Connector-31
 
 Unique  Id: Connector-188: 
 Circuit Id: Connector-164
-<item itemtype="Connector" boardPos="-1e+06,-1e+06" valLabely="0" startpinid="Arduino Mega-153-PG5" mainComp="false" id="Connector-164" Show_id="false" enodeid="Circ_eNode-424" endpinid="SR04-145-trigpin" circPos="0,0" labelx="-16" circRot="0" boardRot="-1e+06" pointList="44,-228,-224,-228,-224,-588" valLabelx="0" objectName="Connector-188" vflip="1" rotation="0" valLabRot="0" y="-228" hflip="1" labely="-24" labelrot="0" x="44"/>
+<item itemtype="Connector" boardPos="-1e+06,-1e+06" valLabely="0" startpinid="Arduino Mega-153-PG5" mainComp="false" id="Connector-164" Show_id="false" enodeid="Circ_eNode-424" endpinid="SR04-145-trigpin" circPos="0,0" labelx="-16" circRot="0" boardRot="-1e+06" pointList="44,-228,-284,-228,-284,-588,-224,-588" valLabelx="0" objectName="Connector-188" vflip="1" rotation="0" valLabRot="0" y="-228" hflip="1" labely="-24" labelrot="0" x="44"/>
 
 Unique  Id: Connector-235: 
 Circuit Id: Connector-235
@@ -146,7 +142,7 @@ Circuit Id: Connector-417
 
 Unique  Id: Connector-21: 
 Circuit Id: Connector-21
-<item itemtype="Connector" boardPos="-1e+06,-1e+06" valLabely="0" startpinid="Arduino Mega-153-PB4" mainComp="false" id="Connector-21" Show_id="false" enodeid="enode-21" endpinid="SR04-149-outpin" circPos="0,0" labelx="-16" circRot="-5.757327183306961e+307" boardRot="-1e+06" pointList="44,-172,-384,-172,-384,-364,-492,-364,-492,-392,-692,-392" valLabelx="0" objectName="Connector-21" vflip="1" rotation="0" valLabRot="0" y="-172" hflip="1" labely="-24" labelrot="0" x="44"/>
+<item itemtype="Connector" boardPos="-1e+06,-1e+06" valLabely="0" startpinid="Arduino Mega-153-PB4" mainComp="false" id="Connector-21" Show_id="false" enodeid="enode-21" endpinid="SR04-149-outpin" circPos="0,0" labelx="-16" circRot="-5.757327183306961e+307" boardRot="-1e+06" pointList="44,-172,-384,-172,-384,-404,-492,-404,-492,-392,-692,-392" valLabelx="0" objectName="Connector-21" vflip="1" rotation="0" valLabRot="0" y="-172" hflip="1" labely="-24" labelrot="0" x="44"/>
 
 Unique  Id: Connector-438: 
 Circuit Id: Connector-438

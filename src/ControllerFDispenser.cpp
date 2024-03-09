@@ -63,17 +63,20 @@ void ControllerFDispenser::processCommand(String value)
 {
     if (value == "0")
     {
-        const int result = close();
+        int result = close();
+        result = 0 ? result == this->closeValue : result;
         Serial.println(this->command + "R:" + String(result));
     }
     else if (value == "1")
     {
         int result = open();
+        result = 1 ? result == this->openValue : result;
         Serial.println(this->command + "R:" + String(result));
     }
     else if (value == "2")
     {
         int result = getPosition();
+        result = 1 ? result == this->openValue : 0;
         Serial.println(this->command + "P:" + String(result));
     }
     else

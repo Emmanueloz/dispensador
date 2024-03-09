@@ -29,7 +29,7 @@ class ConnectionArduino:
             # recibir_dato = self.arduino.readline().decode().strip()
             message = self.arduino.readline()
 
-            return message[:1].decode()
+            return message.decode('utf-8').replace('\n', '')
         except Exception as e:
             return f"Error al recibir los datos: {e}"
 
