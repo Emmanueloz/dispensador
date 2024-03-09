@@ -1,7 +1,7 @@
 from dispensador_python.crud import Crud
 from dispensador_python.conexion_serial import ConnectionArduino
 from time import sleep
-from re import match, search
+from re import match
 
 
 def validar_string(prefijo, valor):
@@ -24,7 +24,8 @@ class Controller:
     def conectar_todo(self):
         try:
             # Conectar a la base de datos
-            self.db.conectar_BD(host="172.20.10.4", user="root", passwd="2004loco#with", database="dispensadorBD")
+            self.db.conectar_BD(host="localhost", user="emmanuel",
+                                passwd="", database="dispensadorBD")
 
             # Conectar a Arduino
             self.arduino.conectar()
@@ -119,24 +120,20 @@ class Controller:
         except Exception as error:
             return f"Esperando"
 
-
     def obtener_posicion_servo_agua(self):
         try:
             comando = "wd:2"
             self.arduino.enviar_dato(comando)
             sleep(2)
             respuesta_arduino = self.arduino.recibir_dato()
-            
+
             if respuesta_arduino.startswith("wdP:"):
                 posicion_servo = respuesta_arduino.split(":")[1]
                 return posicion_servo
             return "Error al obtener la posición del servo de gua."
-            
+
         except Exception as error:
             return f"Error al obtener la posición del servo de agua: {error}"
-
-
-
 
     def obtener_posicion_servo_alimento(self):
         """
@@ -152,15 +149,13 @@ class Controller:
             respuesta_arduino = self.arduino.recibir_dato()
 
             if respuesta_arduino.startswith("fdP:"):
-            # Extrae el valor numérico después de "fdP:"
+                # Extrae el valor numérico después de "fdP:"
                 posicion_servo = respuesta_arduino.split(":")[1]
                 return posicion_servo
 
             return "Error al obtener la posición del servo de alimento."
         except Exception as error:
             return f"Error al obtener la posición del servo de alimento: {error}"
-        
-        
 
     def obtener_distancia_ultrasonico_agua(self):
         try:
@@ -189,11 +184,7 @@ class Controller:
         except Exception as error:
             print(f"Error inesperado: {str(error)}")
             return f"Error inesperado: {str(error)}"
-        
-        
-       
-        
-        
+
     def obtener_estado_contenedor_alimento(self):
         try:
             comando = "fdS:1"
@@ -219,23 +210,18 @@ class Controller:
         except Exception as error:
             print(f"Error inesperado: {str(error)}")
             return f"Error inesperado: {str(error)}"
-        
-        
-        
-        
+
     def consultar_tarea(self, idTarea):
         try:
             return self.db.consultar_tarea(idTarea)
         except Exception as error:
             return f"Error al consultar la tarea: {error}"
-        
 
     def consultar_registro(self, idComponente):
         try:
             return self.db.consultar_registro(idComponente)
         except Exception as error:
             return f"Error al consultar el registro: {error}"
-        
 
     def consultar_intervalo_tiempo_agua(self):
         try:
