@@ -16,4 +16,4 @@ public:
     static void processCommand(String value);
 };
 
-#endif // CONTROLLER_TIME_DISPENSER_H
+#endif // CONTROLLER_W_DISPENSER_H

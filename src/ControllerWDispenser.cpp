@@ -2,9 +2,9 @@
 
 void ControllerWDispenser::setup(String command, byte pin, Sonares &sonar)
 {
-    ControllerWDispenser::sonar = sonar;
-    ControllerWDispenser::command = command;
-    ControllerWDispenser::pin = pin;
+    sonar = sonar;
+    command = command;
+    pin = pin;
 }
 
 void ControllerWDispenser::processCommand(String value)
