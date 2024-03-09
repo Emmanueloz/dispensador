@@ -54,24 +54,25 @@ class ControllerVista:
         while self.corriendo:
             try:
                 mensaje = self.arduino.recibir_dato()
-                print(mensaje)
-                if mensaje.startswith("wdP:"):
+                if mensaje.startswith("wdP:") or mensaje.startswith("wdR:"):
+                    result = int(mensaje.split(":")[1])
+                    msg = "Abierto" if result == 1 else "Cerrado"
+                    self.inicio.set_estado_agua(result, msg)
+
+                elif mensaje.startswith("fdP:") or mensaje.startswith("fdR:"):
                     print(mensaje.split(":")[1])
-                    msg = "Abierto" if mensaje.split(
-                        ":")[1] == "1" else "Cerrado"
-                    self.inicio.set_estado_agua(mensaje.split(":")[1], msg)
-                    print(mensaje)
-                elif mensaje.startswith("fdP:"):
-                    print(mensaje.split(":")[1])
-                    msg = "Abierto" if mensaje.split(
-                        ":")[1] == "1" else "Cerrado"
-                    self.inicio.set_estado_comida(mensaje.split(":")[1], msg)
+                    result = int(mensaje.split(":")[1])
+                    msg = "Abierto" if result == 1 else "Cerrado"
+                    self.inicio.set_estado_comida(result, msg)
                 elif mensaje.startswith("wdACon:0"):
+
                     self.inicio.set_contenedor_agua(
-                        "El contenedor de agua esta lleno")
-                elif mensaje.startswith("fdACon:1"):
+                        "El contenedor de agua esta vacío.")
+                    self.inicio.set_estado_agua(0, "Cerrado")
+                elif mensaje.startswith("fdACon:0"):
                     self.inicio.set_contenedor_comida(
-                        "El contenedor de alimento esta medio.")
+                        "El contenedor de alimento esta vació.")
+                    self.inicio.set_estado_comida(0, "Cerrado")
 
             except Exception as error:
                 print(f"Error al leer el puerto serial: {error}")

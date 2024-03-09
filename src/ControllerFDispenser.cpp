@@ -37,7 +37,7 @@ int ControllerFDispenser::open()
 
     this->servo.write(this->openValue);
     this->position = this->openValue;
-    return this->position;
+    return 1;
 }
 
 int ControllerFDispenser::close()
@@ -64,19 +64,16 @@ void ControllerFDispenser::processCommand(String value)
     if (value == "0")
     {
         int result = close();
-        result = 0 ? result == this->closeValue : result;
         Serial.println(this->command + "R:" + String(result));
     }
     else if (value == "1")
     {
         int result = open();
-        result = 1 ? result == this->openValue : result;
         Serial.println(this->command + "R:" + String(result));
     }
     else if (value == "2")
     {
         int result = getPosition();
-        result = 1 ? result == this->openValue : 0;
         Serial.println(this->command + "P:" + String(result));
     }
     else
