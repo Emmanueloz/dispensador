@@ -31,8 +31,8 @@ const int limitFoodRecipient = 40;
 const int limitFoodDispenser = 40;
 
 // Constantes de tiempos por defecto
-const long defaultTimeOpenWater = 4000;
-const long defaultTimeOpenFood = 4000;
+const long defaultTimeOpenWater = 8000;
+const long defaultTimeOpenFood = 8000;
 
 // Constantes de comandos
 const String COMMAND_TIME_OPEN_WATER_DISPENSER = "wdT";
@@ -130,8 +130,8 @@ void loop()
   }
   */
 
-  // waterDispenserTimeController.update();
-  // foodDispenserTimeController.update();
+  waterDispenserTimeController.update();
+  foodDispenserTimeController.update();
 
   if (Serial.available() > 0)
   {
