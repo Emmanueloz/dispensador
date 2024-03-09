@@ -28,6 +28,16 @@ class Tiempo(Frame):
             self, text="..:: Configurar Tiempo ::..")
         self.label.pack(pady=10)
 
+        self.imagen_agua = PhotoImage(file="imagen/agua.png")
+        self.imagen_comida = PhotoImage(file="imagen/comida.png")
+        # imagen de agua
+        self.im_agua = Label(self, image=self.imagen_agua)
+        self.im_agua.place(x=70, y=100)
+
+        # imagen de comida
+        self.im_comida = Label(self, image=self.im_comida)
+        self.im_comida.place(x=370, y=100)
+
 
 class Registro(Frame):
     def __init__(self, master=None):
