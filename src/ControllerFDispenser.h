@@ -13,10 +13,11 @@ private:
     int openValue;
     int closeValue;
     Sonares &sonar;
+    Sonares &sonarLevel;
     String command;
 
 public:
-    ControllerFDispenser(byte pin, int openValue, int closeValue, Sonares &sonar, String command);
+    ControllerFDispenser(byte pin, int openValue, int closeValue, Sonares &sonar, String command, Sonares &sonarLevel);
     int getPosition();
     int open();
     int close();

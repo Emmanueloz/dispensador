@@ -1,6 +1,6 @@
 #include "ControllerFDispenser.h"
 
-ControllerFDispenser::ControllerFDispenser(byte pin, int openValue, int closeValue, Sonares &sonar, String command) : sonar(sonar)
+ControllerFDispenser::ControllerFDispenser(byte pin, int openValue, int closeValue, Sonares &sonar, String command, Sonares &sonarLevel) : sonar(sonar), sonarLevel(sonarLevel)
 {
     servo.attach(pin);
     openValue = openValue;
@@ -25,6 +25,10 @@ int ControllerFDispenser::open()
     else if (sonar.isDistanceLimit())
     {
         return -2;
+    }
+    else if (!sonarLevel.isDistanceLimit())
+    {
+        return -3;
     }
 
     servo.write(openValue);
@@ -78,6 +82,11 @@ void ControllerFDispenser::closeAutomatic()
     if (sonar.isDistanceLimit() && isOpen())
     {
         const int result = close();
-        Serial.println(command + "A:" + String(result));
+        Serial.println(command + "A:Con" + String(result));
+    }
+    else if (!sonarLevel.isDistanceLimit() && isOpen())
+    {
+        const int result = close();
+        Serial.println(command + "A:Res" + String(result));
     }
 }

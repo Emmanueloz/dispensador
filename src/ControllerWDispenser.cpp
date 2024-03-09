@@ -1,9 +1,11 @@
 #include "ControllerWDispenser.h"
 
-ControllerWDispenser::ControllerWDispenser(byte pin, Sonares &sonar, String command) : sonar(sonar)
+ControllerWDispenser::ControllerWDispenser(byte pin, Sonares &sonar, String command, byte pinLevelWater, int limitWaterRecipient) : sonar(sonar)
 {
     command = command;
     pin = pin;
+    pinLevelWater = pinLevelWater;
+    limitWaterRecipient = limitWaterRecipient;
 }
 
 int ControllerWDispenser::open()
@@ -15,6 +17,10 @@ int ControllerWDispenser::open()
     else if (sonar.isDistanceLimit())
     {
         return -2;
+    }
+    else if (analogRead(pinLevelWater) > limitWaterRecipient)
+    {
+        return -3;
     }
 
     digitalWrite(pin, HIGH);
@@ -66,6 +72,11 @@ void ControllerWDispenser::closeAutomatic()
     if (sonar.isDistanceLimit() && isOpen())
     {
         const int result = close();
-        Serial.println(command + "A:" + String(result));
+        Serial.println(command + "A:Con" + String(result));
+    }
+    else if (analogRead(pinLevelWater) > limitWaterRecipient && isOpen())
+    {
+        const int result = close();
+        Serial.println(command + "A:Res" + String(result));
     }
 }

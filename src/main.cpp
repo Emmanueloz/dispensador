@@ -22,8 +22,11 @@ const byte pinTriggerFoodLevel = 4;
 // Constantes enteras
 const int maxSonarWater = 400;
 const int maxSonarFood = 400;
+
 const int limitWaterRecipient = 350;
+
 const int limitWaterDispenser = 40;
+
 const int limitFoodRecipient = 40;
 const int limitFoodDispenser = 40;
 
@@ -50,8 +53,8 @@ Sonares sonarFoodLevel(pinTriggerFoodLevel, pinEchoFoodLevel, maxSonarFood, limi
 // ControllerDispenser waterDispenserController(waterDispenser, sonarWater, COMMAND_WATER_DISPENSER);
 // ControllerDispenser foodDispenserController(foodDispenser, sonarFood, COMMAND_FOOD_DISPENSER);
 
-ControllerWDispenser waterDispenserController(pinWaterServo, sonarWater, COMMAND_WATER_DISPENSER);
-ControllerFDispenser foodDispenserController(pinFoodServo, 180, 0, sonarFoodLevel, COMMAND_FOOD_DISPENSER);
+ControllerWDispenser waterDispenserController(pinWaterServo, sonarWater, COMMAND_WATER_DISPENSER, pinLevelWater, limitWaterRecipient);
+ControllerFDispenser foodDispenserController(pinFoodServo, 180, 0, sonarFoodLevel, COMMAND_FOOD_DISPENSER, sonarFoodLevel);
 
 ControllerSonar sonarWaterController(sonarWater, COMMAND_WATER_LEVEL);
 ControllerSonar sonarFoodController(sonarFood, COMMAND_FOOD_LEVEL);
@@ -65,6 +68,8 @@ void callbackWaterDispenser()
     Serial.println(COMMAND_TIME_OPEN_WATER_DISPENSER + "result:" + result);
   }
   */
+  const int result = waterDispenserController.open();
+  Serial.println(COMMAND_TIME_OPEN_WATER_DISPENSER + "R:" + String(result));
 }
 
 void callbackFoodDispenser()
@@ -76,6 +81,8 @@ void callbackFoodDispenser()
     Serial.println(COMMAND_TIME_OPEN_FOOD_DISPENSER + "result:" + result);
   }
   */
+  const int result = foodDispenserController.open();
+  Serial.println(COMMAND_TIME_OPEN_FOOD_DISPENSER + "R:" + String(result));
 }
 
 ControllerTimeDispenser waterDispenserTimeController(COMMAND_TIME_OPEN_WATER_DISPENSER, defaultTimeOpenWater, 's', callbackWaterDispenser);

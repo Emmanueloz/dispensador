@@ -10,9 +10,11 @@ private:
     String command;
     byte pin;
     Sonares &sonar;
+    byte pinLevelWater;
+    int limitWaterRecipient;
 
 public:
-    ControllerWDispenser(byte pin, Sonares &sonar, String command);
+    ControllerWDispenser(byte pin, Sonares &sonar, String command, byte pinLevelWater, int limitWaterRecipient);
     int open();
     int close();
     bool isOpen();
