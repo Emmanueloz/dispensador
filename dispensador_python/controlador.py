@@ -2,6 +2,7 @@ from dispensador_python.crud import Crud
 from dispensador_python.conexion_serial import ConnectionArduino
 from time import sleep
 from re import match
+from .vista import *
 
 
 def validar_string(prefijo, valor):
@@ -12,6 +13,34 @@ def validar_string(prefijo, valor):
         return True
     else:
         return False
+
+
+class ControllerVista:
+    def __init__(self, vista) -> None:
+        self.vista: Ventana = vista
+        self.inicio: Inicio = self.vista.inicio
+        self.db = Crud()
+        self.arduino = ConnectionArduino(puerto="COM2")
+        self.estado_agua = 0
+        self.estado_comida = 0
+
+    def conectar_todo(self):
+        try:
+            # Conectar a la base de datos
+            self.db.conectar_BD(host="localhost", user="emmanuel",
+                                passwd="", database="dispensadorBD")
+
+            # Conectar a Arduino
+            if self.arduino.conectar() is not None:
+                raise Exception("Error en la conexión con Arduino.")
+
+            print("Conexión exitosa a la base de datos y Arduino.")
+        except Exception as e:
+            print(f"Error en la conexión: {e}")
+
+    def iniciar(self):
+        self.conectar_todo()
+        self.vista.mainloop()
 
 
 class Controller:

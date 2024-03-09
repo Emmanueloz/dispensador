@@ -117,7 +117,3 @@ class Ventana(Tk):
         self.taps.add(self.inicio, text="Inicio")
         self.taps.add(self.tiempo, text="Tiempo")
         self.taps.add(self.registro, text="Registro")
-
-
-app = Ventana()
-app.mainloop()
