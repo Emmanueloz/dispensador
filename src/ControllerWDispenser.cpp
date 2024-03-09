@@ -2,51 +2,51 @@
 
 ControllerWDispenser::ControllerWDispenser(Sonares &sonar, String command, byte pinLevelWater, int limitWaterRecipient) : sonar(sonar)
 {
-    command = command;
-    pinLevelWater = pinLevelWater;
-    limitWaterRecipient = limitWaterRecipient;
+    this->command = command;
+    this->pinLevelWater = pinLevelWater;
+    this->limitWaterRecipient = limitWaterRecipient;
 }
 
 void ControllerWDispenser::setup(byte pin)
 {
     pinMode(pin, OUTPUT);
     digitalWrite(pin, LOW);
-    pin = pin;
+    this->pin = pin;
 }
 
 int ControllerWDispenser::open()
 {
-    if (isOpen())
+    if (this->isOpen())
     {
         return -1;
     }
-    else if (sonar.isDistanceLimit())
+    else if (this->sonar.isDistanceLimit())
     {
         return -2;
     }
-    else if (analogRead(pinLevelWater) > limitWaterRecipient)
+    else if (analogRead(this->pinLevelWater) > this->limitWaterRecipient)
     {
         return -3;
     }
 
-    digitalWrite(pin, HIGH);
-    return digitalRead(pin);
+    digitalWrite(this->pin, HIGH);
+    return digitalRead(this->pin);
 }
 
 int ControllerWDispenser::close()
 {
-    if (!isOpen())
+    if (!this->isOpen())
     {
         return -1;
     }
 
-    digitalWrite(pin, LOW);
-    return digitalRead(pin);
+    digitalWrite(this->pin, LOW);
+    return digitalRead(this->pin);
 }
 
 bool ControllerWDispenser::isOpen()
 {
-    const int result = digitalRead(pin);
+    const int result = digitalRead(this->pin);
     return result == HIGH;
 }
 
@@ -80,7 +80,7 @@ void ControllerWDispenser::closeAutomatic()
         const int result = close();
         Serial.println(command + "A:Con" + String(result));
     }
-    else if (analogRead(pinLevelWater) > limitWaterRecipient && isOpen())
+    else if (analogRead(this->pinLevelWater) > this->limitWaterRecipient && isOpen())
     {
         const int result = close();
         Serial.println(command + "A:Res" + String(result));

@@ -115,7 +115,7 @@ String getValue(String value)
 
 void loop()
 {
-  // waterDispenserController.closeAutomatic();
+  waterDispenserController.closeAutomatic();
   foodDispenserController.closeAutomatic();
 
   /*
