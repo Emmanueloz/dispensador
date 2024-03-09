@@ -22,7 +22,7 @@ Circuit Id: Arduino Mega-1
 
 Unique  Id: Potentiometer-152: 
 Circuit Id: Potentiometer-135
-<item itemtype="Potentiometer" boardPos="-1e+06,-1e+06" valLabely="-25" mainComp="false" id="Potentiometer-135" Show_id="false" circPos="0,0" labelx="-16" Show_res="true" circRot="0" Resistance="1" Value_Ohm="105" boardRot="-1e+06" valLabelx="17" objectName="Potentiometer-152" vflip="1" rotation="0" valLabRot="0" y="-492" hflip="1" Unit=" kΩ" labely="-40" labelrot="0" x="248"/>
+<item itemtype="Potentiometer" boardPos="-1e+06,-1e+06" valLabely="-25" mainComp="false" id="Potentiometer-135" Show_id="false" circPos="0,0" labelx="-16" Show_res="true" circRot="0" Resistance="1" Value_Ohm="166" boardRot="-1e+06" valLabelx="17" objectName="Potentiometer-152" vflip="1" rotation="0" valLabRot="0" y="-492" hflip="1" Unit=" kΩ" labely="-40" labelrot="0" x="248"/>
 
 Unique  Id: TextComponent-151: 
 Circuit Id: TextComponent-100
@@ -75,10 +75,6 @@ Circuit Id: Servo-3
 Unique  Id: SerialPort-317: 
 Circuit Id: SerialPort-317
 <item itemtype="SerialPort" boardPos="-1e+06,-1e+06" valLabely="0" mainComp="false" id="SerialPort-317" FlowControl="0" Show_id="false" Parity="0" circPos="0,0" labelx="-34" Auto_Open="false" circRot="0" Mcu_Id="Arduino Mega-153" StopBits="1" boardRot="-1e+06" valLabelx="0" objectName="SerialPort-317" vflip="1" Mcu_Uart="1" rotation="0" valLabRot="0" y="-544" hflip="1" DataBits="8" BaudRate="9600" labely="-20" labelrot="0" x="-20" Port_Name="COM1"/>
-
-Unique  Id: SerialTerm-439: 
-Circuit Id: SerialTerm-439
-<item itemtype="SerialTerm" boardPos="-1e+06,-1e+06" valLabely="0" mainComp="false" id="SerialTerm-439" posy="636" Show_id="false" sizey="267" sizex="640" posx="1179" circPos="0,0" labelx="-16" circRot="0" Mcu_Id="Arduino Mega-153" boardRot="-1e+06" valLabelx="0" objectName="SerialTerm-439" vflip="1" Mcu_Uart="1" rotation="0" valLabRot="0" y="-380" hflip="1" labely="-24" labelrot="0" x="36"/>
 
 Unique  Id: Connector-156: 
 Circuit Id: Connector-20

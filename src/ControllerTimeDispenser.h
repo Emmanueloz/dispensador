@@ -1,5 +1,4 @@
 #include <Ticker.h>
-#include "Dispensador.h"
 
 #ifndef CONTROLLER_TIME_DISPENSER_H
 #define CONTROLLER_TIME_DISPENSER_H

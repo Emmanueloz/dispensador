@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "ControllerDispenser.h"
+
 #include "ControllerTimeDispenser.h"
 #include "ControllerSonar.h"
 
@@ -42,16 +42,10 @@ const String COMMAND_FOOD_DISPENSER = "fd";
 const String COMMAND_WATER_LEVEL = "wdS";
 const String COMMAND_FOOD_LEVEL = "fdS";
 
-// Dispensador waterDispenser;
-Dispensador foodDispenser;
-
 Sonares sonarWater(pinTriggerWater, pinEchoWater, maxSonarWater, limitWaterDispenser);
 Sonares sonarFood(pinTriggerFood, pinEchoFood, maxSonarFood, limitFoodDispenser);
 
 Sonares sonarFoodLevel(pinTriggerFoodLevel, pinEchoFoodLevel, maxSonarFood, limitFoodRecipient);
-
-// ControllerDispenser waterDispenserController(waterDispenser, sonarWater, COMMAND_WATER_DISPENSER);
-// ControllerDispenser foodDispenserController(foodDispenser, sonarFood, COMMAND_FOOD_DISPENSER);
 
 ControllerWDispenser waterDispenserController(sonarWater, COMMAND_WATER_DISPENSER, pinLevelWater, limitWaterRecipient);
 ControllerFDispenser foodDispenserController(sonarFood, COMMAND_FOOD_DISPENSER, sonarFoodLevel);
@@ -61,26 +55,14 @@ ControllerSonar sonarFoodController(sonarFood, COMMAND_FOOD_LEVEL);
 
 void callbackWaterDispenser()
 {
-  /*
-  if (!waterDispenser.isOpen() && !sonarWater.isDistanceLimit() && analogRead(pinLevelWater) < limitWaterRecipient)
-  {
-    int result = waterDispenser.open();
-    Serial.println(COMMAND_TIME_OPEN_WATER_DISPENSER + "result:" + result);
-  }
-  */
+
   const int result = waterDispenserController.open();
   Serial.println(COMMAND_TIME_OPEN_WATER_DISPENSER + "R:" + String(result));
 }
 
 void callbackFoodDispenser()
 {
-  /*
-  if (!foodDispenser.isOpen() && !sonarFood.isDistanceLimit() && sonarFoodLevel.isDistanceLimit())
-  {
-    int result = foodDispenser.open();
-    Serial.println(COMMAND_TIME_OPEN_FOOD_DISPENSER + "result:" + result);
-  }
-  */
+
   const int result = foodDispenserController.open();
   Serial.println(COMMAND_TIME_OPEN_FOOD_DISPENSER + "R:" + String(result));
 }
@@ -91,8 +73,6 @@ ControllerTimeDispenser foodDispenserTimeController(COMMAND_TIME_OPEN_FOOD_DISPE
 void setup()
 {
   Serial.begin(9600);
-  // waterDispenser.setup(pinWaterServo, 90, 0);
-  // foodDispenser.setup(pinFoodServo, 90, 0);
   waterDispenserController.setup(pinWaterServo);
   foodDispenserController.setup(pinFoodServo, 90, 0);
   waterDispenserTimeController.start();
@@ -117,18 +97,6 @@ void loop()
 {
   waterDispenserController.closeAutomatic();
   foodDispenserController.closeAutomatic();
-
-  /*
-  if (foodDispenser.isOpen() && !sonarFoodLevel.isDistanceLimit())
-  {
-    foodDispenser.close();
-  }
-
-  if (waterDispenser.isOpen() && analogRead(pinLevelWater) > limitWaterRecipient)
-  {
-    waterDispenser.close();
-  }
-  */
 
   waterDispenserTimeController.update();
   foodDispenserTimeController.update();
