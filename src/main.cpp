@@ -53,8 +53,8 @@ Sonares sonarFoodLevel(pinTriggerFoodLevel, pinEchoFoodLevel, maxSonarFood, limi
 // ControllerDispenser waterDispenserController(waterDispenser, sonarWater, COMMAND_WATER_DISPENSER);
 // ControllerDispenser foodDispenserController(foodDispenser, sonarFood, COMMAND_FOOD_DISPENSER);
 
-ControllerWDispenser waterDispenserController(pinWaterServo, sonarWater, COMMAND_WATER_DISPENSER, pinLevelWater, limitWaterRecipient);
-ControllerFDispenser foodDispenserController(pinFoodServo, 180, 0, sonarFoodLevel, COMMAND_FOOD_DISPENSER, sonarFoodLevel);
+ControllerWDispenser waterDispenserController(sonarWater, COMMAND_WATER_DISPENSER, pinLevelWater, limitWaterRecipient);
+ControllerFDispenser foodDispenserController(sonarFood, COMMAND_FOOD_DISPENSER, sonarFoodLevel);
 
 ControllerSonar sonarWaterController(sonarWater, COMMAND_WATER_LEVEL);
 ControllerSonar sonarFoodController(sonarFood, COMMAND_FOOD_LEVEL);
@@ -93,6 +93,8 @@ void setup()
   Serial.begin(9600);
   // waterDispenser.setup(pinWaterServo, 90, 0);
   // foodDispenser.setup(pinFoodServo, 90, 0);
+  waterDispenserController.setup(pinWaterServo);
+  foodDispenserController.setup(pinFoodServo, 90, 0);
   waterDispenserTimeController.start();
   foodDispenserTimeController.start();
 }
@@ -113,7 +115,7 @@ String getValue(String value)
 
 void loop()
 {
-  waterDispenserController.closeAutomatic();
+  // waterDispenserController.closeAutomatic();
   foodDispenserController.closeAutomatic();
 
   /*

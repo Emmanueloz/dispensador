@@ -14,7 +14,8 @@ private:
     int limitWaterRecipient;
 
 public:
-    ControllerWDispenser(byte pin, Sonares &sonar, String command, byte pinLevelWater, int limitWaterRecipient);
+    ControllerWDispenser(Sonares &sonar, String command, byte pinLevelWater, int limitWaterRecipient);
+    void setup(byte pin);
     int open();
     int close();
     bool isOpen();

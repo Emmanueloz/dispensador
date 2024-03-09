@@ -1,18 +1,21 @@
 #include "ControllerFDispenser.h"
 
-ControllerFDispenser::ControllerFDispenser(byte pin, int openValue, int closeValue, Sonares &sonar, String command, Sonares &sonarLevel) : sonar(sonar), sonarLevel(sonarLevel)
+ControllerFDispenser::ControllerFDispenser(Sonares &sonar, String command, Sonares &sonarLevel) : sonar(sonar), sonarLevel(sonarLevel)
 {
-    servo.attach(pin);
-    openValue = openValue;
-    closeValue = closeValue;
-    servo.write(closeValue);
-    command = command;
+    this->command = command;
+}
+
+void ControllerFDispenser::setup(byte pin, int openValue, int closeValue)
+{
+    this->servo.attach(pin);
+    this->openValue = openValue;
+    this->closeValue = closeValue;
+    this->servo.write(closeValue);
 }
 
 int ControllerFDispenser::getPosition()
 {
-    position = servo.read();
-
+    this->position = servo.read();
     return position;
 }
 
@@ -22,23 +25,24 @@ int ControllerFDispenser::open()
     {
         return -1;
     }
-    else if (sonar.isDistanceLimit())
+    else if (this->sonar.isDistanceLimit())
     {
+        Serial.println(this->sonar.isDistanceLimit());
         return -2;
     }
-    else if (!sonarLevel.isDistanceLimit())
+    else if (!this->sonarLevel.isDistanceLimit())
     {
         return -3;
     }
 
-    servo.write(openValue);
-    position = openValue;
-    return position;
+    this->servo.write(this->openValue);
+    this->position = this->openValue;
+    return this->position;
 }
 
 int ControllerFDispenser::close()
 {
-    if (!isOpen())
+    if (!this->isOpen())
     {
         return -1;
     }
@@ -50,8 +54,9 @@ int ControllerFDispenser::close()
 
 bool ControllerFDispenser::isOpen()
 {
-    position = getPosition();
-    return position == openValue;
+    this->position = getPosition();
+    // Serial.println("Position: " + String(this->position) + " OpenValue: " + String(this->openValue));
+    return this->position == this->openValue;
 }
 
 void ControllerFDispenser::processCommand(String value)
@@ -59,21 +64,21 @@ void ControllerFDispenser::processCommand(String value)
     if (value == "0")
     {
         const int result = close();
-        Serial.println(command + "R:" + String(result));
+        Serial.println(this->command + "R:" + String(result));
     }
     else if (value == "1")
     {
         int result = open();
-        Serial.println(command + "R:" + String(result));
+        Serial.println(this->command + "R:" + String(result));
     }
     else if (value == "2")
     {
         int result = getPosition();
-        Serial.println(command + "P:" + String(result));
+        Serial.println(this->command + "P:" + String(result));
     }
     else
     {
-        Serial.println(command + ":notFound");
+        Serial.println(this->command + ":notFound");
     }
 }
 
@@ -82,11 +87,11 @@ void ControllerFDispenser::closeAutomatic()
     if (sonar.isDistanceLimit() && isOpen())
     {
         const int result = close();
-        Serial.println(command + "A:Con" + String(result));
+        Serial.println(this->command + "A:Con" + String(result));
     }
     else if (!sonarLevel.isDistanceLimit() && isOpen())
     {
         const int result = close();
-        Serial.println(command + "A:Res" + String(result));
+        Serial.println(this->command + "A:Res" + String(result));
     }
 }

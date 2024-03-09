@@ -1,11 +1,17 @@
 #include "ControllerWDispenser.h"
 
-ControllerWDispenser::ControllerWDispenser(byte pin, Sonares &sonar, String command, byte pinLevelWater, int limitWaterRecipient) : sonar(sonar)
+ControllerWDispenser::ControllerWDispenser(Sonares &sonar, String command, byte pinLevelWater, int limitWaterRecipient) : sonar(sonar)
 {
     command = command;
-    pin = pin;
     pinLevelWater = pinLevelWater;
     limitWaterRecipient = limitWaterRecipient;
+}
+
+void ControllerWDispenser::setup(byte pin)
+{
+    pinMode(pin, OUTPUT);
+    digitalWrite(pin, LOW);
+    pin = pin;
 }
 
 int ControllerWDispenser::open()

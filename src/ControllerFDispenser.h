@@ -17,7 +17,8 @@ private:
     String command;
 
 public:
-    ControllerFDispenser(byte pin, int openValue, int closeValue, Sonares &sonar, String command, Sonares &sonarLevel);
+    ControllerFDispenser(Sonares &sonar, String command, Sonares &sonarLevel);
+    void setup(byte pin, int openValue, int closeValue);
     int getPosition();
     int open();
     int close();
