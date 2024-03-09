@@ -2,6 +2,9 @@
 #include "ControllerDispenser.h"
 #include "ControllerTimeDispenser.h"
 #include "ControllerSonar.h"
+
+#include "ControllerWDispenser.h"
+#include "ControllerFDispenser.h"
 // Pines
 const byte pinLevelWater = A15;
 
@@ -36,7 +39,7 @@ const String COMMAND_FOOD_DISPENSER = "fd";
 const String COMMAND_WATER_LEVEL = "wdS";
 const String COMMAND_FOOD_LEVEL = "fdS";
 
-Dispensador waterDispenser;
+// Dispensador waterDispenser;
 Dispensador foodDispenser;
 
 Sonares sonarWater(pinTriggerWater, pinEchoWater, maxSonarWater, limitWaterDispenser);
@@ -44,28 +47,35 @@ Sonares sonarFood(pinTriggerFood, pinEchoFood, maxSonarFood, limitFoodDispenser)
 
 Sonares sonarFoodLevel(pinTriggerFoodLevel, pinEchoFoodLevel, maxSonarFood, limitFoodRecipient);
 
-ControllerDispenser waterDispenserController(waterDispenser, sonarWater, COMMAND_WATER_DISPENSER);
-ControllerDispenser foodDispenserController(foodDispenser, sonarFood, COMMAND_FOOD_DISPENSER);
+// ControllerDispenser waterDispenserController(waterDispenser, sonarWater, COMMAND_WATER_DISPENSER);
+// ControllerDispenser foodDispenserController(foodDispenser, sonarFood, COMMAND_FOOD_DISPENSER);
+
+ControllerWDispenser waterDispenserController(pinWaterServo, sonarWater, COMMAND_WATER_DISPENSER);
+ControllerFDispenser foodDispenserController(pinFoodServo, 180, 0, sonarFoodLevel, COMMAND_FOOD_DISPENSER);
 
 ControllerSonar sonarWaterController(sonarWater, COMMAND_WATER_LEVEL);
 ControllerSonar sonarFoodController(sonarFood, COMMAND_FOOD_LEVEL);
 
 void callbackWaterDispenser()
 {
+  /*
   if (!waterDispenser.isOpen() && !sonarWater.isDistanceLimit() && analogRead(pinLevelWater) < limitWaterRecipient)
   {
     int result = waterDispenser.open();
     Serial.println(COMMAND_TIME_OPEN_WATER_DISPENSER + "result:" + result);
   }
+  */
 }
 
 void callbackFoodDispenser()
 {
+  /*
   if (!foodDispenser.isOpen() && !sonarFood.isDistanceLimit() && sonarFoodLevel.isDistanceLimit())
   {
     int result = foodDispenser.open();
     Serial.println(COMMAND_TIME_OPEN_FOOD_DISPENSER + "result:" + result);
   }
+  */
 }
 
 ControllerTimeDispenser waterDispenserTimeController(COMMAND_TIME_OPEN_WATER_DISPENSER, defaultTimeOpenWater, 's', callbackWaterDispenser);
@@ -74,8 +84,8 @@ ControllerTimeDispenser foodDispenserTimeController(COMMAND_TIME_OPEN_FOOD_DISPE
 void setup()
 {
   Serial.begin(9600);
-  waterDispenser.setup(pinWaterServo, 90, 0);
-  foodDispenser.setup(pinFoodServo, 90, 0);
+  // waterDispenser.setup(pinWaterServo, 90, 0);
+  // foodDispenser.setup(pinFoodServo, 90, 0);
   waterDispenserTimeController.start();
   foodDispenserTimeController.start();
 }
@@ -99,6 +109,7 @@ void loop()
   waterDispenserController.closeAutomatic();
   foodDispenserController.closeAutomatic();
 
+  /*
   if (foodDispenser.isOpen() && !sonarFoodLevel.isDistanceLimit())
   {
     foodDispenser.close();
@@ -108,9 +119,10 @@ void loop()
   {
     waterDispenser.close();
   }
+  */
 
-  waterDispenserTimeController.update();
-  foodDispenserTimeController.update();
+  // waterDispenserTimeController.update();
+  // foodDispenserTimeController.update();
 
   if (Serial.available() > 0)
   {

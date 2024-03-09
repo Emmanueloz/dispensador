@@ -1,8 +1,7 @@
 #include "ControllerWDispenser.h"
 
-void ControllerWDispenser::setup(String command, byte pin, Sonares &sonar)
+ControllerWDispenser::ControllerWDispenser(byte pin, Sonares &sonar, String command) : sonar(sonar)
 {
-    sonar = sonar;
     command = command;
     pin = pin;
 }

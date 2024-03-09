@@ -7,17 +7,17 @@
 class ControllerWDispenser
 {
 private:
-    static String command;
-    static byte pin;
-    static Sonares &sonar;
+    String command;
+    byte pin;
+    Sonares &sonar;
 
 public:
-    static void setup(String command, byte pin, Sonares &sonar);
-    static int open();
-    static int close();
-    static bool isOpen();
-    static void processCommand(String value);
-    static void closeAutomatic();
+    ControllerWDispenser(byte pin, Sonares &sonar, String command);
+    int open();
+    int close();
+    bool isOpen();
+    void processCommand(String value);
+    void closeAutomatic();
 };
 
 #endif // CONTROLLER_W_DISPENSER_H

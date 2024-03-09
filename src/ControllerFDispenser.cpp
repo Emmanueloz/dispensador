@@ -1,12 +1,11 @@
 #include "ControllerFDispenser.h"
 
-void ControllerFDispenser::setup(byte pin, int openValue, int closeValue, Sonares &sonar, String command)
+ControllerFDispenser::ControllerFDispenser(byte pin, int openValue, int closeValue, Sonares &sonar, String command) : sonar(sonar)
 {
     servo.attach(pin);
     openValue = openValue;
     closeValue = closeValue;
     servo.write(closeValue);
-    sonar = sonar;
     command = command;
 }
 
