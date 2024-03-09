@@ -3,6 +3,7 @@ from dispensador_python.conexion_serial import ConnectionArduino
 from time import sleep
 from re import match
 from .vista import *
+from threading import Thread
 
 
 def validar_string(prefijo, valor):
@@ -23,6 +24,7 @@ class ControllerVista:
         self.arduino = ConnectionArduino(puerto="COM2")
         self.estado_agua = 0
         self.estado_comida = 0
+        self.hilo_lectura = Thread(target=self.leer_serial)
 
     def conectar_todo(self):
         try:
@@ -38,8 +40,52 @@ class ControllerVista:
         except Exception as e:
             print(f"Error en la conexión: {e}")
 
+    def leer_serial(self):
+        while True:
+            try:
+                mensaje = self.arduino.recibir_dato()
+                if mensaje.startswith("wdP:"):
+                    self.inicio.set_estado_agua(mensaje.split(":")[1])
+                elif mensaje.startswith("fdP:"):
+                    self.inicio.set_estado_comida(mensaje.split(":")[1])
+                elif mensaje.startswith("wdSget:"):
+                    distancia = int(mensaje.split(":")[1])
+                    if distancia > 38:
+                        self.inicio.set_contenedor_agua(
+                            "El contenedor de agua está vacío.")
+                    elif distancia < 30:
+                        self.inicio.set_contenedor_agua(
+                            "El contenedor de agua está lleno.")
+                    elif distancia < 15:
+                        self.inicio.set_contenedor_agua(
+                            "El contenedor de agua esta medio.")
+                    else:
+                        self.inicio.set_contenedor_agua(
+                            "El contenedor de agua esta lleno")
+                elif mensaje.startswith("fdSget:"):
+                    distancia = int(mensaje.split(":")[1])
+                    if distancia > 40:
+                        self.inicio.set_contenedor_comida(
+                            "El contenedor de alimento está vacío.")
+                    elif distancia < 15:
+                        self.inicio.set_contenedor_comida(
+                            "El contenedor de alimento está lleno.")
+                    else:
+                        self.inicio.set_contenedor_comida(
+                            "El contenedor de alimento esta medio.")
+                elif mensaje.startswith("wdACon:0"):
+                    self.inicio.set_contenedor_agua(
+                        "El contenedor de agua esta lleno")
+                elif mensaje.startswith("fdACon:1"):
+                    self.inicio.set_contenedor_comida(
+                        "El contenedor de alimento esta medio.")
+
+            except Exception as error:
+                print(f"Error al leer el puerto serial: {error}")
+
     def iniciar(self):
         self.conectar_todo()
+        self.hilo_lectura.start()
         self.vista.mainloop()
 
 
