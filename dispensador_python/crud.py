@@ -37,7 +37,7 @@ class Crud:
 
     def consultar_registro(self, idComponente):
         try:
-            instruccion = "SELECT * FROM Registros WHERE idComponente = %s"
+            instruccion = "SELECT * FROM registros WHERE idComponente = %s"
             consulta = self.conexion.cursor()
             consulta.execute(instruccion, (idComponente,))
             resultados = consulta.fetchall()
@@ -49,7 +49,7 @@ class Crud:
     def insertar_registro(self, idComponente, estado):
         try:
             fecha_hora = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            instruccion = "INSERT INTO Registros (idComponente, estado, fecha, hora) VALUES (%s, %s, %s, %s)"
+            instruccion = "INSERT INTO registros (idComponente, estado, fecha, hora) VALUES (%s, %s, %s, %s)"
             valores = (idComponente, estado, fecha_hora.split()
                        [0], fecha_hora.split()[1])
             consulta = self.conexion.cursor()

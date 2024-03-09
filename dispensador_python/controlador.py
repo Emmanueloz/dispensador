@@ -21,11 +21,10 @@ class Controller:
         # Especifica el puerto correcto
         self.arduino = ConnectionArduino(puerto="COM2")
 
-    def conectar_todo(self, host="localhost", user="root", passwd="tavo", database="dispensadorBD"):
+    def conectar_todo(self):
         try:
             # Conectar a la base de datos
-            self.db.conectar_BD(host=host, user=user,
-                                passwd=passwd, database=database)
+            self.db.conectar_BD(host="172.20.10.4", user="root", passwd="2004loco#with", database="dispensadorBD")
 
             # Conectar a Arduino
             self.arduino.conectar()
@@ -88,7 +87,7 @@ class Controller:
             self.arduino.enviar_dato(comando)
             sleep(2)
             respuesta_arduino = self.arduino.recibir_dato()
-            if "0" in respuesta_arduino:
+            if "90" in respuesta_arduino:
                 respuesta_db = self.db.insertar_registro(
                     idComponente="2", estado="ABIERTO")
                 return respuesta_db
@@ -107,7 +106,7 @@ class Controller:
             self.arduino.enviar_dato(comando)
             sleep(2)
             respuesta_arduino = self.arduino.recibir_dato()
-            if "90" in respuesta_arduino:
+            if "0" in respuesta_arduino:
                 respuesta_db = self.db.insertar_registro(
                     idComponente="2", estado="CERRADO")
                 return respuesta_db
@@ -116,9 +115,9 @@ class Controller:
             elif "-1" == respuesta_arduino:
                 return "El dispensador de cerrado ya está abierto."
             else:
-                return f"Error al cerrar el dispensador de alimento en el Arduino: {respuesta_arduino}"
+                return f"Esperando"
         except Exception as error:
-            return f"Error al cerrar el dispensador de alimento: {error}"
+            return f"Esperando"
 
 
     def obtener_posicion_servo_agua(self):
@@ -160,41 +159,68 @@ class Controller:
             return "Error al obtener la posición del servo de alimento."
         except Exception as error:
             return f"Error al obtener la posición del servo de alimento: {error}"
+        
+        
 
     def obtener_distancia_ultrasonico_agua(self):
         try:
-            comando = "wdR:1"
+            comando = "wdS:1"
             self.arduino.enviar_dato(comando)
             sleep(2)
             respuesta_arduino = self.arduino.recibir_dato()
 
-            if not validar_string("wdRget", respuesta_arduino):
-                return "Error al obtener la distancia con el sensor ultrasónico de agua:"
-
-            return respuesta_arduino
-        except Exception as error:
-            return f"Error al obtener la distancia con el sensor ultrasónico de agua: {error}"
-        
-        
-        ''' No funciona los comanodos, no me regresa nada  y un 0 y 90 '''
-    def obtener_distancia_ultrasonico_alimento(self):
-        try:
-            comando = "fdR:1"
-            self.arduino.enviar_dato(comando)
-            sleep(2)
-            respuesta_arduino = self.arduino.recibir_dato()
-
-            if not validar_string("fdRget", respuesta_arduino):
+            if respuesta_arduino.startswith("wdSget:"):
+                distancia = int(respuesta_arduino.split(":")[1])
+                if distancia > 38:
+                    return "porfavor el agua se esta basio."
+                elif distancia < 30:
+                    return "El contenedor de agua está lleno."
+                elif distancia < 15:
+                    return "El contenedor de agua esta medio."
+                else:
+                    return "El contenedor de agua esta lleno"
+            else:
                 print(f"Respuesta no válida: {respuesta_arduino}")
-                return "Error al obtener la distancia con el sensor ultrasónico de alimento: Respuesta no válida."
+                return "Error al obtener el estado del contenedor de agua: Respuesta no válida."
 
-            return respuesta_arduino
         except SerialException as serial_error:
             print(f"Error de comunicación serial: {str(serial_error)}")
             return f"Error de comunicación serial: {str(serial_error)}"
         except Exception as error:
             print(f"Error inesperado: {str(error)}")
             return f"Error inesperado: {str(error)}"
+        
+        
+       
+        
+        
+    def obtener_estado_contenedor_alimento(self):
+        try:
+            comando = "fdS:1"
+            self.arduino.enviar_dato(comando)
+            sleep(2)
+            respuesta_arduino = self.arduino.recibir_dato()
+
+            if respuesta_arduino.startswith("fdSget:"):
+                distancia = int(respuesta_arduino.split(":")[1])
+                if distancia > 40:
+                    return "El contenedor de alimento está vacío."
+                elif distancia < 15:
+                    return "El contenedor de alimento está lleno."
+                else:
+                    return "El contenedor de alimento esta medio."
+            else:
+                print(f"Respuesta no válida: {respuesta_arduino}")
+                return "Error al obtener el estado del contenedor de alimento: Respuesta no válida."
+
+        except SerialException as serial_error:
+            print(f"Error de comunicación serial: {str(serial_error)}")
+            return f"Error de comunicación serial: {str(serial_error)}"
+        except Exception as error:
+            print(f"Error inesperado: {str(error)}")
+            return f"Error inesperado: {str(error)}"
+        
+        
         
         
     def consultar_tarea(self, idTarea):
