@@ -78,7 +78,7 @@ void ControllerFDispenser::closeAutomatic()
 {
     if (sonar.isDistanceLimit() && isOpen())
     {
-        Serial.println(command + "A:0");
-        close();
+        const int result = close();
+        Serial.println(command + "A:" + String(result));
     }
 }

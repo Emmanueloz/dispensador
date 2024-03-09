@@ -13,7 +13,11 @@ private:
 
 public:
     static void setup(String command, byte pin, Sonares &sonar);
+    static int open();
+    static int close();
+    static bool isOpen();
     static void processCommand(String value);
+    static void closeAutomatic();
 };
 
 #endif // CONTROLLER_W_DISPENSER_H

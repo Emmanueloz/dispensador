@@ -7,43 +7,66 @@ void ControllerWDispenser::setup(String command, byte pin, Sonares &sonar)
     pin = pin;
 }
 
+int ControllerWDispenser::open()
+{
+    if (isOpen())
+    {
+        return -1;
+    }
+    else if (sonar.isDistanceLimit())
+    {
+        return -2;
+    }
+
+    digitalWrite(pin, HIGH);
+    return digitalRead(pin);
+}
+
+int ControllerWDispenser::close()
+{
+    if (!isOpen())
+    {
+        return -1;
+    }
+
+    digitalWrite(pin, LOW);
+    return digitalRead(pin);
+}
+
+bool ControllerWDispenser::isOpen()
+{
+    const int result = digitalRead(pin);
+    return result == HIGH;
+}
+
 void ControllerWDispenser::processCommand(String value)
 {
     if (value == "0")
     {
-        if (digitalRead(pin) == HIGH)
-        {
-            digitalWrite(pin, LOW);
-            Serial.println(command + "R:" + String(digitalRead(pin)));
-        }
-        else
-        {
-            Serial.println(command + "R:-1");
-        }
+        const int result = close();
+        Serial.println(command + "R:" + String(result));
     }
     else if (value == "1")
     {
-        if (digitalRead(pin) == HIGH)
-        {
-            Serial.println(command + "R:-1");
-        }
-        else if (sonar.isDistanceLimit())
-        {
-            Serial.println(command + "R:sonarLimit");
-        }
-        else
-        {
-            digitalWrite(pin, HIGH);
-            Serial.println(command + "R:" + String(digitalRead(pin)));
-        }
+        const int result = open();
+        Serial.println(command + "R:" + String(result));
     }
     else if (value == "2")
     {
-        int result = digitalRead(pin);
+        const bool result = isOpen();
         Serial.println(command + "P:" + String(result));
     }
     else
     {
         Serial.println(command + ":notFound");
+    }
+}
+
+void ControllerWDispenser::closeAutomatic()
+{
+    if (sonar.isDistanceLimit() && isOpen())
+    {
+        const int result = close();
+        Serial.println(command + "A:" + String(result));
     }
 }
