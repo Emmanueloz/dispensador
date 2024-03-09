@@ -78,11 +78,11 @@ void ControllerWDispenser::closeAutomatic()
     if (sonar.isDistanceLimit() && isOpen())
     {
         const int result = close();
-        Serial.println(command + "A:Con" + String(result));
+        Serial.println(command + "ACon:" + String(result));
     }
     else if (analogRead(this->pinLevelWater) > this->limitWaterRecipient && isOpen())
     {
         const int result = close();
-        Serial.println(command + "A:Res" + String(result));
+        Serial.println(command + "ARes:" + String(result));
     }
 }
