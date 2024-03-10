@@ -90,6 +90,7 @@ class Tiempo(Frame):
         self.labels()
         self.scales()
         self.imagenes()
+        self.buttons()
         self.selects()
 
     def labels(self):
@@ -121,6 +122,12 @@ class Tiempo(Frame):
 
         # imagen de comida
         Label(self, image=self.imagen_comida).place(x=400, y=100)
+
+    def buttons(self):
+        self.btn_enviar_agua = Button(self, width=8, text="Enviar")
+        self.btn_enviar_agua.place(x=150, y=350)
+        self.btn_enviar_comida = Button(self, width=8, text="Enviar")
+        self.btn_enviar_comida.place(x=450, y=350)
 
     def selects(self):
         self.select_agua = ttk.Combobox(self, values=["Minuto", "Segundo"])
