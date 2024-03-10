@@ -240,6 +240,9 @@ class ControllerVista:
                         self.inicio.set_estado_agua(result, "Abierto")
                         self.tiempo.set_resultado_aguaT(
                             "El dispensador se abrió")
+                        if estado_anterior_bd_agua != "ABIERTO":
+                            self.db.insertar_registro(1, "ABIERTO")
+
                     elif result == -1:
                         estado = self.inicio.var_dispensar_agua.get()
                         msg = "Abierto" if estado == 1 else "Cerrado"
@@ -251,11 +254,15 @@ class ControllerVista:
                             "El contenedor de agua esta vacío.")
                         self.tiempo.set_resultado_aguaT(
                             "No se abrió. El contenedor de agua esta vacío.")
+                        if estado_anterior_bd_agua != "CERRADO":
+                            self.db.insertar_registro(1, "CERRADO")
                     elif result == -3:
                         self.inicio.set_estado_agua(0, msg)
                         self.tiempo.set_resultado_aguaT(
                             "No se abrió. El recipiente esta lleno."
                         )
+                        if estado_anterior_bd_agua != "CERRADO":
+                            self.db.insertar_registro(1, "CERRADO")
                 elif mensaje.startswith("fdTR:"):
                     mensaje = mensaje.replace("\r", "")
                     result = mensaje.split(":")[1]
@@ -265,6 +272,8 @@ class ControllerVista:
                         self.inicio.set_estado_comida(result, "Abierto")
                         self.tiempo.set_resultado_comidaT(
                             "El dispensador se abrió")
+                        if estado_anterior_bd_alimento != "ABIERTO":
+                            self.db.insertar_registro(2, "ABIERTO")
                     elif result == -1:
                         estado = self.inicio.var_dispensar_comida.get()
                         msg = "Abierto" if estado == 1 else "Cerrado"
@@ -276,10 +285,14 @@ class ControllerVista:
                             "El contenedor de alimento esta vacío.")
                         self.tiempo.set_resultado_comidaT(
                             "No se abrió. El contenedor de alimento esta vacío.")
+                        if estado_anterior_bd_alimento != "CERRADO":
+                            self.db.insertar_registro(2, "CERRADO")
                     elif result == -3:
                         self.inicio.set_estado_comida(0, msg)
                         self.tiempo.set_resultado_comidaT(
                             "No se abrió. El recipiente esta lleno.")
+                        if estado_anterior_bd_alimento != "CERRADO":
+                            self.db.insertar_registro(2, "CERRADO")
 
             except Exception as error:
                 print(f"Error al leer el puerto serial: {error}")

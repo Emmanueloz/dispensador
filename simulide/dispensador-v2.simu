@@ -22,7 +22,7 @@ Circuit Id: Arduino Mega-1
 
 Unique  Id: Potentiometer-152: 
 Circuit Id: Potentiometer-135
-<item Value_Ohm="169" itemtype="Potentiometer" Show_id="false" valLabRot="0" Resistance="1" boardRot="-1e+06" mainComp="false" valLabely="-25" circPos="0,0" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" labelx="-16" labelrot="0" x="248" Show_res="true" objectName="Potentiometer-152" id="Potentiometer-135" labely="-40" y="-492" valLabelx="17" vflip="1" Unit=" kΩ" circRot="0"/>
+<item Value_Ohm="120" itemtype="Potentiometer" Show_id="false" valLabRot="0" Resistance="1" boardRot="-1e+06" mainComp="false" valLabely="-25" circPos="0,0" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" labelx="-16" labelrot="0" x="248" Show_res="true" objectName="Potentiometer-152" id="Potentiometer-135" labely="-40" y="-492" valLabelx="17" vflip="1" Unit=" kΩ" circRot="0"/>
 
 Unique  Id: TextComponent-151: 
 Circuit Id: TextComponent-100
@@ -42,7 +42,7 @@ Circuit Id: TextComponent-100
 
 Unique  Id: TextComponent-146: 
 Circuit Id: TextComponent-45
-<item Fixed_Width="false" itemtype="TextComponent" Show_id="false" valLabRot="0" Font_Size="10" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" hflip="1" Text="Dispensador &#xa;de agua" boardPos="-1e+06,-1e+06" rotation="0" Font="Helvetica [Cronyx]" labelx="-16" labelrot="0" x="-100" Opacity="1" objectName="TextComponent-146" id="TextComponent-45" labely="-24" y="-56" Margin="5" Border="1" valLabelx="0" vflip="1" circRot="0"/>
+<item Fixed_Width="false" itemtype="TextComponent" Show_id="false" valLabRot="0" Font_Size="10" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" hflip="1" Text="Dispensador &#xa;de agua" boardPos="-1e+06,-1e+06" rotation="0" Font="Helvetica [Cronyx]" labelx="-16" labelrot="0" x="-112" Opacity="1" objectName="TextComponent-146" id="TextComponent-45" labely="-24" y="-352" Margin="5" Border="1" valLabelx="0" vflip="1" circRot="0"/>
 
 Unique  Id: SR04-145: 
 Circuit Id: SR04-16
