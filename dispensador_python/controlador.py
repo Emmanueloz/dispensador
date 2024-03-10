@@ -34,8 +34,8 @@ class ControllerVista:
     def conectar_todo(self):
         try:
             # Conectar a la base de datos
-            self.db.conectar_BD(host="localhost", user="emmanuel",
-                                passwd="", database="dispensadorBD")
+            self.db.conectar_BD(host="localhost", user="root",
+                                passwd="123456", database="dispensadorBD", port=3308)
 
             print("Conexión exitosa a la base de datos y Arduino.")
             messagebox.showinfo(

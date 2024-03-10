@@ -5,7 +5,7 @@ from datetime import datetime
 class Crud:
     conexion = None
 
-    def conectar_BD(self, host, user, passwd, database):
+    def conectar_BD(self, host, user, passwd, database, port=3306):
         try:
             self.conexion = mysql.connector.connect(
                 host=host, user=user, password=passwd, database=database)
