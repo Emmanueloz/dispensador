@@ -14,7 +14,7 @@ Circuit Id: Node-336
 
 Unique  Id: TextComponent-190: 
 Circuit Id: TextComponent-100
-<item Fixed_Width="false" itemtype="TextComponent" Show_id="false" valLabRot="0" Font_Size="10" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" hflip="1" Text="Nivel del recipiente de agua" boardPos="-1e+06,-1e+06" rotation="0" Font="Helvetica [Cronyx]" labelx="-16" labelrot="0" x="272" Opacity="1" objectName="TextComponent-190" id="TextComponent-100" labely="-24" y="-460" Margin="5" Border="1" valLabelx="0" vflip="1" circRot="-5.486129280331905e+303"/>
+<item Fixed_Width="false" itemtype="TextComponent" Show_id="false" valLabRot="0" Font_Size="10" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" hflip="1" Text="Nivel del recipiente de agua" boardPos="-1e+06,-1e+06" rotation="0" Font="Helvetica [Cronyx]" labelx="-16" labelrot="0" x="208" Opacity="1" objectName="TextComponent-190" id="TextComponent-100" labely="-24" y="-552" Margin="5" Border="1" valLabelx="0" vflip="1" circRot="-5.486129280331905e+303"/>
 
 Unique  Id: Arduino Mega-153: 
 Circuit Id: Arduino Mega-1
@@ -26,15 +26,15 @@ Circuit Id: Potentiometer-135
 
 Unique  Id: TextComponent-151: 
 Circuit Id: TextComponent-100
-<item Fixed_Width="false" itemtype="TextComponent" Show_id="false" valLabRot="0" Font_Size="10" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" hflip="1" Text="Nivel del dispensador de alimento" boardPos="-1e+06,-1e+06" rotation="0" Font="Helvetica [Cronyx]" labelx="-16" labelrot="0" x="-916" Opacity="1" objectName="TextComponent-151" id="TextComponent-100" labely="-24" y="-660" Margin="5" Border="1" valLabelx="0" vflip="1" circRot="-5.486129280331905e+303"/>
+<item Fixed_Width="false" itemtype="TextComponent" Show_id="false" valLabRot="0" Font_Size="10" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" hflip="1" Text="Nivel del dispensador de alimento" boardPos="-1e+06,-1e+06" rotation="0" Font="Helvetica [Cronyx]" labelx="-16" labelrot="0" x="-880" Opacity="1" objectName="TextComponent-151" id="TextComponent-100" labely="-24" y="-660" Margin="5" Border="1" valLabelx="0" vflip="1" circRot="-5.486129280331905e+303"/>
 
 Unique  Id: SR04-150: 
 Circuit Id: SR04-16
-<item itemtype="SR04" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" labelx="-16" labelrot="0" x="-356" objectName="SR04-150" id="SR04-16" labely="-48" y="-540" valLabelx="0" vflip="1" circRot="0"/>
+<item itemtype="SR04" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" labelx="-16" labelrot="0" x="-284" objectName="SR04-150" id="SR04-16" labely="-48" y="-576" valLabelx="0" vflip="1" circRot="0"/>
 
 Unique  Id: SR04-149: 
 Circuit Id: SR04-16
-<item itemtype="SR04" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" labelx="-16" labelrot="0" x="-700" objectName="SR04-149" id="SR04-16" labely="-48" y="-440" valLabelx="0" vflip="1" circRot="0"/>
+<item itemtype="SR04" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" labelx="-16" labelrot="0" x="-660" objectName="SR04-149" id="SR04-16" labely="-48" y="-424" valLabelx="0" vflip="1" circRot="0"/>
 
 Unique  Id: TextComponent-148: 
 Circuit Id: TextComponent-100
@@ -42,15 +42,15 @@ Circuit Id: TextComponent-100
 
 Unique  Id: TextComponent-146: 
 Circuit Id: TextComponent-45
-<item Fixed_Width="false" itemtype="TextComponent" Show_id="false" valLabRot="0" Font_Size="10" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" hflip="1" Text="Dispensador &#xa;de agua" boardPos="-1e+06,-1e+06" rotation="0" Font="Helvetica [Cronyx]" labelx="-16" labelrot="0" x="-112" Opacity="1" objectName="TextComponent-146" id="TextComponent-45" labely="-24" y="-352" Margin="5" Border="1" valLabelx="0" vflip="1" circRot="0"/>
+<item Fixed_Width="false" itemtype="TextComponent" Show_id="false" valLabRot="0" Font_Size="10" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" hflip="1" Text="Dispensador &#xa;de agua" boardPos="-1e+06,-1e+06" rotation="0" Font="Helvetica [Cronyx]" labelx="-16" labelrot="0" x="-128" Opacity="1" objectName="TextComponent-146" id="TextComponent-45" labely="-24" y="-356" Margin="5" Border="1" valLabelx="0" vflip="1" circRot="0"/>
 
 Unique  Id: SR04-145: 
 Circuit Id: SR04-16
-<item itemtype="SR04" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" labelx="-16" labelrot="0" x="-224" objectName="SR04-145" id="SR04-16" labely="-48" y="-636" valLabelx="0" vflip="1" circRot="0"/>
+<item itemtype="SR04" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" labelx="-16" labelrot="0" x="-532" objectName="SR04-145" id="SR04-16" labely="-48" y="-540" valLabelx="0" vflip="1" circRot="0"/>
 
 Unique  Id: TextComponent-144: 
 Circuit Id: TextComponent-100
-<item Fixed_Width="false" itemtype="TextComponent" Show_id="false" valLabRot="0" Font_Size="10" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" hflip="1" Text="Nivel del recipiente de alimento" boardPos="-1e+06,-1e+06" rotation="0" Font="Helvetica [Cronyx]" labelx="-16" labelrot="0" x="-196" Opacity="1" objectName="TextComponent-144" id="TextComponent-100" labely="-24" y="-704" Margin="5" Border="1" valLabelx="0" vflip="1" circRot="-5.486129280331905e+303"/>
+<item Fixed_Width="false" itemtype="TextComponent" Show_id="false" valLabRot="0" Font_Size="10" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" hflip="1" Text="Nivel del recipiente de alimento" boardPos="-1e+06,-1e+06" rotation="0" Font="Helvetica [Cronyx]" labelx="-16" labelrot="0" x="-324" Opacity="1" objectName="TextComponent-144" id="TextComponent-100" labely="-24" y="-648" Margin="5" Border="1" valLabelx="0" vflip="1" circRot="-5.486129280331905e+303"/>
 
 Unique  Id: Voltage Source-143: 
 Circuit Id: Voltage Source-24
@@ -58,19 +58,19 @@ Circuit Id: Voltage Source-24
 
 Unique  Id: Voltage Source-141: 
 Circuit Id: Voltage Source-24
-<item itemtype="Voltage Source" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="10" circPos="0,0" Voltage="1" Show_Volt="true" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" labelx="-40" labelrot="0" x="-700" objectName="Voltage Source-141" id="Voltage Source-24" labely="-80" y="-644" valLabelx="-26" vflip="1" Unit=" V" circRot="0"/>
+<item itemtype="Voltage Source" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="10" circPos="0,0" Voltage="1" Show_Volt="true" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" labelx="-40" labelrot="0" x="-424" objectName="Voltage Source-141" id="Voltage Source-24" labely="-80" y="-664" valLabelx="-26" vflip="1" Unit=" V" circRot="0"/>
 
 Unique  Id: TextComponent-139: 
 Circuit Id: TextComponent-45
-<item Fixed_Width="false" itemtype="TextComponent" Show_id="false" valLabRot="0" Font_Size="10" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" hflip="1" Text="Dispensador &#xa;de alimento" boardPos="-1e+06,-1e+06" rotation="0" Font="Helvetica [Cronyx]" labelx="-16" labelrot="0" x="-432" Opacity="1" objectName="TextComponent-139" id="TextComponent-45" labely="-24" y="-92" Margin="5" Border="1" valLabelx="0" vflip="1" circRot="0"/>
+<item Fixed_Width="false" itemtype="TextComponent" Show_id="false" valLabRot="0" Font_Size="10" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" hflip="1" Text="Dispensador &#xa;de alimento" boardPos="-1e+06,-1e+06" rotation="0" Font="Helvetica [Cronyx]" labelx="-16" labelrot="0" x="-408" Opacity="1" objectName="TextComponent-139" id="TextComponent-45" labely="-24" y="-108" Margin="5" Border="1" valLabelx="0" vflip="1" circRot="0"/>
 
 Unique  Id: Voltage Source-138: 
 Circuit Id: Voltage Source-24
-<item itemtype="Voltage Source" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="10" circPos="0,0" Voltage="1" Show_Volt="true" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" labelx="-40" labelrot="0" x="-468" objectName="Voltage Source-138" id="Voltage Source-24" labely="-80" y="-696" valLabelx="-26" vflip="1" Unit=" V" circRot="0"/>
+<item itemtype="Voltage Source" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="10" circPos="0,0" Voltage="1" Show_Volt="true" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" labelx="-40" labelrot="0" x="-660" objectName="Voltage Source-138" id="Voltage Source-24" labely="-80" y="-656" valLabelx="-26" vflip="1" Unit=" V" circRot="0"/>
 
 Unique  Id: Servo-135: 
 Circuit Id: Servo-3
-<item itemtype="Servo" Show_id="true" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" hflip="1" boardPos="-1e+06,-1e+06" rotation="-180" Speed="0.2" labelx="-16" labelrot="0" x="-220" objectName="Servo-135" id="Servo-3" labely="-62" y="-88" valLabelx="0" vflip="1" circRot="2.3158423023773e+77"/>
+<item itemtype="Servo" Show_id="true" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" hflip="1" boardPos="-1e+06,-1e+06" rotation="-180" Speed="0.2" labelx="31" labelrot="-180" x="-248" objectName="Servo-135" id="Servo-3" labely="41" y="-104" valLabelx="0" vflip="1" circRot="2.3158423023773e+77"/>
 
 Unique  Id: SerialPort-317: 
 Circuit Id: SerialPort-317
@@ -78,39 +78,39 @@ Circuit Id: SerialPort-317
 
 Unique  Id: Connector-156: 
 Circuit Id: Connector-20
-<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="SR04-149-trigpin" enodeid="Circ_eNode-416" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="40,-168,-700,-168,-700,-392" labelx="-16" labelrot="0" x="40" objectName="Connector-156" id="Connector-20" labely="-24" y="-168" startpinid="Arduino Mega-153-PH6" valLabelx="0" vflip="1" circRot="0"/>
+<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="SR04-149-trigpin" enodeid="Circ_eNode-416" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="40,-168,-660,-168,-660,-376" labelx="-16" labelrot="0" x="40" objectName="Connector-156" id="Connector-20" labely="-24" y="-168" startpinid="Arduino Mega-153-PH6" valLabelx="0" vflip="1" circRot="0"/>
 
 Unique  Id: Connector-165: 
 Circuit Id: Connector-142
-<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="Potentiometer-152-PinM" enodeid="Circ_eNode-417" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="184,-328,184,-476,248,-476" labelx="-16" labelrot="0" x="184" objectName="Connector-165" id="Connector-142" labely="-24" y="-328" startpinid="Arduino Mega-153-PK7" valLabelx="0" vflip="1" circRot="-5.850951302637259e+307"/>
+<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="Potentiometer-152-PinM" enodeid="Circ_eNode-417" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="184,-328,248,-328,248,-476" labelx="-16" labelrot="0" x="184" objectName="Connector-165" id="Connector-142" labely="-24" y="-328" startpinid="Arduino Mega-153-PK7" valLabelx="0" vflip="1" circRot="-5.850951302637259e+307"/>
 
 Unique  Id: Connector-172: 
 Circuit Id: Connector-155
-<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="Arduino Mega-153-PH3" enodeid="Circ_eNode-418" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="-356,-492,-356,-200,40,-200" labelx="-16" labelrot="0" x="-356" objectName="Connector-172" id="Connector-155" labely="-24" y="-492" startpinid="SR04-150-trigpin" valLabelx="0" vflip="1" circRot="3.070093214754164e+257"/>
+<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="Arduino Mega-153-PH3" enodeid="Circ_eNode-418" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="-284,-528,-284,-200,40,-200" labelx="-16" labelrot="0" x="-284" objectName="Connector-172" id="Connector-155" labely="-24" y="-528" startpinid="SR04-150-trigpin" valLabelx="0" vflip="1" circRot="3.070093214754164e+257"/>
 
 Unique  Id: Connector-177: 
 Circuit Id: Connector-154
-<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="Arduino Mega-153-PH4" enodeid="Circ_eNode-419" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="-348,-492,-348,-192,40,-192" labelx="-16" labelrot="0" x="-348" objectName="Connector-177" id="Connector-154" labely="-24" y="-492" startpinid="SR04-150-outpin" valLabelx="0" vflip="1" circRot="-2.3407473789711277e+305"/>
+<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="Arduino Mega-153-PH4" enodeid="Circ_eNode-419" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="-276,-528,-276,-192,40,-192" labelx="-16" labelrot="0" x="-276" objectName="Connector-177" id="Connector-154" labely="-24" y="-528" startpinid="SR04-150-outpin" valLabelx="0" vflip="1" circRot="-2.3407473789711277e+305"/>
 
 Unique  Id: Connector-179: 
 Circuit Id: Connector-166
-<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="SR04-145-inpin" enodeid="Circ_eNode-420" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="-452,-696,-312,-696,-312,-660" labelx="-16" labelrot="0" x="-452" objectName="Connector-179" id="Connector-166" labely="-24" y="-696" startpinid="Voltage Source-138-outPin" valLabelx="0" vflip="1" circRot="0"/>
+<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="SR04-145-inpin" enodeid="Circ_eNode-420" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="-644,-656,-644,-564,-620,-564" labelx="-16" labelrot="0" x="-644" objectName="Connector-179" id="Connector-166" labely="-24" y="-656" startpinid="Voltage Source-138-outPin" valLabelx="0" vflip="1" circRot="0"/>
 
 Unique  Id: Connector-183: 
 Circuit Id: Connector-75
-<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="SR04-150-inpin" enodeid="Circ_eNode-421" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="-684,-644,-444,-644,-444,-564" labelx="-16" labelrot="0" x="-684" objectName="Connector-183" id="Connector-75" labely="-24" y="-644" startpinid="Voltage Source-141-outPin" valLabelx="0" vflip="1" circRot="0"/>
+<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="SR04-150-inpin" enodeid="Circ_eNode-421" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="-408,-664,-408,-600,-372,-600" labelx="-16" labelrot="0" x="-408" objectName="Connector-183" id="Connector-75" labely="-24" y="-664" startpinid="Voltage Source-141-outPin" valLabelx="0" vflip="1" circRot="0"/>
 
 Unique  Id: Connector-186: 
 Circuit Id: Connector-31
-<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="SR04-149-inpin" enodeid="Circ_eNode-422" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="-776,-508,-776,-464,-788,-464" labelx="-16" labelrot="0" x="-776" objectName="Connector-186" id="Connector-31" labely="-24" y="-508" startpinid="Voltage Source-143-outPin" valLabelx="0" vflip="1" circRot="-5.486129280331905e+303"/>
+<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="SR04-149-inpin" enodeid="Circ_eNode-422" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="-776,-508,-776,-448,-748,-448" labelx="-16" labelrot="0" x="-776" objectName="Connector-186" id="Connector-31" labely="-24" y="-508" startpinid="Voltage Source-143-outPin" valLabelx="0" vflip="1" circRot="-5.486129280331905e+303"/>
 
 Unique  Id: Connector-188: 
 Circuit Id: Connector-164
-<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="SR04-145-trigpin" enodeid="Circ_eNode-423" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="40,-216,-244,-216,-244,-588,-224,-588" labelx="-16" labelrot="0" x="40" objectName="Connector-188" id="Connector-164" labely="-24" y="-216" startpinid="Arduino Mega-153-PG5" valLabelx="0" vflip="1" circRot="0"/>
+<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="SR04-145-trigpin" enodeid="Circ_eNode-423" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="40,-216,-532,-216,-532,-492" labelx="-16" labelrot="0" x="40" objectName="Connector-188" id="Connector-164" labely="-24" y="-216" startpinid="Arduino Mega-153-PG5" valLabelx="0" vflip="1" circRot="0"/>
 
 Unique  Id: Connector-235: 
 Circuit Id: Connector-235
-<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="Potentiometer-152-PinA" enodeid="Circ_eNode-424" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="184,-176,184,-492,232,-492" labelx="-16" labelrot="0" x="184" objectName="Connector-235" id="Connector-235" labely="-24" y="-176" startpinid="Arduino Mega-153-GND1" valLabelx="0" vflip="1" circRot="-5.757327183306961e+307"/>
+<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="Potentiometer-152-PinA" enodeid="Circ_eNode-424" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="184,-176,200,-176,200,-492,232,-492" labelx="-16" labelrot="0" x="184" objectName="Connector-235" id="Connector-235" labely="-24" y="-176" startpinid="Arduino Mega-153-GND1" valLabelx="0" vflip="1" circRot="-5.757327183306961e+307"/>
 
 Unique  Id: Connector-337: 
 Circuit Id: Connector-337
@@ -118,7 +118,7 @@ Circuit Id: Connector-337
 
 Unique  Id: Connector-338: 
 Circuit Id: Connector-338
-<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="Servo-135-in0" enodeid="Circ_eNode-425" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="308,-168,308,72,-172,72,-172,-72" labelx="-16" labelrot="0" x="308" objectName="Connector-338" id="Connector-338" labely="-24" y="-168" startpinid="Node-336-1" valLabelx="0" vflip="1" circRot="nan"/>
+<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="Servo-135-in0" enodeid="Circ_eNode-425" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="308,-168,308,-20,-200,-20,-200,-88" labelx="-16" labelrot="0" x="308" objectName="Connector-338" id="Connector-338" labely="-24" y="-168" startpinid="Node-336-1" valLabelx="0" vflip="1" circRot="nan"/>
 
 Unique  Id: Connector-215: 
 Circuit Id: Connector-215
@@ -126,15 +126,15 @@ Circuit Id: Connector-215
 
 Unique  Id: Connector-369: 
 Circuit Id: Connector-369
-<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="SR04-145-outpin" enodeid="Circ_eNode-426" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="40,-208,-216,-208,-216,-588" labelx="-16" labelrot="0" x="40" objectName="Connector-369" id="Connector-369" labely="-24" y="-208" startpinid="Arduino Mega-153-PE3" valLabelx="0" vflip="1" circRot="-9.480022369947698e+306"/>
+<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="SR04-145-outpin" enodeid="Circ_eNode-426" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="40,-208,-524,-208,-524,-492" labelx="-16" labelrot="0" x="40" objectName="Connector-369" id="Connector-369" labely="-24" y="-208" startpinid="Arduino Mega-153-PE3" valLabelx="0" vflip="1" circRot="-9.480022369947698e+306"/>
 
 Unique  Id: Connector-374: 
 Circuit Id: Connector-374
-<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="Servo-135-in2" enodeid="Circ_eNode-427" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="40,-144,-172,-144,-172,-104" labelx="-16" labelrot="0" x="40" objectName="Connector-374" id="Connector-374" labely="-24" y="-144" startpinid="Arduino Mega-153-PB6" valLabelx="0" vflip="1" circRot="0"/>
+<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="Servo-135-in2" enodeid="Circ_eNode-427" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="40,-144,-200,-144,-200,-120" labelx="-16" labelrot="0" x="40" objectName="Connector-374" id="Connector-374" labely="-24" y="-144" startpinid="Arduino Mega-153-PB6" valLabelx="0" vflip="1" circRot="0"/>
 
 Unique  Id: Connector-218: 
 Circuit Id: Connector-218
-<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="Servo-135-in1" enodeid="Circ_eNode-428" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="40,-128,-172,-128,-172,-88" labelx="-16" labelrot="0" x="40" objectName="Connector-218" id="Connector-218" labely="-24" y="-128" startpinid="Arduino Mega-153-GND0" valLabelx="0" vflip="1" circRot="0"/>
+<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="Servo-135-in1" enodeid="Circ_eNode-428" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="40,-128,40,-104,-200,-104" labelx="-16" labelrot="0" x="40" objectName="Connector-218" id="Connector-218" labely="-24" y="-128" startpinid="Arduino Mega-153-GND0" valLabelx="0" vflip="1" circRot="0"/>
 
 Unique  Id: Connector-417: 
 Circuit Id: Connector-417
@@ -142,7 +142,7 @@ Circuit Id: Connector-417
 
 Unique  Id: Connector-21: 
 Circuit Id: Connector-21
-<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="SR04-149-outpin" enodeid="Circ_eNode-430" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="40,-160,-384,-160,-384,-404,-492,-404,-492,-392,-692,-392" labelx="-16" labelrot="0" x="40" objectName="Connector-21" id="Connector-21" labely="-24" y="-160" startpinid="Arduino Mega-153-PB4" valLabelx="0" vflip="1" circRot="-5.757327183306961e+307"/>
+<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="SR04-149-outpin" enodeid="Circ_eNode-430" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="40,-160,-652,-160,-652,-376" labelx="-16" labelrot="0" x="40" objectName="Connector-21" id="Connector-21" labely="-24" y="-160" startpinid="Arduino Mega-153-PB4" valLabelx="0" vflip="1" circRot="-5.757327183306961e+307"/>
 
 Unique  Id: Connector-438: 
 Circuit Id: Connector-438
@@ -150,6 +150,6 @@ Circuit Id: Connector-438
 
 Unique  Id: Connector-441: 
 Circuit Id: Connector-441
-<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="Arduino Mega-153-GND4" enodeid="Circ_eNode-442" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="-152,-292,-160,-292,-160,-396,176,-396,176,-352" labelx="-16" labelrot="0" x="-152" objectName="Connector-441" id="Connector-441" labely="-24" y="-292" startpinid="Resistor-415-lPin" valLabelx="0" vflip="1" circRot="0"/>
+<item itemtype="Connector" Show_id="false" valLabRot="0" boardRot="-1e+06" mainComp="false" valLabely="0" circPos="0,0" endpinid="Arduino Mega-153-GND4" enodeid="enode-441" hflip="1" boardPos="-1e+06,-1e+06" rotation="0" pointList="-152,-292,-160,-292,-160,-408,140,-408,140,-396,176,-396,176,-352" labelx="-16" labelrot="0" x="-152" objectName="Connector-441" id="Connector-441" labely="-24" y="-292" startpinid="Resistor-415-lPin" valLabelx="0" vflip="1" circRot="2.546442e-316"/>
  
 </circuit>
