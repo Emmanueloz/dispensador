@@ -2,10 +2,10 @@ from tkinter import Tk, Frame, Button, Label, Entry, StringVar, IntVar, Scale, P
 from tkinter import Tk, Frame, Label, StringVar, Listbox, Scrollbar
 import threading
 from serial import SerialException
-# from .controlador import Controller
+from .controlador import Controller
 import time
 
-"""
+
 controlador = Controller()
 
 
@@ -166,7 +166,7 @@ def monitorear_estado_contenedor_agua(etiqueta_estado):
                 text=f"Error inesperado al obtener el estado del contenedor de alimento: {str(error)}")
 
         time.sleep(14)
-"""
+
 
 miVentana = Tk()
 miVentana.title("Gustavo Alexander Medina Cifuentes")
@@ -292,7 +292,7 @@ enviar_comida = Button(tiempo, width=8, text="Enviar",).place(x=400, y=350)
 lbl_estado_comida = Label(tiempo, fg="red", font=("Courier New", 14, "bold"))
 lbl_estado_comida.place(x=200, y=450)
 
-"""
+
 conectar_todo()
 hilo_monitoreo = threading.Thread(
     target=monitorear_estado_servo, args=(lbl_estado_comidaIni,))
@@ -306,7 +306,7 @@ hilo_monitoreo_contenedor_alimento.start()
 hilo_monitoreo_contenedor_alimento = threading.Thread(
     target=monitorear_estado_contenedor_agua, args=(lbl_contene_agua,))
 hilo_monitoreo_contenedor_alimento.start()
-"""
+
 
 # Pestaña de registros en la base de datos
 lbl_titulo = Label(consulta, text="Registros")
@@ -366,7 +366,7 @@ comida.heading("Estado", text="Estado")
 comida.heading("Fecha", text="Fecha")
 comida.heading("Hora", text="Hora")
 
-"""
+
 def actualizar_tablas():
     registros_agua = controlador.consultar_registro(idComponente=1)
     registros_comida = controlador.consultar_registro(idComponente=2)
@@ -394,5 +394,5 @@ def actualizar_tablas():
 
 
 actualizar_tablas()
-"""
+
 miVentana.mainloop()

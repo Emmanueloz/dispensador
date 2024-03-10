@@ -41,8 +41,10 @@ class ControllerVista:
                 raise Exception("Error en la conexión con Arduino.")
 
             print("Conexión exitosa a la base de datos y Arduino.")
+            messagebox.showinfo(
+                "Conexión exitosa", "Conexión exitosa a la base de datos y Arduino.")
         except Exception as e:
-            print(f"Error en la conexión: {e}")
+            messagebox.showerror("Error", f"Error al conectar: {e}")
 
     def finalizar(self):
         self.corriendo = False
