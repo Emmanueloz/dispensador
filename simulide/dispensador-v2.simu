@@ -76,10 +76,6 @@ Unique  Id: SerialPort-317:
 Circuit Id: SerialPort-317
 <item itemtype="SerialPort" boardPos="-1e+06,-1e+06" valLabely="0" mainComp="false" id="SerialPort-317" FlowControl="0" Show_id="false" Parity="0" circPos="0,0" labelx="-34" Auto_Open="false" circRot="0" Mcu_Id="Arduino Mega-153" StopBits="1" boardRot="-1e+06" valLabelx="0" objectName="SerialPort-317" vflip="1" Mcu_Uart="1" rotation="0" valLabRot="0" y="-544" hflip="1" DataBits="8" BaudRate="9600" labely="-20" labelrot="0" x="-20" Port_Name="COM1"/>
 
-Unique  Id: SerialTerm-447: 
-Circuit Id: SerialTerm-447
-<item itemtype="SerialTerm" boardPos="-1e+06,-1e+06" valLabely="0" mainComp="false" id="SerialTerm-447" posy="457" Show_id="false" sizey="267" sizex="862" posx="1518" circPos="0,0" labelx="-16" circRot="0" Mcu_Id="Arduino Mega-153" boardRot="-1e+06" valLabelx="0" objectName="SerialTerm-447" vflip="1" Mcu_Uart="1" rotation="0" valLabRot="0" y="-368" hflip="1" labely="-24" labelrot="0" x="32"/>
-
 Unique  Id: Connector-156: 
 Circuit Id: Connector-20
 <item itemtype="Connector" boardPos="-1e+06,-1e+06" valLabely="0" startpinid="Arduino Mega-153-PH6" mainComp="false" id="Connector-20" Show_id="false" enodeid="Circ_eNode-416" endpinid="SR04-149-trigpin" circPos="0,0" labelx="-16" circRot="0" boardRot="-1e+06" pointList="40,-168,-700,-168,-700,-392" valLabelx="0" objectName="Connector-156" vflip="1" rotation="0" valLabRot="0" y="-168" hflip="1" labely="-24" labelrot="0" x="40"/>

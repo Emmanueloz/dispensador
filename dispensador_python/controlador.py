@@ -22,7 +22,7 @@ class ControllerVista:
         self.inicio: Inicio = self.vista.inicio
         self.tiempo: Tiempo = self.vista.tiempo
         self.db = Crud()
-        self.arduino = ConnectionArduino(puerto="COM2")
+        self.arduino = ConnectionArduino(puerto="COM9")
         self.estado_agua = 0
         self.estado_comida = 0
         self.hilo_lectura = Thread(target=self.leer_serial)
@@ -193,6 +193,18 @@ class ControllerVista:
                     msg = "Intervalo:"+result
                     self.tiempo.set_estado_comidaT(
                         int(result.strip("mhs")), result[-1], msg)
+                elif mensaje.startswith("wdTR:"):
+                    mensaje = mensaje.split(":")[1]
+                    result = int(mensaje)
+                    msg = self.procesar_resultado(result)
+                    self.inicio.set_estado_agua(result, msg)
+
+                    if result == -2:
+                        self.inicio.set_contenedor_agua(
+                            "El contenedor de agua esta vacío.")
+                    elif result == 1 or result == 0:
+                        self.inicio.set_contenedor_agua(
+                            "El contenedor de agua esta lleno")
 
             except Exception as error:
                 print(f"Error al leer el puerto serial: {error}")

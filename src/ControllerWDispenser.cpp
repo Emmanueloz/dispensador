@@ -10,7 +10,7 @@ ControllerWDispenser::ControllerWDispenser(Sonares &sonar, String command, byte 
 void ControllerWDispenser::setup(byte pin)
 {
     pinMode(pin, OUTPUT);
-    digitalWrite(pin, LOW);
+    digitalWrite(pin, HIGH);
     this->pin = pin;
 }
 
@@ -29,8 +29,8 @@ int ControllerWDispenser::open()
         return -3;
     }
 
-    digitalWrite(this->pin, HIGH);
-    return digitalRead(this->pin);
+    digitalWrite(this->pin, LOW);
+    return 1 ? digitalRead(this->pin) == LOW : 0;
 }
 
 int ControllerWDispenser::close()
@@ -40,14 +40,14 @@ int ControllerWDispenser::close()
         return -1;
     }
 
-    digitalWrite(this->pin, LOW);
-    return digitalRead(this->pin);
+    digitalWrite(this->pin, HIGH);
+    return 0 ? digitalRead(this->pin) == HIGH : 1;
 }
 
 bool ControllerWDispenser::isOpen()
 {
     const int result = digitalRead(this->pin);
-    return result == HIGH;
+    return result == LOW;
 }
 
 void ControllerWDispenser::processCommand(String value)

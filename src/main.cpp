@@ -25,10 +25,10 @@ const int maxSonarFood = 400;
 
 const int limitWaterRecipient = 350;
 
-const int limitWaterDispenser = 40;
+const int limitWaterDispenser = 20;
 
-const int limitFoodRecipient = 40;
-const int limitFoodDispenser = 40;
+const int limitFoodRecipient = 5;
+const int limitFoodDispenser = 25;
 
 // Constantes de tiempos por defecto
 const long defaultTimeOpenWater = 3600000;
