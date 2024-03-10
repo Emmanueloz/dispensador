@@ -67,6 +67,12 @@ ControllerTimeDispenser::ControllerTimeDispenser(String command, unsigned long t
     this->typeTime = typeTime;
 }
 
+String ControllerTimeDispenser::getTimer()
+{
+
+    return String(this->convertMillisToTime()) + this->typeTime;
+}
+
 void ControllerTimeDispenser::start()
 {
     this->ticker->start();
@@ -92,7 +98,7 @@ void ControllerTimeDispenser::processCommand(String value)
     }
     else if (value == "2")
     {
-        Serial.println(this->command + "get:" + this->convertMillisToTime() + this->typeTime);
+        Serial.println(this->command + "get:" + this->getTimer());
     }
     else
     {

@@ -20,6 +20,7 @@ private:
 
 public:
     ControllerTimeDispenser(String command, unsigned long timeOpen, char typeTime, void (*callback)());
+    String getTimer();
     void start();
     void update();
     void processCommand(String value);

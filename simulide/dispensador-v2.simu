@@ -78,7 +78,7 @@ Circuit Id: SerialPort-317
 
 Unique  Id: SerialTerm-447: 
 Circuit Id: SerialTerm-447
-<item itemtype="SerialTerm" boardPos="-1e+06,-1e+06" valLabely="0" mainComp="false" id="SerialTerm-447" posy="737" Show_id="false" sizey="267" sizex="640" posx="1535" circPos="0,0" labelx="-16" circRot="0" Mcu_Id="Arduino Mega-153" boardRot="-1e+06" valLabelx="0" objectName="SerialTerm-447" vflip="1" Mcu_Uart="1" rotation="0" valLabRot="0" y="-368" hflip="1" labely="-24" labelrot="0" x="32"/>
+<item itemtype="SerialTerm" boardPos="-1e+06,-1e+06" valLabely="0" mainComp="false" id="SerialTerm-447" posy="737" Show_id="false" sizey="267" sizex="862" posx="1313" circPos="0,0" labelx="-16" circRot="0" Mcu_Id="Arduino Mega-153" boardRot="-1e+06" valLabelx="0" objectName="SerialTerm-447" vflip="1" Mcu_Uart="1" rotation="0" valLabRot="0" y="-368" hflip="1" labely="-24" labelrot="0" x="32"/>
 
 Unique  Id: Connector-156: 
 Circuit Id: Connector-20

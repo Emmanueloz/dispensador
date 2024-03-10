@@ -31,8 +31,8 @@ const int limitFoodRecipient = 40;
 const int limitFoodDispenser = 40;
 
 // Constantes de tiempos por defecto
-const long defaultTimeOpenWater = 8000;
-const long defaultTimeOpenFood = 8000;
+const long defaultTimeOpenWater = 5400000;
+const long defaultTimeOpenFood = 5400000;
 
 // Constantes de comandos
 const String COMMAND_TIME_OPEN_WATER_DISPENSER = "wdT";
@@ -41,6 +41,8 @@ const String COMMAND_WATER_DISPENSER = "wd";
 const String COMMAND_FOOD_DISPENSER = "fd";
 const String COMMAND_WATER_LEVEL = "wdS";
 const String COMMAND_FOOD_LEVEL = "fdS";
+
+const String COMMAND_ALL_STATUS = "all";
 
 Sonares sonarWater(pinTriggerWater, pinEchoWater, maxSonarWater, limitWaterDispenser);
 Sonares sonarFood(pinTriggerFood, pinEchoFood, maxSonarFood, limitFoodDispenser);
@@ -67,8 +69,8 @@ void callbackFoodDispenser()
   Serial.println(COMMAND_TIME_OPEN_FOOD_DISPENSER + "R:" + String(result));
 }
 
-ControllerTimeDispenser waterDispenserTimeController(COMMAND_TIME_OPEN_WATER_DISPENSER, defaultTimeOpenWater, 's', callbackWaterDispenser);
-ControllerTimeDispenser foodDispenserTimeController(COMMAND_TIME_OPEN_FOOD_DISPENSER, defaultTimeOpenFood, 's', callbackFoodDispenser);
+ControllerTimeDispenser waterDispenserTimeController(COMMAND_TIME_OPEN_WATER_DISPENSER, defaultTimeOpenWater, 'm', callbackWaterDispenser);
+ControllerTimeDispenser foodDispenserTimeController(COMMAND_TIME_OPEN_FOOD_DISPENSER, defaultTimeOpenFood, 'm', callbackFoodDispenser);
 
 void setup()
 {
@@ -131,6 +133,18 @@ void loop()
     else if (command == COMMAND_FOOD_LEVEL)
     {
       sonarFoodController.processCommand(value);
+    }
+    else if (command == COMMAND_ALL_STATUS)
+    {
+      const String estadoWD = COMMAND_WATER_DISPENSER + "P:" + String(waterDispenserController.isOpen());
+      const String estadoFD = COMMAND_FOOD_DISPENSER + "P:" + String(foodDispenserController.isOpen());
+      const String estadoWL = COMMAND_WATER_LEVEL + "Is:" + String(sonarWater.isDistanceLimit());
+      const String estadoFL = COMMAND_FOOD_LEVEL + "Is:" + String(sonarFood.isDistanceLimit());
+
+      const String estadoWTD = COMMAND_TIME_OPEN_WATER_DISPENSER + "get:" + String(waterDispenserTimeController.getTimer());
+      const String estadoFTD = COMMAND_TIME_OPEN_FOOD_DISPENSER + "get:" + String(foodDispenserTimeController.getTimer());
+
+      Serial.println(estadoWD + "," + estadoFD + "," + estadoWL + "," + estadoFL + "," + estadoWTD + "," + estadoFTD);
     }
   }
 }
