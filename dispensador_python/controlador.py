@@ -81,6 +81,26 @@ class ControllerVista:
         else:
             return "Error"
 
+    def enviar_tiempo_agua(self):
+        try:
+            tiempo = self.tiempo.tiempo_agua_var.get()
+            unidad = self.tiempo.select_agua.get()
+            self.arduino.enviar_dato(f"wdT:{tiempo}{unidad}")
+        except Exception as e:
+            print(f"Error al enviar el tiempo de agua: {e}")
+
+    def enviar_tiempo_comida(self):
+        try:
+            tiempo = self.tiempo.tiempo_comida_var.get()
+            unidad = self.tiempo.select_comida.get()
+            self.arduino.enviar_dato(f"fdT:{tiempo}{unidad}")
+        except Exception as e:
+            print(f"Error al enviar el tiempo de comida: {e}")
+
+    def activar_botones(self):
+        self.tiempo.btn_enviar_agua.config(command=self.enviar_tiempo_agua)
+        self.tiempo.btn_enviar_comida.config(command=self.enviar_tiempo_comida)
+
     def iniciar_estados(self):
         try:
             self.arduino.enviar_dato("all:1")
@@ -158,6 +178,17 @@ class ControllerVista:
                 elif mensaje.startswith("fdARes:0"):
                     self.inicio.set_estado_comida(
                         0, "El recipiente esta lleno.")
+
+                elif mensaje.startswith("wdTset:"):
+                    result = mensaje.split(":")[1]
+                    msg = "Intervalo:"+result
+                    self.tiempo.set_estado_aguaT(
+                        int(result.strip("mhs")), result[-1], msg)
+                elif mensaje.startswith("fdTset:"):
+                    result = mensaje.split(":")[1]
+                    msg = "Intervalo:"+result
+                    self.tiempo.set_estado_comidaT(
+                        int(result.strip("mhs")), result[-1], msg)
 
             except Exception as error:
                 print(f"Error al leer el puerto serial: {error}")
