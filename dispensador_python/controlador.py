@@ -20,6 +20,7 @@ class ControllerVista:
     def __init__(self, vista) -> None:
         self.vista: Ventana = vista
         self.inicio: Inicio = self.vista.inicio
+        self.tiempo: Tiempo = self.vista.tiempo
         self.db = Crud()
         self.arduino = ConnectionArduino(puerto="COM2")
         self.estado_agua = 0
@@ -103,6 +104,13 @@ class ControllerVista:
                 result[3]) == 0 else "El contenedor de alimento esta vacío."
             self.inicio.set_contenedor_agua(msg_contenedor_agua)
             self.inicio.set_contenedor_comida(msg_contenedor_alimento)
+
+            msgT_agua = "Intervalo:"+result[4]
+            self.tiempo.set_estado_aguaT(
+                int(result[4].strip("mhs")), result[4][-1], msgT_agua)
+
+            self.tiempo.set_estado_comidaT(
+                int(result[5].strip("mhs")), result[5][-1], "Intervalo:"+result[5])
 
             print(result)
 

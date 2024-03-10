@@ -97,23 +97,17 @@ class Tiempo(Frame):
             self, fg="blue", font=("Courier New", 14, "bold"))
         self.lbl_estado_aguaT.place(x=90, y=70)
 
-        self.lbl_estado_aguaT.config(text="Hola mundo")
-
         self.lbl_estado_comidaT = Label(
             self, fg="green", font=("Courier New", 14, "bold"))
         self.lbl_estado_comidaT.place(x=400, y=70)
 
-        self.lbl_estado_comidaT.config(text="Hola mundo2")
-
         self.lbl_resultado_aguaT = Label(
             self, fg="blue", font=("Courier New", 14, "bold"))
         self.lbl_resultado_aguaT.place(x=90, y=450)
-        self.lbl_resultado_aguaT.config(text="Hola mundo3")
 
         self.lbl_resultado_comidaT = Label(
             self, fg="green", font=("Courier New", 14, "bold"))
         self.lbl_resultado_comidaT.place(x=400, y=450)
-        self.lbl_resultado_comidaT.config(text="Hola mundo4")
 
     def scales(self):
         Scale(self,  from_=0, to=60, orient="vertical", tickinterval=30,
@@ -136,6 +130,24 @@ class Tiempo(Frame):
         self.select_comida = ttk.Combobox(self, values=["Minuto", "Segundo"])
         self.select_comida.set("Minuto")
         self.select_comida.place(x=400, y=400)
+
+    def set_estado_aguaT(self, tiempo, unidad, msg):
+        self.tiempo_agua_var.set(tiempo)
+        unidad = "Minuto" if unidad == "m" else "Segundo"
+        self.select_agua.set(unidad)
+        self.lbl_estado_aguaT.config(text=msg)
+
+    def set_estado_comidaT(self, tiempo, unidad, msg):
+        self.tiempo_comida_var.set(tiempo)
+        unidad = "Minuto" if unidad == "m" else "Segundo"
+        self.select_comida.set(unidad)
+        self.lbl_estado_comidaT.config(text=msg)
+
+    def set_resultado_aguaT(self, msg):
+        self.lbl_resultado_aguaT.config(text=msg)
+
+    def set_resultado_comidaT(self, msg):
+        self.lbl_resultado_comidaT.config(text=msg)
 
 
 class Registro(Frame):
