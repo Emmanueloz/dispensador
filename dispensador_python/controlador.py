@@ -143,25 +143,52 @@ class ControllerVista:
         while self.corriendo:
             try:
                 mensaje = self.arduino.recibir_dato()
+                registro_anterior_agua = self.db.consultar_ultimo_registro(1)[
+                    0]
+                registro_anterior_alimento = self.db.consultar_ultimo_registro(2)[
+                    0]
+
+                if isinstance(registro_anterior_agua, str):
+                    registro_anterior_agua = ("", "", "", "", "")
+                estado_anterior_bd_agua = registro_anterior_agua[2]
+
+                if isinstance(registro_anterior_alimento, str):
+                    registro_anterior_alimento = ("", "", "", "", "")
+                estado_anterior_bd_alimento = registro_anterior_alimento[2]
+
+                # print(estado_anterior_bd_agua, estado_anterior_bd_alimento)
+
                 if mensaje.startswith("wdP:") or mensaje.startswith("wdR:"):
                     result = int(mensaje.split(":")[1])
                     msg = self.procesar_resultado(result)
+
                     self.inicio.set_estado_agua(result, msg)
+
                     if result == -2:
                         self.inicio.set_contenedor_agua(
                             "El contenedor de agua esta vacío.")
                     elif result == 1 or result == 0:
+                        estado_actual = "ABIERTO" if result == 1 else "CERRADO"
+                        if estado_anterior_bd_agua != estado_actual:
+                            self.db.insertar_registro(1, estado_actual)
                         self.inicio.set_contenedor_agua(
                             "El contenedor de agua esta lleno")
 
                 elif mensaje.startswith("fdP:") or mensaje.startswith("fdR:"):
                     result = int(mensaje.split(":")[1])
                     msg = self.procesar_resultado(result)
+
                     self.inicio.set_estado_comida(result, msg)
+
                     if result == -2:
                         self.inicio.set_contenedor_comida(
                             "El contenedor de alimento esta vació.")
                     elif result == 1 or result == 0:
+                        estado_actual = "ABIERTO" if result == 1 else "CERRADO"
+                        print(estado_anterior_bd_alimento, estado_actual)
+                        if estado_anterior_bd_alimento != estado_actual:
+                            self.db.insertar_registro(2, estado_actual)
+
                         self.inicio.set_contenedor_comida(
                             "El contenedor de alimento esta lleno")
                 elif mensaje.startswith("wdACon:0"):
@@ -169,17 +196,28 @@ class ControllerVista:
                     self.inicio.set_contenedor_agua(
                         "El contenedor de agua esta vacío.")
                     self.inicio.set_estado_agua(0, "Cerrado")
+                    if estado_anterior_bd_agua != "CERRADO":
+                        self.db.insertar_registro(1, "CERRADO")
+
                 elif mensaje.startswith("fdACon:0"):
                     self.inicio.set_contenedor_comida(
                         "El contenedor de alimento esta vació.")
                     self.inicio.set_estado_comida(0, "Cerrado")
+                    if estado_anterior_bd_alimento != "CERRADO":
+                        self.db.insertar_registro(2, "CERRADO")
 
                 elif mensaje.startswith("wdARes:0"):
                     self.inicio.set_estado_agua(
                         0, "El recipiente esta lleno.")
+
+                    if estado_anterior_bd_agua != "CERRADO":
+                        self.db.insertar_registro(1, "CERRADO")
                 elif mensaje.startswith("fdARes:0"):
                     self.inicio.set_estado_comida(
                         0, "El recipiente esta lleno.")
+
+                    if estado_anterior_bd_alimento != "CERRADO":
+                        self.db.insertar_registro(2, "CERRADO")
 
                 elif mensaje.startswith("wdTset:"):
                     mensaje = mensaje.replace("\r", "")

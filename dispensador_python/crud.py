@@ -42,7 +42,18 @@ class Crud:
             consulta.execute(instruccion, (idComponente,))
             resultados = consulta.fetchall()
             consulta.close()
-            return resultados if resultados else [("No se encontraron resultados.",)]
+            return resultados, None if resultados else None, "No se encontraron resultados."
+        except mysql.connector.Error as error:
+            raise RuntimeError(f"Error al consultar la base de datos: {error}")
+
+    def consultar_ultimo_registro(self, idComponente):
+        try:
+            instruccion = "SELECT * FROM registros WHERE idComponente = %s ORDER BY idRegistro DESC LIMIT 1"
+            consulta = self.conexion.cursor()
+            consulta.execute(instruccion, (idComponente,))
+            resultados = consulta.fetchall()
+            consulta.close()
+            return resultados if resultados else ["No se encontraron resultados."]
         except mysql.connector.Error as error:
             raise RuntimeError(f"Error al consultar la base de datos: {error}")
 
