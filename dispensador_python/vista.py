@@ -4,13 +4,14 @@ import threading
 
 
 class Inicio(Frame):
-    def __init__(self, master=None):
+    def __init__(self, master=None, imagen_agua=None, imagen_comida=None):
         super().__init__(master)
         self.master = master
         self.pack()
         self.var_dispensar_agua = IntVar()
         self.var_dispensar_comida = IntVar()
-
+        self.imagen_agua = imagen_agua
+        self.imagen_comida = imagen_comida
         self.interfaz()
 
     def interfaz(self):
@@ -42,15 +43,11 @@ class Inicio(Frame):
         self.lb_estado_con_alimento.place(x=30, y=480)
 
     def imagenes(self):
-        self.imagen_agua = PhotoImage(file="imagen/agua.png")
-        self.imagen_comida = PhotoImage(file="imagen/comida.png")
         # imagen de agua
-        self.im_agua = Label(self, image=self.imagen_agua)
-        self.im_agua.place(x=70, y=100)
+        Label(self, image=self.imagen_agua).place(x=70, y=100)
 
         # imagen de comida
-        self.im_comida = Label(self, image=self.imagen_comida)
-        self.im_comida.place(x=370, y=100)
+        Label(self, image=self.imagen_comida).place(x=370, y=100)
 
     def mis_checkbox(self):
         self.check_agua = Checkbutton(
@@ -77,16 +74,68 @@ class Inicio(Frame):
 
 
 class Tiempo(Frame):
-    def __init__(self, master=None):
+    def __init__(self, master=None, imagen_agua=None, imagen_comida=None):
         super().__init__(master)
         self.master = master
         self.pack()
+        self.tiempo_agua_var = IntVar()
+        self.tiempo_comida_var = IntVar()
+        self.imagen_agua = imagen_agua
+        self.imagen_comida = imagen_comida
+
         self.interfaz()
 
     def interfaz(self):
-        self.label = Label(
-            self, text="..:: Configurar Tiempo ::..")
-        self.label.pack(pady=10)
+        Label(self, text="..:: Tiempo para dispensar ::..").place(x=300, y=10)
+        self.labels()
+        self.scales()
+        self.imagenes()
+        self.selects()
+
+    def labels(self):
+        self.lbl_estado_aguaT = Label(
+            self, fg="blue", font=("Courier New", 14, "bold"))
+        self.lbl_estado_aguaT.place(x=90, y=70)
+
+        self.lbl_estado_aguaT.config(text="Hola mundo")
+
+        self.lbl_estado_comidaT = Label(
+            self, fg="green", font=("Courier New", 14, "bold"))
+        self.lbl_estado_comidaT.place(x=400, y=70)
+
+        self.lbl_estado_comidaT.config(text="Hola mundo2")
+
+        self.lbl_resultado_aguaT = Label(
+            self, fg="blue", font=("Courier New", 14, "bold"))
+        self.lbl_resultado_aguaT.place(x=90, y=450)
+        self.lbl_resultado_aguaT.config(text="Hola mundo3")
+
+        self.lbl_resultado_comidaT = Label(
+            self, fg="green", font=("Courier New", 14, "bold"))
+        self.lbl_resultado_comidaT.place(x=400, y=450)
+        self.lbl_resultado_comidaT.config(text="Hola mundo4")
+
+    def scales(self):
+        Scale(self,  from_=0, to=60, orient="vertical", tickinterval=30,
+              length=400, variable=self.tiempo_agua_var).place(x=10, y=10)
+        Scale(self, from_=0, to=60, orient="vertical", tickinterval=30, length=400,
+              variable=self.tiempo_comida_var).place(x=720, y=10)
+
+    def imagenes(self):
+        # imagen de agua
+        Label(self, image=self.imagen_agua).place(x=90, y=100)
+
+        # imagen de comida
+        Label(self, image=self.imagen_comida).place(x=400, y=100)
+
+    def selects(self):
+        self.select_agua = ttk.Combobox(self, values=["Minuto", "Segundo"])
+        self.select_agua.set("Minuto")
+        self.select_agua.place(x=90, y=400)
+
+        self.select_comida = ttk.Combobox(self, values=["Minuto", "Segundo"])
+        self.select_comida.set("Minuto")
+        self.select_comida.place(x=400, y=400)
 
 
 class Registro(Frame):
@@ -108,13 +157,15 @@ class Ventana(Tk):
         self.title("Dispensador de Medicamentos")
         self.geometry("800x600")
         self.resizable(0, 0)
+        self.imagen_agua = PhotoImage(file="imagen/agua.png")
+        self.imagen_comida = PhotoImage(file="imagen/comida.png")
         self.taps()
 
     def taps(self):
         self.taps = ttk.Notebook(self)
         self.taps.pack(fill='both', expand=True)
-        self.inicio = Inicio(self.taps)
-        self.tiempo = Tiempo(self.taps)
+        self.inicio = Inicio(self.taps, self.imagen_agua, self.imagen_comida)
+        self.tiempo = Tiempo(self.taps, self.imagen_agua, self.imagen_comida)
         self.registro = Registro(self.taps)
         self.taps.add(self.inicio, text="Inicio")
         self.taps.add(self.tiempo, text="Tiempo")
