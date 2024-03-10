@@ -30,7 +30,7 @@ int ControllerWDispenser::open()
     }
 
     digitalWrite(this->pin, LOW);
-    return 1 ? digitalRead(this->pin) == LOW : 0;
+    return digitalRead(this->pin) == LOW ? 1 : 0;
 }
 
 int ControllerWDispenser::close()
@@ -41,7 +41,7 @@ int ControllerWDispenser::close()
     }
 
     digitalWrite(this->pin, HIGH);
-    return 0 ? digitalRead(this->pin) == HIGH : 1;
+    return digitalRead(this->pin) == HIGH ? 0 : 1;
 }
 
 bool ControllerWDispenser::isOpen()

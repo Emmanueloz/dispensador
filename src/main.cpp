@@ -27,7 +27,7 @@ const int limitWaterRecipient = 350;
 
 const int limitWaterDispenser = 20;
 
-const int limitFoodRecipient = 5;
+const int limitFoodRecipient = 1;
 const int limitFoodDispenser = 25;
 
 // Constantes de tiempos por defecto
