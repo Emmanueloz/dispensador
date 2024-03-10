@@ -32,7 +32,7 @@ class Crud:
                     \t{horaRegistro}\t{tiempo}\t{unidadtiempo}\n"""
             consulta.close()
             return resultado if resultado else "No se encontraron resultados."
-        except mysql.connector.Error as error:
+        except Exception as error:
             raise RuntimeError(f"Error al consultar la base de datos: {error}")
 
     def consultar_registro(self, idComponente):
@@ -45,7 +45,7 @@ class Crud:
             if resultados:
                 return resultados, None
             return None, "No se encontraron resultados."
-        except mysql.connector.Error as error:
+        except Exception as error:
             return None, "Error al consultar la base de datos: {error}"
 
     def consultar_ultimo_registro(self, idComponente):
@@ -55,9 +55,11 @@ class Crud:
             consulta.execute(instruccion, (idComponente,))
             resultados = consulta.fetchall()
             consulta.close()
-            return resultados if resultados else ["No se encontraron resultados."]
-        except mysql.connector.Error as error:
-            raise RuntimeError(f"Error al consultar la base de datos: {error}")
+            if resultados:
+                return resultados, None
+            return None, "No se encontraron resultados."
+        except Exception as error:
+            return None, f"Error al consultar la base de datos: {error}"
 
     def insertar_registro(self, idComponente, estado):
         try:
@@ -69,9 +71,9 @@ class Crud:
             consulta.execute(instruccion, valores)
             self.conexion.commit()
             consulta.close()
-            return "Registro insertado correctamente."
-        except mysql.connector.Error as error:
-            raise RuntimeError(f"Error al insertar en la tabla: {error}")
+            return "Registro insertado correctamente.", None
+        except Exception as error:
+            return None, f"Error al insertar en la tabla: {error}"
 
     def insertar_tarea(self, idComponente, tipo, tiempo, unidadtiempo):
         try:

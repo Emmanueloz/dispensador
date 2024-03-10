@@ -29,6 +29,7 @@ class ControllerVista:
         self.hilo_lectura = Thread(target=self.leer_serial)
         self.vista.protocol("WM_DELETE_WINDOW", self.finalizar)
         self.corriendo = True
+        self.error_bd = False
 
     def conectar_todo(self):
         try:
@@ -36,13 +37,17 @@ class ControllerVista:
             self.db.conectar_BD(host="localhost", user="emmanuel",
                                 passwd="", database="dispensadorBD")
 
-            # Conectar a Arduino
-            if self.arduino.conectar() is not None:
-                raise Exception("Error en la conexión con Arduino.")
-
             print("Conexión exitosa a la base de datos y Arduino.")
             messagebox.showinfo(
                 "Conexión exitosa", "Conexión exitosa a la base de datos y Arduino.")
+        except Exception as e:
+            self.error_bd = True
+            messagebox.showerror("Error", f"Error al conectar: {e}")
+
+        try:
+            if self.arduino.conectar() is not None:
+                raise Exception("Error en la conexión con Arduino.")
+
         except Exception as e:
             messagebox.showerror("Error", f"Error al conectar: {e}")
 
@@ -147,18 +152,20 @@ class ControllerVista:
         while self.corriendo:
             try:
                 mensaje = self.arduino.recibir_dato()
-                registro_anterior_agua = self.db.consultar_ultimo_registro(1)[
-                    0]
-                registro_anterior_alimento = self.db.consultar_ultimo_registro(2)[
-                    0]
+                registro_anterior_agua, error_ag = self.db.consultar_ultimo_registro(
+                    1)
+                registro_anterior_alimento, error_al = self.db.consultar_ultimo_registro(
+                    2)
 
-                if isinstance(registro_anterior_agua, str):
-                    registro_anterior_agua = ("", "", "", "", "")
-                estado_anterior_bd_agua = registro_anterior_agua[2]
+                if error_ag is not None:
+                    registro_anterior_agua = [("", "", "", "", "")]
 
-                if isinstance(registro_anterior_alimento, str):
-                    registro_anterior_alimento = ("", "", "", "", "")
-                estado_anterior_bd_alimento = registro_anterior_alimento[2]
+                estado_anterior_bd_agua = registro_anterior_agua[0][2]
+
+                if error_al is not None:
+                    registro_anterior_alimento = [("", "", "", "", "")]
+
+                estado_anterior_bd_alimento = registro_anterior_alimento[0][2]
 
                 if mensaje.startswith("wdP:") or mensaje.startswith("wdR:"):
                     result = int(mensaje.split(":")[1])
