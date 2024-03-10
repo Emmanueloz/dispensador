@@ -133,6 +133,15 @@ class ControllerVista:
                         "El contenedor de alimento esta vació.")
                     self.inicio.set_estado_comida(0, "Cerrado")
 
+                elif mensaje.startswith("wdARes:0"):
+                    self.inicio.set_contenedor_agua(
+                        "El recipiente de agua esta lleno.")
+                    self.inicio.set_estado_agua(0, "Cerrado")
+                elif mensaje.startswith("fdARes:0"):
+                    self.inicio.set_contenedor_comida(
+                        "El recipiente de alimento esta lleno.")
+                    self.inicio.set_estado_comida(0, "Cerrado")
+
             except Exception as error:
                 print(f"Error al leer el puerto serial: {error}")
 
