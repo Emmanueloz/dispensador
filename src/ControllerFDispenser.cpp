@@ -76,6 +76,12 @@ void ControllerFDispenser::processCommand(String value)
         int result = getPosition();
         Serial.println(this->command + "P:" + String(result));
     }
+    else if (value == "3")
+    {
+        int result = this->sonarLevel.getDistance();
+        Serial.println(this->command + "L:" + String(result));
+    }
+
     else
     {
         Serial.println(this->command + ":notFound");

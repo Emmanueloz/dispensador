@@ -67,6 +67,11 @@ void ControllerWDispenser::processCommand(String value)
         const bool result = isOpen();
         Serial.println(command + "P:" + String(result));
     }
+    else if (value == "3")
+    {
+        const int result = analogRead(this->pinLevelWater);
+        Serial.println(command + "L:" + String(result));
+    }
     else
     {
         Serial.println(command + ":notFound");
