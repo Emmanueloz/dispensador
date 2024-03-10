@@ -104,7 +104,7 @@ class Tiempo(Frame):
 
         self.lbl_resultado_aguaT = Label(
             self, fg="blue", font=("Courier New", 14, "bold"))
-        self.lbl_resultado_aguaT.place(x=90, y=450)
+        self.lbl_resultado_aguaT.place(x=20, y=450)
 
         self.lbl_resultado_comidaT = Label(
             self, fg="green", font=("Courier New", 14, "bold"))
@@ -143,12 +143,14 @@ class Tiempo(Frame):
         unidad = "Minutos" if unidad == "m" else "Segundos"
         self.select_agua.set(unidad)
         self.lbl_estado_aguaT.config(text=msg)
+        self.lbl_resultado_aguaT.config(text="")
 
     def set_estado_comidaT(self, tiempo, unidad, msg):
         self.tiempo_comida_var.set(tiempo)
         unidad = "Minutos" if unidad == "m" else "Segundos"
         self.select_comida.set(unidad)
         self.lbl_estado_comidaT.config(text=msg)
+        self.lbl_resultado_comidaT.config(text="")
 
     def set_resultado_aguaT(self, msg):
         self.lbl_resultado_aguaT.config(text=msg)

@@ -194,17 +194,54 @@ class ControllerVista:
                     self.tiempo.set_estado_comidaT(
                         int(result.strip("mhs")), result[-1], msg)
                 elif mensaje.startswith("wdTR:"):
-                    mensaje = mensaje.split(":")[1]
-                    result = int(mensaje)
-                    msg = self.procesar_resultado(result)
-                    self.inicio.set_estado_agua(result, msg)
+                    mensaje = mensaje.replace("\r", "")
+                    result = mensaje.split(":")[1]
+                    result = int(result)
 
-                    if result == -2:
+                    if result == 1:
+                        self.inicio.set_estado_agua(result, "Abierto")
+                        self.tiempo.set_resultado_aguaT(
+                            "El dispensador se abrió")
+                    elif result == -1:
+                        estado = self.inicio.var_dispensar_agua.get()
+                        msg = "Abierto" if estado == 1 else "Cerrado"
+                        self.inicio.set_estado_agua(estado, msg)
+                        self.tiempo.set_resultado_aguaT(
+                            "El dispensador ya esta abierto.")
+                    elif result == -2:
                         self.inicio.set_contenedor_agua(
                             "El contenedor de agua esta vacío.")
-                    elif result == 1 or result == 0:
-                        self.inicio.set_contenedor_agua(
-                            "El contenedor de agua esta lleno")
+                        self.tiempo.set_resultado_aguaT(
+                            "No se abrió. El contenedor de agua esta vacío.")
+                    elif result == -3:
+                        self.inicio.set_estado_agua(0, msg)
+                        self.tiempo.set_resultado_aguaT(
+                            "No se abrió. El recipiente esta lleno."
+                        )
+                elif mensaje.startswith("fdTR:"):
+                    mensaje = mensaje.replace("\r", "")
+                    result = mensaje.split(":")[1]
+                    result = int(result)
+
+                    if result == 1:
+                        self.inicio.set_estado_comida(result, "Abierto")
+                        self.tiempo.set_resultado_comidaT(
+                            "El dispensador se abrió")
+                    elif result == -1:
+                        estado = self.inicio.var_dispensar_comida.get()
+                        msg = "Abierto" if estado == 1 else "Cerrado"
+                        self.inicio.set_estado_comida(estado, msg)
+                        self.tiempo.set_resultado_comidaT(
+                            "El dispensador ya esta abierto.")
+                    elif result == -2:
+                        self.inicio.set_contenedor_comida(
+                            "El contenedor de alimento esta vacío.")
+                        self.tiempo.set_resultado_comidaT(
+                            "No se abrió. El contenedor de alimento esta vacío.")
+                    elif result == -3:
+                        self.inicio.set_estado_comida(0, msg)
+                        self.tiempo.set_resultado_comidaT(
+                            "No se abrió. El recipiente esta lleno.")
 
             except Exception as error:
                 print(f"Error al leer el puerto serial: {error}")
