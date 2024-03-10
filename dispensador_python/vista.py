@@ -169,6 +169,8 @@ class Registro(Frame):
         self.label = Label(
             self, text="..:: Consultar Registros ::..")
         self.label.pack(pady=10)
+        self.btn_actualizar = Button(self, text="Actualizar")
+        self.btn_actualizar.place(x=10, y=10)
         self.tabla_registros_agua()
         self.tabla_registros_comida()
 
@@ -228,12 +230,10 @@ class Registro(Frame):
         self.comida.heading("Fecha", text="Fecha")
         self.comida.heading("Hora", text="Hora")
 
-    def actualizar_tablas(self, registros_agua, registros_comida):
+    def actualizar_tabla_agua(self, registros_agua):
 
         # Limpiar tablas
         self.agua.delete(*self.agua.get_children())
-        self.comida.delete(*self.comida.get_children())
-
         # Actualizar tabla de agua
         for registro in registros_agua:
             # Modificar la columna "id" con "Servo1"
@@ -241,15 +241,17 @@ class Registro(Frame):
             registro[0] = "agua" if registro[0] == 1 else "agua"
             self.agua.insert("", "end", values=registro)
 
+    def actualizar_tabla_alimento(self, registros_comida):
+
+        self.comida.delete(*self.comida.get_children())
+
+        # Actualizar tabla de agu
         # Actualizar tabla de comida
         for registro in registros_comida:
             # Modificar la columna "id" con "Servo1"
             registro = list(registro)
             registro[0] = "comida" if registro[0] == 1 else "comida"
             self.comida.insert("", "end", values=registro)
-
-        self.agua.after(100000, self.actualizar_tablas)
-        self.comida.after(10000, self.actualizar_tablas)
 
 
 class Ventana(Tk):
@@ -271,4 +273,3 @@ class Ventana(Tk):
         self.taps.add(self.inicio, text="Inicio")
         self.taps.add(self.tiempo, text="Tiempo")
         self.taps.add(self.registro, text="Registro")
-        print(self.taps.focus)

@@ -21,6 +21,7 @@ class ControllerVista:
         self.vista: Ventana = vista
         self.inicio: Inicio = self.vista.inicio
         self.tiempo: Tiempo = self.vista.tiempo
+        self.registros: Registro = self.vista.registro
         self.db = Crud()
         self.arduino = ConnectionArduino(puerto="COM2")
         self.estado_agua = 0
@@ -102,6 +103,7 @@ class ControllerVista:
     def activar_botones(self):
         self.tiempo.btn_enviar_agua.config(command=self.enviar_tiempo_agua)
         self.tiempo.btn_enviar_comida.config(command=self.enviar_tiempo_comida)
+        self.registros.btn_actualizar.config(command=self.actualizar_registros)
 
     def iniciar_estados(self):
         try:
@@ -155,8 +157,6 @@ class ControllerVista:
                 if isinstance(registro_anterior_alimento, str):
                     registro_anterior_alimento = ("", "", "", "", "")
                 estado_anterior_bd_alimento = registro_anterior_alimento[2]
-
-                # print(estado_anterior_bd_agua, estado_anterior_bd_alimento)
 
                 if mensaje.startswith("wdP:") or mensaje.startswith("wdR:"):
                     result = int(mensaje.split(":")[1])
@@ -297,10 +297,21 @@ class ControllerVista:
             except Exception as error:
                 print(f"Error al leer el puerto serial: {error}")
 
+    def actualizar_registros(self):
+        registros_agua, error_a = self.db.consultar_registro(1)
+        registros_comida, error_b = self.db.consultar_registro(2)
+
+        if error_a is None:
+            self.registros.actualizar_tabla_agua(registros_agua)
+
+        if error_b is None:
+            self.registros.actualizar_tabla_alimento(registros_comida)
+
     def iniciar(self):
         self.conectar_todo()
         self.iniciar_estados()
         self.activar_check_button()
         self.activar_botones()
+        self.actualizar_registros()
         self.hilo_lectura.start()
         self.vista.mainloop()
