@@ -85,6 +85,7 @@ class ControllerVista:
         try:
             tiempo = self.tiempo.tiempo_agua_var.get()
             unidad = self.tiempo.select_agua.get()
+            unidad = "m" if unidad == "Minutos" else "s"
             self.arduino.enviar_dato(f"wdT:{tiempo}{unidad}")
         except Exception as e:
             print(f"Error al enviar el tiempo de agua: {e}")
@@ -93,6 +94,7 @@ class ControllerVista:
         try:
             tiempo = self.tiempo.tiempo_comida_var.get()
             unidad = self.tiempo.select_comida.get()
+            unidad = "m" if unidad == "Minutos" else "s"
             self.arduino.enviar_dato(f"fdT:{tiempo}{unidad}")
         except Exception as e:
             print(f"Error al enviar el tiempo de comida: {e}")
@@ -180,11 +182,13 @@ class ControllerVista:
                         0, "El recipiente esta lleno.")
 
                 elif mensaje.startswith("wdTset:"):
+                    mensaje = mensaje.replace("\r", "")
                     result = mensaje.split(":")[1]
                     msg = "Intervalo:"+result
                     self.tiempo.set_estado_aguaT(
                         int(result.strip("mhs")), result[-1], msg)
                 elif mensaje.startswith("fdTset:"):
+                    mensaje = mensaje.replace("\r", "")
                     result = mensaje.split(":")[1]
                     msg = "Intervalo:"+result
                     self.tiempo.set_estado_comidaT(
@@ -197,5 +201,6 @@ class ControllerVista:
         self.conectar_todo()
         self.iniciar_estados()
         self.activar_check_button()
+        self.activar_botones()
         self.hilo_lectura.start()
         self.vista.mainloop()

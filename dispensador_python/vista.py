@@ -124,12 +124,12 @@ class Tiempo(Frame):
         Label(self, image=self.imagen_comida).place(x=400, y=100)
 
     def selects(self):
-        self.select_agua = ttk.Combobox(self, values=["Minuto", "Segundo"])
-        self.select_agua.set("Minuto")
+        self.select_agua = ttk.Combobox(self, values=["Minutos", "Segundos"])
+        self.select_agua.set("Minutos")
         self.select_agua.place(x=150, y=350)
 
-        self.select_comida = ttk.Combobox(self, values=["Minuto", "Segundo"])
-        self.select_comida.set("Minuto")
+        self.select_comida = ttk.Combobox(self, values=["Minutos", "Segundos"])
+        self.select_comida.set("Minutos")
         self.select_comida.place(x=450, y=350)
 
     def buttons(self):
@@ -140,13 +140,13 @@ class Tiempo(Frame):
 
     def set_estado_aguaT(self, tiempo, unidad, msg):
         self.tiempo_agua_var.set(tiempo)
-        unidad = "Minuto" if unidad == "m" else "Segundo"
+        unidad = "Minutos" if unidad == "m" else "Segundos"
         self.select_agua.set(unidad)
         self.lbl_estado_aguaT.config(text=msg)
 
     def set_estado_comidaT(self, tiempo, unidad, msg):
         self.tiempo_comida_var.set(tiempo)
-        unidad = "Minuto" if unidad == "m" else "Segundo"
+        unidad = "Minutos" if unidad == "m" else "Segundos"
         self.select_comida.set(unidad)
         self.lbl_estado_comidaT.config(text=msg)
 
