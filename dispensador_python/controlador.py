@@ -76,9 +76,38 @@ class ControllerVista:
         elif result == -2:
             return "El contenedor esta vacío"
         elif result == -3:
-            return "El recipiente esta vacío"
+            return "El recipiente esta lleno"
         else:
             return "Error"
+
+    def iniciar_estados(self):
+        try:
+            self.arduino.enviar_dato("all:1")
+            sleep(1)
+            result = self.arduino.recibir_dato()
+            result = result.replace("\r", "")
+            # orden de los estados:
+            # wdP:0,fdP:0,wdSIs:0,fdSIs:0,wdTget:90m,fdTget:90m
+            result = result.split(",")
+            es_agua = int(result[0])
+            msg_agua = self.procesar_resultado(es_agua)
+            self.inicio.set_estado_agua(es_agua, msg_agua)
+            es_alimento = int(result[1])
+            msg_alimento = self.procesar_resultado(es_alimento)
+            self.inicio.set_estado_comida(es_alimento, msg_alimento)
+
+            msg_contenedor_agua = "El contenedor de agua esta lleno" if int(
+                result[2]) == 0 else "El contenedor de agua esta vacío"
+
+            msg_contenedor_alimento = "El contenedor de alimento esta lleno" if int(
+                result[3]) == 0 else "El contenedor de alimento esta vacío"
+            self.inicio.set_contenedor_agua(msg_contenedor_agua)
+            self.inicio.set_contenedor_comida(msg_contenedor_alimento)
+
+            print(result)
+
+        except Exception as e:
+            print(f"Error al iniciar los estados: {e}")
 
     def leer_serial(self):
         while self.corriendo:
@@ -109,6 +138,7 @@ class ControllerVista:
 
     def iniciar(self):
         self.conectar_todo()
+        self.iniciar_estados()
         self.activar_check_button()
         self.hilo_lectura.start()
         self.vista.mainloop()

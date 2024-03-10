@@ -136,13 +136,13 @@ void loop()
     }
     else if (command == COMMAND_ALL_STATUS)
     {
-      const String estadoWD = COMMAND_WATER_DISPENSER + "P:" + String(waterDispenserController.isOpen());
-      const String estadoFD = COMMAND_FOOD_DISPENSER + "P:" + String(foodDispenserController.isOpen());
-      const String estadoWL = COMMAND_WATER_LEVEL + "Is:" + String(sonarWater.isDistanceLimit());
-      const String estadoFL = COMMAND_FOOD_LEVEL + "Is:" + String(sonarFood.isDistanceLimit());
+      const String estadoWD = String(waterDispenserController.isOpen());
+      const String estadoFD = String(foodDispenserController.isOpen());
+      const String estadoWL = String(sonarWater.isDistanceLimit());
+      const String estadoFL = String(sonarFood.isDistanceLimit());
 
-      const String estadoWTD = COMMAND_TIME_OPEN_WATER_DISPENSER + "get:" + String(waterDispenserTimeController.getTimer());
-      const String estadoFTD = COMMAND_TIME_OPEN_FOOD_DISPENSER + "get:" + String(foodDispenserTimeController.getTimer());
+      const String estadoWTD = String(waterDispenserTimeController.getTimer());
+      const String estadoFTD = String(foodDispenserTimeController.getTimer());
 
       Serial.println(estadoWD + "," + estadoFD + "," + estadoWL + "," + estadoFL + "," + estadoWTD + "," + estadoFTD);
     }
