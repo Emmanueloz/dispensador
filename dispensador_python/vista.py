@@ -169,16 +169,64 @@ class Registro(Frame):
         self.label = Label(
             self, text="..:: Consultar Registros ::..")
         self.label.pack(pady=10)
+        self.tabla_registros_agua()
+        self.tabla_registros_comida()
 
     def tabla_registros_agua(self):
         scroll_dato_agua = Scrollbar(self, orient="vertical")
 
-        agua = Treeview(self, height=10, yscrollcommand=scroll_dato_agua.set)
+        Label(self, text="Registro de Agua").place(x=10, y=40)
+        self.agua = Treeview(
+            self, height=10, yscrollcommand=scroll_dato_agua.set)
 
-        scroll_dato_agua.place(x=670, y=100)
-        scroll_dato_agua.configure(command=agua.yview)
+        scroll_dato_agua.place(x=750, y=100)
+        scroll_dato_agua.configure(command=self.agua.yview)
 
-        agua.place(x=10, y=30)
+        self.agua.place(x=10, y=60)
+        self.agua["columns"] = ("Servo", "id", "Estado", "Fecha", "Hora")
+        self.agua.column("#0", width=0, stretch="no")
+        self.agua.column("Servo", anchor="center", width=60)
+        self.agua.column("id", anchor="center", width=60)
+        self.agua.column("Estado", anchor="center", width=50)
+        self.agua.column("Fecha", anchor="center", width=200)
+        self.agua.column("Hora", anchor="center", width=200)
+
+        self.agua.heading("#0", text="", anchor="w")
+        self.agua.heading("Servo", text="Servo")
+        self.agua.heading("id", text="id")
+        self.agua.heading("Estado", text="Estado")
+        self.agua.heading("Fecha", text="Fecha")
+        self.agua.heading("Hora", text="Hora")
+
+    def tabla_registros_comida(self):
+
+        Label(self, text="Registro de Comida").place(x=10, y=320)
+        scroll_dato_comida = Scrollbar(self, orient="vertical")
+
+        self.comida = Treeview(self, height=10,
+                               yscrollcommand=scroll_dato_comida.set)
+
+        scroll_dato_comida.place(x=750, y=400)
+        scroll_dato_comida.configure(command=self.comida.yview)
+
+        self.comida.place(x=10, y=340)
+
+        # trecera pestaña
+
+        self.comida["columns"] = ("Servo", "id", "Estado", "Fecha", "Hora")
+        self.comida.column("#0", width=0, stretch="no")
+        self.comida.column("Servo", anchor="center", width=60)
+        self.comida.column("id", anchor="center", width=60)
+        self.comida.column("Estado", anchor="center", width=50)
+        self.comida.column("Fecha", anchor="center", width=200)
+        self.comida.column("Hora", anchor="center", width=200)
+
+        self.comida.heading("#0", text="", anchor="w")
+        self.comida.heading("Servo", text="Servo")
+        self.comida.heading("id", text="id")
+        self.comida.heading("Estado", text="Estado")
+        self.comida.heading("Fecha", text="Fecha")
+        self.comida.heading("Hora", text="Hora")
 
 
 class Ventana(Tk):
