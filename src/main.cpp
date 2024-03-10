@@ -13,11 +13,11 @@ const byte pinFoodServo = 12;
 
 const byte pinEchoWater = 10;
 const byte pinTriggerWater = 9;
-const byte pinEchoFood = 7;
-const byte pinTriggerFood = 6;
+const byte pinEchoFood = 5;    // 5
+const byte pinTriggerFood = 4; // 4
 
-const byte pinEchoFoodLevel = 5;
-const byte pinTriggerFoodLevel = 4;
+const byte pinEchoFoodLevel = 7;
+const byte pinTriggerFoodLevel = 6;
 
 // Constantes enteras
 const int maxSonarWater = 400;
