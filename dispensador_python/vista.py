@@ -1,6 +1,5 @@
-from tkinter import Tk, Frame, Button, Label, Entry, StringVar, IntVar, Scale, PhotoImage, messagebox, Toplevel, ttk, Scrollbar, Tk, Frame, Label, Checkbutton, StringVar, IntVar
-from tkinter import Tk, Frame, Label, StringVar, Listbox, Scrollbar
-import threading
+from tkinter import Tk, Frame, Button, Label, IntVar, Scale, PhotoImage, messagebox, Toplevel, ttk, Scrollbar, Tk, Frame, Label, Checkbutton, IntVar, Listbox
+from tkinter.ttk import Treeview, Combobox, Notebook
 
 
 class Inicio(Frame):
@@ -124,11 +123,11 @@ class Tiempo(Frame):
         Label(self, image=self.imagen_comida).place(x=400, y=100)
 
     def selects(self):
-        self.select_agua = ttk.Combobox(self, values=["Minutos", "Segundos"])
+        self.select_agua = Combobox(self, values=["Minutos", "Segundos"])
         self.select_agua.set("Minutos")
         self.select_agua.place(x=150, y=350)
 
-        self.select_comida = ttk.Combobox(self, values=["Minutos", "Segundos"])
+        self.select_comida = Combobox(self, values=["Minutos", "Segundos"])
         self.select_comida.set("Minutos")
         self.select_comida.place(x=450, y=350)
 
@@ -171,6 +170,16 @@ class Registro(Frame):
             self, text="..:: Consultar Registros ::..")
         self.label.pack(pady=10)
 
+    def tabla_registros_agua(self):
+        scroll_dato_agua = Scrollbar(self, orient="vertical")
+
+        agua = Treeview(self, height=10, yscrollcommand=scroll_dato_agua.set)
+
+        scroll_dato_agua.place(x=670, y=100)
+        scroll_dato_agua.configure(command=agua.yview)
+
+        agua.place(x=10, y=30)
+
 
 class Ventana(Tk):
     def __init__(self):
@@ -183,7 +192,7 @@ class Ventana(Tk):
         self.taps()
 
     def taps(self):
-        self.taps = ttk.Notebook(self)
+        self.taps = Notebook(self)
         self.taps.pack(fill='both', expand=True)
         self.inicio = Inicio(self.taps, self.imagen_agua, self.imagen_comida)
         self.tiempo = Tiempo(self.taps, self.imagen_agua, self.imagen_comida)
