@@ -1,3 +1,6 @@
 colorama
 mysql-connector-python
 pyserial
+pyrebase4
+requests
+setuptools
