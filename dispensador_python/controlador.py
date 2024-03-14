@@ -116,22 +116,25 @@ class ControllerVista:
         except Exception as e:
             print(f"Error al enviar el tiempo de comida: {e}")
 
-    def filtrar_por_tipo(self, event):
+    def filtrar_por_tipo(self):
         self.filtro_tipo = self.registros.filtro_tipo.get()
-        print(self.filtro_tipo)
+        self.registros.filtro_estado.set("Todo")
+        self.filtro_estado = "Todo"
+        self.actualizar_registros()
 
-    def filtrar_por_estado(self, event):
+    def filtrar_por_estado(self):
         self.filtro_estado = self.registros.filtro_estado.get()
-        print(self.filtro_estado)
+        self.registros.filtro_tipo.set("Todo")
+        self.filtro_tipo = "Todo"
+        self.actualizar_registros()
 
     def activar_botones(self):
         self.tiempo.btn_enviar_agua.config(command=self.enviar_tiempo_agua)
         self.tiempo.btn_enviar_comida.config(command=self.enviar_tiempo_comida)
         self.registros.btn_actualizar.config(command=self.actualizar_registros)
-        self.registros.filtro_tipo.bind(
-            "<<ComboboxSelected>>", self.filtrar_por_tipo)
-        self.registros.filtro_estado.bind(
-            "<<ComboboxSelected", self.filtrar_por_estado)
+        self.registros.btn_enviar_tipo.config(command=self.filtrar_por_tipo)
+        self.registros.btn_enviar_estado.config(
+            command=self.filtrar_por_estado)
 
     def iniciar_estados(self):
         try:
@@ -328,7 +331,18 @@ class ControllerVista:
                 print(f"Error al leer el puerto serial: {error}")
 
     def actualizar_registros(self):
-        registro, error = self.db.consultar_registro()
+        registro = None
+        error = None
+        if self.filtro_tipo == "Todo" and self.filtro_estado == "Todo":
+            registro, error = self.db.consultar_registro()
+        elif self.filtro_tipo == "Agua":
+            registro, error = self.db.consultar_registro(idComponente=1)
+        elif self.filtro_tipo == "Alimento":
+            registro, error = self.db.consultar_registro(idComponente=2)
+        elif self.filtro_estado == "Abierto":
+            registro, error = self.db.consultar_registro(estado="ABIERTO")
+        elif self.filtro_estado == "Cerrado":
+            registro, error = self.db.consultar_registro(estado="CERRADO")
 
         if error is None:
             self.registros.actualizar_tabla(registro)

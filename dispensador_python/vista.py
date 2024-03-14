@@ -175,11 +175,16 @@ class Registro(Frame):
         self.filtro_tipo.set("Todo")
         Label(self, text="Filtrar por tipo:").place(x=40, y=60)
         self.filtro_tipo.place(x=140, y=60, width=100)
-        Label(self, text="Filtrar por estado:").place(x=540, y=60)
+        self.btn_enviar_tipo = Button(self, text="Filtrar")
+        self.btn_enviar_tipo.place(x=250, y=60)
+
+        Label(self, text="Filtrar por estado:").place(x=480, y=60)
         self.filtro_estado = Combobox(
-            self, values=["Todo", "Agua", "Alimento"])
+            self, values=["Todo", "Abierto", "Cerrado"])
         self.filtro_estado.set("Todo")
-        self.filtro_estado.place(x=650, y=60, width=100)
+        self.filtro_estado.place(x=590, y=60, width=100)
+        self.btn_enviar_estado = Button(self, text="Filtrar")
+        self.btn_enviar_estado.place(x=700, y=60)
 
         self.tabla_registros()
 
