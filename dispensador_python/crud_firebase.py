@@ -31,7 +31,7 @@ class CrudFirebase:
         except Exception as error:
             raise RuntimeError(f"Error al insertar el registro: {error}")
 
-    def update_registro(self, idComponente, estado):
+    def update_estado(self, idComponente, estado):
         try:
             db = self.connection.database()
             fecha = datetime.now().strftime('%Y-%m-%d')
@@ -125,10 +125,11 @@ crudPrueba.insertar_registro("2", "ABIERTO")
 crudPrueba.insertar_registro("1", "ABIERTO")
 
 
-result, error = crudPrueba.update_registro(idComponente=1, estado="CERRADO")
+result, error = crudPrueba.update_estado(idComponente=1, estado="ABIERTO")
 
 print(result, error)
 error = None
+
 consulta, error = crudPrueba.consultar_registro(estado="ABIERTO")
 print(consulta)
 """
