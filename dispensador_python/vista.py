@@ -171,82 +171,41 @@ class Registro(Frame):
         self.label.pack(pady=10)
         self.btn_actualizar = Button(self, text="Actualizar")
         self.btn_actualizar.place(x=10, y=10)
-        self.tabla_registros_agua()
-        self.tabla_registros_comida()
+        self.tabla_registros()
 
-    def tabla_registros_agua(self):
+    def tabla_registros(self):
         scroll_dato_agua = Scrollbar(self, orient="vertical")
 
-        Label(self, text="Registro de Agua").place(x=10, y=40)
-        self.agua = Treeview(
+        Label(self, text="Registros").place(x=10, y=40)
+        self.tabla = Treeview(
             self, height=10, yscrollcommand=scroll_dato_agua.set)
 
         scroll_dato_agua.place(x=750, y=100)
-        scroll_dato_agua.configure(command=self.agua.yview)
+        scroll_dato_agua.configure(command=self.tabla.yview)
 
-        self.agua.place(x=10, y=60)
-        self.agua["columns"] = ("Dispensador", "Estado", "Fecha", "Hora")
-        self.agua.column("#0", width=0, stretch="no")
-        self.agua.column("Dispensador", anchor="center", width=60)
-        self.agua.column("Estado", anchor="center", width=50)
-        self.agua.column("Fecha", anchor="center", width=200)
-        self.agua.column("Hora", anchor="center", width=200)
-        self.agua.heading("#0", text="", anchor="w")
-        self.agua.heading("Dispensador", text="Dispensador")
-        self.agua.heading("Estado", text="Estado")
-        self.agua.heading("Fecha", text="Fecha")
-        self.agua.heading("Hora", text="Hora")
+        self.tabla.place(x=10, y=60)
+        self.tabla["columns"] = ("Dispensador", "Estado", "Fecha", "Hora")
+        self.tabla.column("#0", width=0, stretch="no")
+        self.tabla.column("Dispensador", anchor="center", width=60)
+        self.tabla.column("Estado", anchor="center", width=50)
+        self.tabla.column("Fecha", anchor="center", width=200)
+        self.tabla.column("Hora", anchor="center", width=200)
+        self.tabla.heading("#0", text="", anchor="w")
+        self.tabla.heading("Dispensador", text="Dispensador")
+        self.tabla.heading("Estado", text="Estado")
+        self.tabla.heading("Fecha", text="Fecha")
+        self.tabla.heading("Hora", text="Hora")
 
-    def tabla_registros_comida(self):
-
-        Label(self, text="Registro de Comida").place(x=10, y=320)
-        scroll_dato_comida = Scrollbar(self, orient="vertical")
-
-        self.comida = Treeview(self, height=10,
-                               yscrollcommand=scroll_dato_comida.set)
-
-        scroll_dato_comida.place(x=750, y=400)
-        scroll_dato_comida.configure(command=self.comida.yview)
-
-        self.comida.place(x=10, y=340)
-
-        # trecera pestaña
-
-        self.comida["columns"] = ("Dispensador", "Estado", "Fecha", "Hora")
-        self.comida.column("#0", width=0, stretch="no")
-        self.comida.column("Dispensador", anchor="center", width=60)
-        self.comida.column("Estado", anchor="center", width=50)
-        self.comida.column("Fecha", anchor="center", width=200)
-        self.comida.column("Hora", anchor="center", width=200)
-
-        self.comida.heading("#0", text="", anchor="w")
-        self.comida.heading("Dispensador", text="Dispensador")
-        self.comida.heading("Estado", text="Estado")
-        self.comida.heading("Fecha", text="Fecha")
-        self.comida.heading("Hora", text="Hora")
-
-    def actualizar_tabla_agua(self, registros_agua):
+    def actualizar_tabla(self, registros):
 
         # Limpiar tablas
-        self.agua.delete(*self.agua.get_children())
+        self.tabla.delete(*self.tabla.get_children())
         # Actualizar tabla de agua
-        for registro in registros_agua:
+        for registro in registros:
             # Modificar la columna "id" con "Servo1"
             registro = list(registro)
             registro[0] = "agua" if registro[0] == 1 else "agua"
-            self.agua.insert("", "end", values=registro)
-
-    def actualizar_tabla_alimento(self, registros_comida):
-
-        self.comida.delete(*self.comida.get_children())
-
-        # Actualizar tabla de agu
-        # Actualizar tabla de comida
-        for registro in registros_comida:
-            # Modificar la columna "id" con "Servo1"
-            registro = list(registro)
-            registro[0] = "comida" if registro[0] == 1 else "comida"
-            self.comida.insert("", "end", values=registro)
+            self.tabla.insert("", "end", values=registro)
 
 
 class Ventana(Tk):

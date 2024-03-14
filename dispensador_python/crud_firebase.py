@@ -36,13 +36,14 @@ class CrudFirebase:
             db = self.connection.database()
             registros = None
             if idComponente is not None:
-                registros = db.child("dispensador/registros").order_by_child(
+                registros = db.child("dispensador/registros").order_by_key().order_by_child(
                     "idComponente").equal_to(idComponente).get()
             elif estado is not None:
-                registros = db.child("dispensador/registros").order_by_child(
+                registros = db.child("dispensador/registros").order_by_key().order_by_child(
                     "estado").equal_to(estado).get()
             else:
-                registros = db.child("dispensador/registros").get()
+                registros = db.child(
+                    "dispensador/registros").order_by_key().get()
 
             if registros.val() is None or len(registros.val()) == 0:
                 raise Exception("No se encontraron resultados.")

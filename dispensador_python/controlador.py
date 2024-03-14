@@ -314,14 +314,10 @@ class ControllerVista:
                 print(f"Error al leer el puerto serial: {error}")
 
     def actualizar_registros(self):
-        registros_agua, error_a = self.db.consultar_registro(idComponente=1)
-        registros_comida, error_b = self.db.consultar_registro(idComponente=2)
+        registro, error = self.db.consultar_registro()
 
-        if error_a is None:
-            self.registros.actualizar_tabla_agua(registros_agua)
-
-        if error_b is None:
-            self.registros.actualizar_tabla_alimento(registros_comida)
+        if error is None:
+            self.registros.actualizar_tabla(registro)
 
     def iniciar(self):
         self.conectar_todo()
