@@ -30,6 +30,8 @@ class ControllerVista:
         self.vista.protocol("WM_DELETE_WINDOW", self.finalizar)
         self.corriendo = True
         self.error_bd = False
+        self.filtro_tipo = "Todo"
+        self.filtro_estado = "Todo"
 
     def conectar_todo(self):
         try:
@@ -114,10 +116,22 @@ class ControllerVista:
         except Exception as e:
             print(f"Error al enviar el tiempo de comida: {e}")
 
+    def filtrar_por_tipo(self, event):
+        self.filtro_tipo = self.registros.filtro_tipo.get()
+        print(self.filtro_tipo)
+
+    def filtrar_por_estado(self, event):
+        self.filtro_estado = self.registros.filtro_estado.get()
+        print(self.filtro_estado)
+
     def activar_botones(self):
         self.tiempo.btn_enviar_agua.config(command=self.enviar_tiempo_agua)
         self.tiempo.btn_enviar_comida.config(command=self.enviar_tiempo_comida)
         self.registros.btn_actualizar.config(command=self.actualizar_registros)
+        self.registros.filtro_tipo.bind(
+            "<<ComboboxSelected>>", self.filtrar_por_tipo)
+        self.registros.filtro_estado.bind(
+            "<<ComboboxSelected", self.filtrar_por_estado)
 
     def iniciar_estados(self):
         try:
