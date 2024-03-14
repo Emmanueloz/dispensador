@@ -171,11 +171,19 @@ class Registro(Frame):
         self.label.pack(pady=10)
         self.btn_actualizar = Button(self, text="Actualizar")
         self.btn_actualizar.place(x=10, y=10)
+        self.filtro_tipo = Combobox(self, values=["Todo", "Agua", "Alimento"])
+        self.filtro_tipo.set("Todo")
+        Label(self, text="Filtrar por tipo:").place(x=40, y=60)
+        self.filtro_tipo.place(x=140, y=60, width=100)
+        Label(self, text="Filtrar por estado:").place(x=540, y=60)
+        self.filtro_estado = Combobox(
+            self, values=["Todo", "Agua", "Alimento"])
+        self.filtro_estado.set("Todo")
+        self.filtro_estado.place(x=650, y=60, width=100)
+
         self.tabla_registros()
 
     def tabla_registros(self):
-
-        Label(self, text="Registros").place(x=10, y=40)
         self.tabla = Treeview(self, selectmode="browse")
 
         scroll_tabla = Scrollbar(
@@ -183,7 +191,7 @@ class Registro(Frame):
         scroll_tabla.pack(side="right", fill="y")
         self.tabla.configure(yscrollcommand=scroll_tabla.set)
 
-        self.tabla.place(x=10, y=60, width=780, height=400)
+        self.tabla.place(x=40, y=100, width=700, height=400)
         self.tabla["columns"] = ("Dispensador", "Estado", "Fecha", "Hora")
         self.tabla.column("#0", width=0, stretch="no")
         self.tabla.column("Dispensador", anchor="nw", width=80)
