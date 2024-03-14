@@ -185,17 +185,14 @@ class Registro(Frame):
         scroll_dato_agua.configure(command=self.agua.yview)
 
         self.agua.place(x=10, y=60)
-        self.agua["columns"] = ("Servo", "id", "Estado", "Fecha", "Hora")
+        self.agua["columns"] = ("Dispensador", "Estado", "Fecha", "Hora")
         self.agua.column("#0", width=0, stretch="no")
-        self.agua.column("Servo", anchor="center", width=60)
-        self.agua.column("id", anchor="center", width=60)
+        self.agua.column("Dispensador", anchor="center", width=60)
         self.agua.column("Estado", anchor="center", width=50)
         self.agua.column("Fecha", anchor="center", width=200)
         self.agua.column("Hora", anchor="center", width=200)
-
         self.agua.heading("#0", text="", anchor="w")
-        self.agua.heading("Servo", text="Servo")
-        self.agua.heading("id", text="id")
+        self.agua.heading("Dispensador", text="Dispensador")
         self.agua.heading("Estado", text="Estado")
         self.agua.heading("Fecha", text="Fecha")
         self.agua.heading("Hora", text="Hora")
@@ -215,17 +212,15 @@ class Registro(Frame):
 
         # trecera pestaña
 
-        self.comida["columns"] = ("Servo", "id", "Estado", "Fecha", "Hora")
+        self.comida["columns"] = ("Dispensador", "Estado", "Fecha", "Hora")
         self.comida.column("#0", width=0, stretch="no")
-        self.comida.column("Servo", anchor="center", width=60)
-        self.comida.column("id", anchor="center", width=60)
+        self.comida.column("Dispensador", anchor="center", width=60)
         self.comida.column("Estado", anchor="center", width=50)
         self.comida.column("Fecha", anchor="center", width=200)
         self.comida.column("Hora", anchor="center", width=200)
 
         self.comida.heading("#0", text="", anchor="w")
-        self.comida.heading("Servo", text="Servo")
-        self.comida.heading("id", text="id")
+        self.comida.heading("Dispensador", text="Dispensador")
         self.comida.heading("Estado", text="Estado")
         self.comida.heading("Fecha", text="Fecha")
         self.comida.heading("Hora", text="Hora")

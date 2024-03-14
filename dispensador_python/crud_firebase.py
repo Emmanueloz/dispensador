@@ -6,10 +6,8 @@ class CrudFirebase:
     connection = None
     config = None
 
-    def __init__(self, config):
+    def conectar_BD(self, config):
         self.config = config
-
-    def conectar_BD(self):
         try:
             self.connection = initialize_app(self.config)
         except Exception as error:
@@ -22,12 +20,13 @@ class CrudFirebase:
             fecha = datetime.now().strftime('%Y-%m-%d')
 
             hora = datetime.now().strftime('%H:%M:%S')
-            db.child("dispensador/registros").push({
+            result = db.child("dispensador/registros").push({
                 "idComponente": idComponente,
                 "estado": estado,
                 "fecha": fecha,
                 "hora": hora,
             })
+
             return "Registro insertado correctamente."
         except Exception as error:
             raise RuntimeError(f"Error al insertar el registro: {error}")
@@ -37,7 +36,6 @@ class CrudFirebase:
             db = self.connection.database()
             registros = None
             if idComponente is not None:
-                idComponente = str(idComponente)
                 registros = db.child("dispensador/registros").order_by_child(
                     "idComponente").equal_to(idComponente).get()
             elif estado is not None:
@@ -62,10 +60,40 @@ class CrudFirebase:
 
             return lista_registros, None
         except Exception as error:
-            return None, f"{error}"
+            return None, str(error)
+
+    def consultar_ultimo_registro(self, idComponente):
+        try:
+            idComponente = str(idComponente)
+            db = self.connection.database()
+            registros = db.child("dispensador/registros").order_by_child(
+                "idComponente").equal_to(idComponente).limit_to_last(1).get()
+
+            # print(registros.val())
+            if registros.val() is None or len(registros.val()) == 0:
+                raise Exception("No se encontraron resultados.")
+
+            lista_registros = []
+            for registro in registros.each():
+                lista_registros.append(
+                    (
+                        int(registro.val()["idComponente"]),
+                        registro.val()["estado"],
+                        registro.val()["fecha"],
+                        registro.val()["hora"]
+                    )
+                )
+
+            return lista_registros, None
+        except Exception as error:
+            return None, str(error)
 
 
-crudPrueba = CrudFirebase({
+"""
+
+crudPrueba = CrudFirebase()
+
+crudPrueba.conectar_BD({
     'apiKey': "AIzaSyD3l2W0fhM7QfF3PhvSK3dU5Sghsn7ORBs",
     'authDomain': "aplicacionesiot-1622a.firebaseapp.com",
     'databaseURL': "https://aplicacionesiot-1622a-default-rtdb.firebaseio.com",
@@ -75,19 +103,8 @@ crudPrueba = CrudFirebase({
     'appId': "1:801264676158:web:b39b19991c7167cc89106f"
 })
 
-
-"""
-    Usar dos combos
-    primero: para consultar para los registros de todos,agua y alimento   
-    segundo: para consultar todos los registros del estado todo, abierto, estado 
-"""
-
-"""
-crudPrueba.conectar_BD()
-
 crudPrueba.insertar_registro("2", "ABIERTO")
-crudPrueba.insertar_registro("1", "CERRADO")
-crudPrueba.insertar_registro("2", "CERRADO")
+crudPrueba.insertar_registro("1", "ABIERTO")
 
 
 consulta, error = crudPrueba.consultar_registro()

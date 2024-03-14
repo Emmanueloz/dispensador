@@ -1,4 +1,4 @@
-from dispensador_python.crud import Crud
+from dispensador_python.crud_firebase import CrudFirebase
 from dispensador_python.conexion_serial import ConnectionArduino
 from time import sleep
 from re import match
@@ -22,7 +22,7 @@ class ControllerVista:
         self.inicio: Inicio = self.vista.inicio
         self.tiempo: Tiempo = self.vista.tiempo
         self.registros: Registro = self.vista.registro
-        self.db = Crud()
+        self.db = CrudFirebase()
         self.arduino = ConnectionArduino(puerto="COM2")
         self.estado_agua = 0
         self.estado_comida = 0
@@ -34,8 +34,15 @@ class ControllerVista:
     def conectar_todo(self):
         try:
             # Conectar a la base de datos
-            self.db.conectar_BD(host="localhost", user="emmanuel",
-                                passwd="", database="dispensadorBD")
+            self.db.conectar_BD({
+                'apiKey': "AIzaSyD3l2W0fhM7QfF3PhvSK3dU5Sghsn7ORBs",
+                'authDomain': "aplicacionesiot-1622a.firebaseapp.com",
+                'databaseURL': "https://aplicacionesiot-1622a-default-rtdb.firebaseio.com",
+                'projectId': "aplicacionesiot-1622a",
+                'storageBucket': "aplicacionesiot-1622a.appspot.com",
+                'messagingSenderId': "801264676158",
+                'appId': "1:801264676158:web:b39b19991c7167cc89106f"
+            })
 
             print("Conexión exitosa a la base de datos y Arduino.")
             messagebox.showinfo(
@@ -56,7 +63,7 @@ class ControllerVista:
         self.hilo_lectura.join(0.1)
         self.vista.quit()
         self.vista.destroy()
-        self.db.cerrar_conexion()
+        # self.db.cerrar_conexion()
         self.arduino.cerrar_arduino()
 
     def dispensar_agua(self):
@@ -160,12 +167,12 @@ class ControllerVista:
                 if error_ag is not None:
                     registro_anterior_agua = [("", "", "", "", "")]
 
-                estado_anterior_bd_agua = registro_anterior_agua[0][2]
+                estado_anterior_bd_agua = registro_anterior_agua[0][1]
 
                 if error_al is not None:
                     registro_anterior_alimento = [("", "", "", "", "")]
 
-                estado_anterior_bd_alimento = registro_anterior_alimento[0][2]
+                estado_anterior_bd_alimento = registro_anterior_alimento[0][1]
 
                 if mensaje.startswith("wdP:") or mensaje.startswith("wdR:"):
                     result = int(mensaje.split(":")[1])
@@ -307,9 +314,9 @@ class ControllerVista:
                 print(f"Error al leer el puerto serial: {error}")
 
     def actualizar_registros(self):
-        registros_agua, error_a = self.db.consultar_registro(1)
-        registros_comida, error_b = self.db.consultar_registro(2)
-        print(registros_agua)
+        registros_agua, error_a = self.db.consultar_registro(idComponente=1)
+        registros_comida, error_b = self.db.consultar_registro(idComponente=2)
+
         if error_a is None:
             self.registros.actualizar_tabla_agua(registros_agua)
 
