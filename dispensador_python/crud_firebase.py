@@ -32,13 +32,35 @@ class CrudFirebase:
         except Exception as error:
             raise RuntimeError(f"Error al insertar el registro: {error}")
 
-    def consultar_registro(self):
+    def consultar_registro(self, idComponente=None, estado=None):
         try:
             db = self.connection.database()
-            registros = db.child("dispensador/registros").get()
-            if registros.val() is None:
+            registros = None
+            if idComponente is not None:
+                idComponente = str(idComponente)
+                registros = db.child("dispensador/registros").order_by_child(
+                    "idComponente").equal_to(idComponente).get()
+            elif estado is not None:
+                registros = db.child("dispensador/registros").order_by_child(
+                    "estado").equal_to(estado).get()
+            else:
+                registros = db.child("dispensador/registros").get()
+
+            if registros.val() is None or len(registros.val()) == 0:
                 raise Exception("No se encontraron resultados.")
-            return registros, None
+
+            lista_registros = []
+            for registro in registros.each():
+                lista_registros.append(
+                    (
+                        int(registro.val()["idComponente"]),
+                        registro.val()["estado"],
+                        registro.val()["fecha"],
+                        registro.val()["hora"]
+                    )
+                )
+
+            return lista_registros, None
         except Exception as error:
             return None, f"{error}"
 
@@ -60,14 +82,37 @@ crudPrueba = CrudFirebase({
     segundo: para consultar todos los registros del estado todo, abierto, estado 
 """
 
+"""
 crudPrueba.conectar_BD()
-# crudPrueba.insertar_registro("1", "ABIERTO")
+
+crudPrueba.insertar_registro("2", "ABIERTO")
+crudPrueba.insertar_registro("1", "CERRADO")
+crudPrueba.insertar_registro("2", "CERRADO")
+
 
 consulta, error = crudPrueba.consultar_registro()
 
-
-if error is None:
-    for fila in consulta.each():
-        print(fila.val())
-else:
-    print(error)
+print("consulta total")
+print(consulta)
+print(error)
+error = None
+print("consulta del dispensador de agua")
+consulta, error = crudPrueba.consultar_registro(idComponente=1)
+print(consulta)
+print(error)
+error = None
+print("consulta del dispensador de alimento")
+consulta, error = crudPrueba.consultar_registro(idComponente=2)
+print(consulta)
+print(error)
+error = None
+print("consulta de los registros de estado abierto")
+consulta, error = crudPrueba.consultar_registro(estado="ABIERTO")
+print(consulta)
+print(error)
+error = None
+print("consulta de los registros de estado cerrado")
+consulta, error = crudPrueba.consultar_registro(estado="CERRADO")
+print(consulta)
+print(error)
+"""

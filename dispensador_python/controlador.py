@@ -23,7 +23,7 @@ class ControllerVista:
         self.tiempo: Tiempo = self.vista.tiempo
         self.registros: Registro = self.vista.registro
         self.db = Crud()
-        self.arduino = ConnectionArduino(puerto="COM8")
+        self.arduino = ConnectionArduino(puerto="COM2")
         self.estado_agua = 0
         self.estado_comida = 0
         self.hilo_lectura = Thread(target=self.leer_serial)
@@ -309,7 +309,7 @@ class ControllerVista:
     def actualizar_registros(self):
         registros_agua, error_a = self.db.consultar_registro(1)
         registros_comida, error_b = self.db.consultar_registro(2)
-
+        print(registros_agua)
         if error_a is None:
             self.registros.actualizar_tabla_agua(registros_agua)
 
