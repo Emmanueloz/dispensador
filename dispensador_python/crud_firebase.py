@@ -31,6 +31,24 @@ class CrudFirebase:
         except Exception as error:
             raise RuntimeError(f"Error al insertar el registro: {error}")
 
+    def update_registro(self, idComponente, estado):
+        try:
+            db = self.connection.database()
+            fecha = datetime.now().strftime('%Y-%m-%d')
+            hora = datetime.now().strftime('%H:%M:%S')
+            result = db.child(
+                "dispensador/estados").child(f"dispensador{idComponente}").update(
+                    {
+                        "estado": estado,
+                        "fecha": fecha,
+                        "hora": hora
+                    }
+            )
+
+            return result, None
+        except Exception as error:
+            return None, str(error)
+
     def consultar_registro(self, idComponente=None, estado=None):
         try:
             db = self.connection.database()
@@ -91,7 +109,6 @@ class CrudFirebase:
 
 
 """
-
 crudPrueba = CrudFirebase()
 
 crudPrueba.conectar_BD({
@@ -108,29 +125,10 @@ crudPrueba.insertar_registro("2", "ABIERTO")
 crudPrueba.insertar_registro("1", "ABIERTO")
 
 
-consulta, error = crudPrueba.consultar_registro()
+result, error = crudPrueba.update_registro(idComponente=1, estado="CERRADO")
 
-print("consulta total")
-print(consulta)
-print(error)
+print(result, error)
 error = None
-print("consulta del dispensador de agua")
-consulta, error = crudPrueba.consultar_registro(idComponente=1)
-print(consulta)
-print(error)
-error = None
-print("consulta del dispensador de alimento")
-consulta, error = crudPrueba.consultar_registro(idComponente=2)
-print(consulta)
-print(error)
-error = None
-print("consulta de los registros de estado abierto")
 consulta, error = crudPrueba.consultar_registro(estado="ABIERTO")
 print(consulta)
-print(error)
-error = None
-print("consulta de los registros de estado cerrado")
-consulta, error = crudPrueba.consultar_registro(estado="CERRADO")
-print(consulta)
-print(error)
 """
