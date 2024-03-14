@@ -174,20 +174,20 @@ class Registro(Frame):
         self.tabla_registros()
 
     def tabla_registros(self):
-        scroll_dato_agua = Scrollbar(self, orient="vertical")
 
         Label(self, text="Registros").place(x=10, y=40)
-        self.tabla = Treeview(
-            self, height=10, yscrollcommand=scroll_dato_agua.set)
+        self.tabla = Treeview(self, selectmode="browse")
 
-        scroll_dato_agua.place(x=750, y=100)
-        scroll_dato_agua.configure(command=self.tabla.yview)
+        scroll_tabla = Scrollbar(
+            self, orient="vertical", command=self.tabla.yview)
+        scroll_tabla.pack(side="right", fill="y")
+        self.tabla.configure(yscrollcommand=scroll_tabla.set)
 
-        self.tabla.place(x=10, y=60)
+        self.tabla.place(x=10, y=60, width=780, height=400)
         self.tabla["columns"] = ("Dispensador", "Estado", "Fecha", "Hora")
         self.tabla.column("#0", width=0, stretch="no")
-        self.tabla.column("Dispensador", anchor="center", width=60)
-        self.tabla.column("Estado", anchor="center", width=50)
+        self.tabla.column("Dispensador", anchor="nw", width=80)
+        self.tabla.column("Estado", anchor="center", width=60)
         self.tabla.column("Fecha", anchor="center", width=200)
         self.tabla.column("Hora", anchor="center", width=200)
         self.tabla.heading("#0", text="", anchor="w")
@@ -204,7 +204,7 @@ class Registro(Frame):
         for registro in registros:
             # Modificar la columna "id" con "Servo1"
             registro = list(registro)
-            registro[0] = "agua" if registro[0] == 1 else "agua"
+            registro[0] = "agua" if registro[0] == 1 else "alimento"
             self.tabla.insert("", "end", values=registro)
 
 
