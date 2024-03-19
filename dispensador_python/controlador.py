@@ -116,25 +116,16 @@ class ControllerVista:
         except Exception as e:
             print(f"Error al enviar el tiempo de comida: {e}")
 
-    def filtrar_por_tipo(self):
-        self.filtro_tipo = self.registros.filtro_tipo.get()
-        self.registros.filtro_estado.set("Todo")
-        self.filtro_estado = "Todo"
-        self.actualizar_registros()
-
-    def filtrar_por_estado(self):
+    def filtrar(self):
         self.filtro_estado = self.registros.filtro_estado.get()
-        self.registros.filtro_tipo.set("Todo")
-        self.filtro_tipo = "Todo"
+        self.filtro_tipo = self.registros.filtro_tipo.get()
         self.actualizar_registros()
 
     def activar_botones(self):
         self.tiempo.btn_enviar_agua.config(command=self.enviar_tiempo_agua)
         self.tiempo.btn_enviar_comida.config(command=self.enviar_tiempo_comida)
         self.registros.btn_actualizar.config(command=self.actualizar_registros)
-        self.registros.btn_enviar_tipo.config(command=self.filtrar_por_tipo)
-        self.registros.btn_enviar_estado.config(
-            command=self.filtrar_por_estado)
+        self.registros.btn_enviar_filtro.config(command=self.filtrar)
 
     def iniciar_estados(self):
         try:
@@ -335,6 +326,19 @@ class ControllerVista:
         error = None
         if self.filtro_tipo == "Todo" and self.filtro_estado == "Todo":
             registro, error = self.db.consultar_registro()
+        elif self.filtro_tipo == "Agua" and self.filtro_estado == "Abierto":
+            registro, error = self.db.consultar_registro(
+                idComponente=1, estado="ABIERTO")
+        elif self.filtro_tipo == "Agua" and self.filtro_estado == "Cerrado":
+            registro, error = self.db.consultar_registro(
+                idComponente=1, estado="CERRADO")
+        elif self.filtro_tipo == "Alimento" and self.filtro_estado == "Abierto":
+            registro, error = self.db.consultar_registro(
+                idComponente=2, estado="ABIERTO")
+        elif self.filtro_tipo == "Alimento" and self.filtro_estado == "Cerrado":
+            registro, error = self.db.consultar_registro(
+                idComponente=2, estado="CERRADO")
+
         elif self.filtro_tipo == "Agua":
             registro, error = self.db.consultar_registro(idComponente=1)
         elif self.filtro_tipo == "Alimento":
