@@ -1,4 +1,4 @@
-from tkinter import Tk, Frame, Button, Label, IntVar, Scale, PhotoImage, messagebox, Toplevel, ttk, Scrollbar, Tk, Frame, Label, Checkbutton, IntVar, Listbox
+from tkinter import Tk, Frame, Button, Label, IntVar, Scale, PhotoImage, messagebox, Toplevel, ttk, Scrollbar, Tk, Frame, Label, Checkbutton, IntVar, Listbox, LabelFrame
 from tkinter.ttk import Treeview, Combobox, Notebook
 
 
@@ -187,6 +187,7 @@ class Registro(Frame):
         self.tabla_registros()
 
     def tabla_registros(self):
+
         self.tabla = Treeview(self, selectmode="browse")
 
         scroll_tabla = Scrollbar(
