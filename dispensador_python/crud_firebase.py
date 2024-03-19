@@ -14,23 +14,6 @@ class CrudFirebase:
             raise RuntimeError(
                 f"Error al conectar a la base de datos: {error}")
 
-    def insertar_registro(self, idComponente, estado):
-        try:
-            db = self.connection.database()
-            idComponente = int(idComponente)
-            fecha = datetime.now().strftime('%Y-%m-%d')
-            hora = datetime.now().strftime('%H:%M:%S')
-            result = db.child("dispensador/registros").push({
-                "idComponente": idComponente,
-                "estado": estado,
-                "fecha": fecha,
-                "hora": hora,
-            })
-
-            return "Registro insertado correctamente."
-        except Exception as error:
-            raise RuntimeError(f"Error al insertar el registro: {error}")
-
     def update_estado(self, idComponente, estado):
         try:
             db = self.connection.database()
@@ -48,6 +31,30 @@ class CrudFirebase:
             return result, None
         except Exception as error:
             return None, str(error)
+
+    def insertar_registro(self, idComponente, estado):
+        try:
+            db = self.connection.database()
+            idComponente = int(idComponente)
+            fecha = datetime.now().strftime('%Y-%m-%d')
+            hora = datetime.now().strftime('%H:%M:%S')
+
+            upd, error = self.update_estado(
+                idComponente=idComponente, estado=estado)
+
+            if error is not None:
+                raise Exception(error)
+
+            result = db.child("dispensador/registros").push({
+                "idComponente": idComponente,
+                "estado": estado,
+                "fecha": fecha,
+                "hora": hora,
+            })
+
+            return "Registro insertado correctamente."
+        except Exception as error:
+            raise RuntimeError(f"Error al insertar el registro: {error}")
 
     def consulta_filtrado(self, idComponente, estado):
         try:
