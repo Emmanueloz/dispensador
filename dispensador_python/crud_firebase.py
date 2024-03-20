@@ -6,6 +6,9 @@ class CrudFirebase:
     connection = None
     config = None
 
+    def __init__(self, nombre) -> None:
+        self.nombre = nombre
+
     def conectar_BD(self, config):
         self.config = config
         try:
@@ -24,6 +27,45 @@ class CrudFirebase:
                     {
                         "estado": estado,
                         "fecha": fecha,
+                        "dispensador": self.nombre,
+                        "hora": hora
+                    }
+            )
+
+            return result, None
+        except Exception as error:
+            return None, str(error)
+
+    def update_estado_contenedores(self, idComponente, estado):
+        try:
+            db = self.connection.database()
+            fecha = datetime.now().strftime('%Y-%m-%d')
+            hora = datetime.now().strftime('%H:%M:%S')
+            result = db.child(
+                "dispensador/estados").child(f"contenedor{idComponente}").update(
+                    {
+                        "estado": estado,
+                        "fecha": fecha,
+                        "dispensador": self.nombre,
+                        "hora": hora
+                    }
+            )
+
+            return result, None
+        except Exception as error:
+            return None, str(error)
+
+    def update_estado_tiempo(self, idComponente, estado):
+        try:
+            db = self.connection.database()
+            fecha = datetime.now().strftime('%Y-%m-%d')
+            hora = datetime.now().strftime('%H:%M:%S')
+            result = db.child(
+                "dispensador/estados").child(f"tiempo{idComponente}").update(
+                    {
+                        "estado": estado,
+                        "fecha": fecha,
+                        "dispensador": self.nombre,
                         "hora": hora
                     }
             )

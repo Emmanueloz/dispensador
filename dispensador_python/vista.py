@@ -187,15 +187,16 @@ class Registro(Frame):
         self.tabla_registros()
 
     def tabla_registros(self):
-
-        self.tabla = Treeview(self, selectmode="browse")
+        self.label_frame1 = Label(self, text="Dispensador para gallinas")
+        self.label_frame1.place(x=40, y=70, width=700, height=400)
+        self.tabla = Treeview(self.label_frame1, selectmode="browse")
 
         scroll_tabla = Scrollbar(
             self, orient="vertical", command=self.tabla.yview)
         scroll_tabla.pack(side="right", fill="y")
         self.tabla.configure(yscrollcommand=scroll_tabla.set)
 
-        self.tabla.place(x=40, y=100, width=700, height=400)
+        self.tabla.place(x=10, y=10, width=600, height=380)
         self.tabla["columns"] = ("Dispensador", "Estado", "Fecha", "Hora")
         self.tabla.column("#0", width=0, stretch="no")
         self.tabla.column("Dispensador", anchor="nw", width=80)

@@ -22,7 +22,7 @@ class ControllerVista:
         self.inicio: Inicio = self.vista.inicio
         self.tiempo: Tiempo = self.vista.tiempo
         self.registros: Registro = self.vista.registro
-        self.db = CrudFirebase()
+        self.db = CrudFirebase(nombre="dispensador1")
         self.arduino = ConnectionArduino(puerto="COM2")
         self.estado_agua = 0
         self.estado_comida = 0
