@@ -19,9 +19,9 @@ def validar_string(prefijo, valor):
 class ControllerVista:
     def __init__(self, vista) -> None:
         self.vista: Ventana = vista
-        self.inicio: Inicio = self.vista.inicio
+        self.inicio: DashBoard = self.vista.inicio.dash_board
         self.tiempo: Tiempo = self.vista.tiempo
-        self.registros: Registro = self.vista.registro
+        self.registros: Tablas = self.vista.registro.registro1
         self.db = CrudFirebase(nombre="dispensador1")
         self.arduino = ConnectionArduino(puerto="COM2")
         self.estado_agua = 0

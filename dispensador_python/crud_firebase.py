@@ -87,7 +87,7 @@ class CrudFirebase:
             if error is not None:
                 raise Exception(error)
 
-            result = db.child("dispensador/registros").push({
+            db.child("dispensador/registros").push({
                 "idComponente": idComponente,
                 "estado": estado,
                 "fecha": fecha,
@@ -129,10 +129,7 @@ class CrudFirebase:
             db = self.connection.database()
             registros = None
             if idComponente is not None and estado is not None:
-                """
-                registros = db.child("dispensador/registros").order_by_key().order_by_child(
-                    "idComponente").equal_to(idComponente).order_by_child("estado").equal_to(estado).get()
-                """
+
                 lista_registros, error = self.consulta_filtrado(
                     idComponente, estado)
 
@@ -196,6 +193,7 @@ class CrudFirebase:
             return None, str(error)
 
 
+"""
 crudPrueba = CrudFirebase()
 
 crudPrueba.conectar_BD({
@@ -211,14 +209,15 @@ crudPrueba.conectar_BD({
 # crudPrueba.insertar_registro(1, "CERRADO")
 # crudPrueba.insertar_registro(2, "CERRADO")
 
-"""
+
 result, error = crudPrueba.update_estado(idComponente=1, estado="ABIERTO")
 
 print(result, error)
 error = None
-"""
+
 consulta, error = crudPrueba.consultar_registro(
     idComponente=1, estado="CERRADO"
 )
 
 print(consulta)
+"""
