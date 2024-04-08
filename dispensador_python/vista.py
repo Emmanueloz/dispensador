@@ -179,21 +179,21 @@ class Tablas(LabelFrame):
         self.interfaz()
 
     def interfaz(self):
-        Label(self, text=f"..:: {self.name} ::..").place(x=300, y=10)
+        Label(self, text=f"..:: {self.name} ::..").place(x=160, y=10)
         self.btn_actualizar = Button(self, text="Actualizar")
         self.btn_actualizar.place(x=10, y=10)
         self.filtro_tipo = Combobox(self, values=["Todo", "Agua", "Alimento"])
         self.filtro_tipo.set("Todo")
-        Label(self, text="Filtrar por tipo:").place(x=40, y=60)
-        self.filtro_tipo.place(x=140, y=60, width=100)
+        Label(self, text="Filtrar por tipo:").place(x=10, y=50)
+        self.filtro_tipo.place(x=100, y=50, width=100)
 
-        Label(self, text="Filtrar por estado:").place(x=480, y=60)
+        Label(self, text="Filtrar por estado:").place(x=300, y=50)
         self.filtro_estado = Combobox(
             self, values=["Todo", "Abierto", "Cerrado"])
         self.filtro_estado.set("Todo")
-        self.filtro_estado.place(x=590, y=60, width=100)
+        self.filtro_estado.place(x=400, y=50, width=100)
         self.btn_enviar_filtro = Button(self, text="Filtrar")
-        self.btn_enviar_filtro.place(x=700, y=60)
+        self.btn_enviar_filtro.place(x=510, y=50)
 
         self.tabla_registros()
 
@@ -205,7 +205,7 @@ class Tablas(LabelFrame):
         scroll_tabla.pack(side="right", fill="y")
         self.tabla.configure(yscrollcommand=scroll_tabla.set)
 
-        self.tabla.place(x=10, y=80, width=600, height=200)
+        self.tabla.place(x=10, y=80, width=560, height=200)
         self.tabla["columns"] = ("Dispensador", "Estado", "Fecha", "Hora")
         self.tabla.column("#0", width=0, stretch="no")
         self.tabla.column("Dispensador", anchor="nw", width=80)
