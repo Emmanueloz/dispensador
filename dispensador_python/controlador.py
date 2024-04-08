@@ -17,12 +17,12 @@ def validar_string(prefijo, valor):
 
 
 class ControllerVista:
-    def __init__(self, vista) -> None:
+    def __init__(self, vista, name_id) -> None:
         self.vista: Ventana = vista
         self.inicio: DashBoard = self.vista.inicio.dash_board
         self.tiempo: Tiempo = self.vista.tiempo
         self.registros: Tablas = self.vista.registro.registro1
-        self.db = CrudFirebase(nombre="dispensador1")
+        self.db = CrudFirebase(name_id=name_id)
         self.arduino = ConnectionArduino(puerto="COM2")
         self.estado_agua = 0
         self.estado_comida = 0

@@ -6,8 +6,8 @@ class CrudFirebase:
     connection = None
     config = None
 
-    def __init__(self, nombre) -> None:
-        self.nombre = nombre
+    def __init__(self, name_id) -> None:
+        self.name_id = name_id
 
     def conectar_BD(self, config):
         self.config = config
@@ -23,11 +23,10 @@ class CrudFirebase:
             fecha = datetime.now().strftime('%Y-%m-%d')
             hora = datetime.now().strftime('%H:%M:%S')
             result = db.child(
-                "dispensador/estados").child(f"dispensador{idComponente}").update(
+                f"dispensador/estados/{self.name_id}").child(f"dispensador{idComponente}").update(
                     {
                         "estado": estado,
                         "fecha": fecha,
-                        "dispensador": self.nombre,
                         "hora": hora
                     }
             )
@@ -42,12 +41,12 @@ class CrudFirebase:
             fecha = datetime.now().strftime('%Y-%m-%d')
             hora = datetime.now().strftime('%H:%M:%S')
             result = db.child(
-                "dispensador/estados").child(f"contenedor{idComponente}").update(
+                f"dispensador/estados/{self.name_id}").child(f"contenedor{idComponente}").update(
                     {
                         "estado": estado,
                         "fecha": fecha,
                         "dispensador": self.nombre,
-                        "hora": hora
+                        "hora": hora,
                     }
             )
 
@@ -61,12 +60,12 @@ class CrudFirebase:
             fecha = datetime.now().strftime('%Y-%m-%d')
             hora = datetime.now().strftime('%H:%M:%S')
             result = db.child(
-                "dispensador/estados").child(f"tiempo{idComponente}").update(
+                f"dispensador/estados/{self.name_id}").child(f"tiempo{idComponente}").update(
                     {
                         "estado": estado,
                         "fecha": fecha,
                         "dispensador": self.nombre,
-                        "hora": hora
+                        "hora": hora,
                     }
             )
 
@@ -87,7 +86,7 @@ class CrudFirebase:
             if error is not None:
                 raise Exception(error)
 
-            db.child("dispensador/registros").push({
+            db.child(f"dispensador/registros/{self.name_id}").push({
                 "idComponente": idComponente,
                 "estado": estado,
                 "fecha": fecha,
@@ -103,7 +102,7 @@ class CrudFirebase:
             db = self.connection.database()
 
             registros = db.child(
-                "dispensador/registros").order_by_key().limit_to_last(5).order_by_child("estado").equal_to(estado).get()
+                f"dispensador/registros/{self.name_id}").order_by_key().limit_to_last(5).order_by_child("estado").equal_to(estado).get()
 
             lista_registros = []
             for registro in registros.each():
@@ -139,14 +138,14 @@ class CrudFirebase:
                 return lista_registros, None
 
             elif idComponente is not None:
-                registros = db.child("dispensador/registros").order_by_key().limit_to_last(5).order_by_child(
+                registros = db.child(f"dispensador/registros/{self.name_id}").order_by_key().limit_to_last(5).order_by_child(
                     "idComponente").equal_to(idComponente).get()
             elif estado is not None:
-                registros = db.child("dispensador/registros").order_by_key().limit_to_last(5).order_by_child(
+                registros = db.child(f"dispensador/registros/{self.name_id}").order_by_key().limit_to_last(5).order_by_child(
                     "estado").equal_to(estado).get()
             else:
                 registros = db.child(
-                    "dispensador/registros").limit_to_last(5).order_by_key().get()
+                    f"dispensador/registros/{self.name_id}").limit_to_last(5).order_by_key().get()
 
             if registros.val() is None or len(registros.val()) == 0:
                 raise Exception("No se encontraron resultados.")
@@ -170,7 +169,7 @@ class CrudFirebase:
         try:
             idComponente = int(idComponente)
             db = self.connection.database()
-            registros = db.child("dispensador/registros").order_by_child(
+            registros = db.child(f"dispensador/registros/{self.name_id}").order_by_child(
                 "idComponente").equal_to(idComponente).limit_to_last(1).get()
 
             # print(registros.val())

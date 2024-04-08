@@ -3,5 +3,5 @@ from .vista import Ventana
 
 
 app = Ventana()
-controlador = ControllerVista(app)
+controlador = ControllerVista(app, "dis1")
 controlador.iniciar()
