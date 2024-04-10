@@ -17,6 +17,25 @@ class CrudFirebase:
             raise RuntimeError(
                 f"Error al conectar a la base de datos: {error}")
 
+    def consultar_estados_all(self):
+        try:
+            db = self.connection.database()
+            estados = db.child("dispensador/estados/").get()
+
+            estados_dic = {e.key(): e.val() for e in estados.each()}
+
+            return estados_dic, None
+        except Exception as e:
+            return [], str(e)
+
+    def set_stream_handler(self, stream_handler):
+        try:
+            db = self.connection.database()
+            db.child("dispensador/estados/").stream(stream_handler)
+            return None
+        except Exception as e:
+            return str(e)
+
     def update_estado(self, idComponente, estado):
         try:
             db = self.connection.database()
@@ -216,6 +235,7 @@ class CrudFirebase:
 
             lista_registros = []
             for registro in registros.each():
+
                 lista_registros.append(
                     (
                         int(registro.val()["idComponente"]),
@@ -231,7 +251,7 @@ class CrudFirebase:
 
 
 """
-crudPrueba = CrudFirebase()
+crudPrueba = CrudFirebase("dis1")
 
 crudPrueba.conectar_BD({
     'apiKey': "AIzaSyD3l2W0fhM7QfF3PhvSK3dU5Sghsn7ORBs",
@@ -247,14 +267,15 @@ crudPrueba.conectar_BD({
 # crudPrueba.insertar_registro(2, "CERRADO")
 
 
-result, error = crudPrueba.update_estado(idComponente=1, estado="ABIERTO")
+estados_dic, error = crudPrueba.consultar_estados_all()
 
-print(result, error)
-error = None
+print(error)
+print(estados_dic)
 
-consulta, error = crudPrueba.consultar_registro(
-    idComponente=1, estado="CERRADO"
-)
 
-print(consulta)
+def example(message):
+    print(message)
+
+
+crudPrueba.set_stream_handler(example)
 """

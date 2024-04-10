@@ -50,6 +50,7 @@ class ControllerVista:
         self.inicio: DashBoard = inicio
         self.tiempo: DashBoardTiempo = tiempo
         self.registros: Tablas = registros
+
         self.db = CrudFirebase(name_id=name_id)
         self.arduino = ConnectionArduino(puerto="COM2")
         self.estado_agua = 0
@@ -60,6 +61,27 @@ class ControllerVista:
         self.error_bd = False
         self.filtro_tipo = "Todo"
         self.filtro_estado = "Todo"
+
+    def vistas(self):
+        self.inicio1: DashBoard = self.vista.inicio.dash_board1
+        self.tiempo1: DashBoardTiempo = self.vista.tiempo.dash_board_tiempo1
+        self.registros1: Tablas = self.vista.registro.registro1
+
+        self.inicio2: DashBoard = self.vista.inicio.dash_board2
+        self.tiempo2: DashBoardTiempo = self.vista.tiempo.dash_board_tiempo2
+        self.registros2: Tablas = self.vista.registro.registro2
+
+        self.inicio3: DashBoard = self.vista.inicio.dash_board3
+        self.tiempo3: DashBoardTiempo = self.vista.tiempo.dash_board_tiempo3
+        self.registros3: Tablas = self.vista.registro.registro3
+
+        self.inicio4: DashBoard = self.vista.inicio.dash_board4
+        self.tiempo4: DashBoardTiempo = self.vista.tiempo.dash_board_tiempo4
+        self.registros4: Tablas = self.vista.registro.registro4
+
+        self.inicio5: DashBoard = self.vista.inicio.dash_board5
+        self.tiempo5: DashBoardTiempo = self.vista.tiempo.dash_board_tiempo5
+        self.registros5: Tablas = self.vista.registro.registro5
 
     def conectar_todo(self):
         try:
@@ -87,6 +109,9 @@ class ControllerVista:
 
         except Exception as e:
             messagebox.showerror("Error", f"Error al conectar: {e}")
+
+    def actualizar_estado(self, data):
+        print(data)
 
     def finalizar(self):
         self.corriendo = False
