@@ -17,6 +17,9 @@ class CrudFirebase:
             raise RuntimeError(
                 f"Error al conectar a la base de datos: {error}")
 
+    def cerrar(self):
+        self.stream.close()
+
     def consultar_estados_all(self):
         try:
             db = self.connection.database()
@@ -26,12 +29,13 @@ class CrudFirebase:
 
             return estados_dic, None
         except Exception as e:
-            return [], str(e)
+            return {}, str(e)
 
     def set_stream_handler(self, stream_handler):
         try:
             db = self.connection.database()
-            db.child("dispensador/estados/").stream(stream_handler)
+            self.stream = db.child(
+                "dispensador/estados/").stream(stream_handler)
             return None
         except Exception as e:
             return str(e)

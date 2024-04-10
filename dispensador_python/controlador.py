@@ -20,6 +20,7 @@ class ControllerVista:
     def __init__(self, vista, name_id) -> None:
 
         self.vista: Ventana = vista
+        self.name_id = name_id
 
         inicio = None
         tiempo = None
@@ -96,6 +97,8 @@ class ControllerVista:
                 'appId': "1:801264676158:web:b39b19991c7167cc89106f"
             })
 
+            self.db.set_stream_handler(self.actualizar_vista)
+
             print("Conexión exitosa a la base de datos y Arduino.")
             messagebox.showinfo(
                 "Conexión exitosa", "Conexión exitosa a la base de datos y Arduino.")
@@ -110,14 +113,20 @@ class ControllerVista:
         except Exception as e:
             messagebox.showerror("Error", f"Error al conectar: {e}")
 
-    def actualizar_estado(self, data):
-        print(data)
+    def actualizar_vista(self, data):
+        estados, error = self.db.consultar_estados_all()
+        if error is not None:
+            messagebox.showerror("Error", error)
+            return
+
+        print(estados)
 
     def finalizar(self):
         self.corriendo = False
         self.hilo_lectura.join(0.1)
         self.vista.quit()
         self.vista.destroy()
+        self.db.cerrar()
         # self.db.cerrar_conexion()
         self.arduino.cerrar_arduino()
 
@@ -188,28 +197,26 @@ class ControllerVista:
             result = result.replace("\r", "")
             # orden de los estados:
             # wdP:0,fdP:0,wdSIs:0,fdSIs:0,wdTget:90m,fdTget:90m
+
             result = result.split(",")
+
             es_agua = int(result[0])
-            msg_agua = self.procesar_resultado(es_agua)
-            self.inicio.set_estado_agua(es_agua, msg_agua)
+
+            self.db.update_estado(1, es_agua)
+
             es_alimento = int(result[1])
-            msg_alimento = self.procesar_resultado(es_alimento)
-            self.inicio.set_estado_comida(es_alimento, msg_alimento)
 
-            msg_contenedor_agua = "El contenedor de agua esta lleno" if int(
-                result[2]) == 0 else "El contenedor de agua esta vacío."
+            self.db.update_estado(2, es_alimento)
 
-            msg_contenedor_alimento = "El contenedor de alimento esta lleno" if int(
-                result[3]) == 0 else "El contenedor de alimento esta vacío."
-            self.inicio.set_contenedor_agua(msg_contenedor_agua)
-            self.inicio.set_contenedor_comida(msg_contenedor_alimento)
+            self.db.update_estado_contenedores(1, result[2])
 
-            msgT_agua = "Intervalo:"+result[4]
-            self.tiempo.set_estado_aguaT(
-                int(result[4].strip("mhs")), result[4][-1], msgT_agua)
+            self.db.update_estado_contenedores(1, result[3])
+
+            self.db.update_estado_tiempo(
+                1, int(result[4].strip("mhs")), result[4][-1])
 
             self.tiempo.set_estado_comidaT(
-                int(result[5].strip("mhs")), result[5][-1], "Intervalo:"+result[5])
+                2, int(result[5].strip("mhs")), result[5][-1])
 
             print(result)
 
