@@ -151,6 +151,16 @@ class ControllerVista:
         except Exception as e:
             messagebox.showerror("Error", f"Error al conectar: {e}")
 
+    def set_estados_inicio(self, vista: DashBoard, dis: DisModel):
+        vista.set_estado_agua(dis.dispensador1.estado,
+                              self.procesar_resultado(dis.dispensador1.estado))
+
+        vista.set_estado_comida(dis.dispensador2.estado,
+                                self.procesar_resultado(dis.dispensador2.estado))
+
+        vista.set_contenedor_agua(dis.contenedor1.estado)
+        vista.set_contenedor_comida(dis.contenedor2.estado)
+
     def actualizar_vista(self, data):
         estados, error = self.db.consultar_estados_all()
         if error is not None:
@@ -163,14 +173,7 @@ class ControllerVista:
         dis4 = DisModel(estados['dis4'])
         dis5 = DisModel(estados['dis5'])
 
-        self.inicio1.set_estado_agua(dis1.dispensador1.estado,
-                                     self.procesar_resultado(dis1.dispensador1.estado))
-
-        self.inicio1.set_estado_comida(dis1.dispensador2.estado,
-                                       self.procesar_resultado(dis1.dispensador2.estado))
-
-        self.inicio1.set_contenedor_agua(dis1.contenedor1.estado)
-        self.inicio1.set_contenedor_comida(dis1.contenedor2.estado)
+        self.set_estados_inicio(self.inicio1, dis1)
 
         self.inicio2.set_estado_agua(dis2.dispensador1.estado,
                                      self.procesar_resultado(dis2.dispensador2.estado))
