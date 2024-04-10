@@ -148,6 +148,7 @@ class DashBoardTiempo(LabelFrame):
     def scales(self):
 
         estado_escale = "disabled" if self.is_readonly else "normal"
+
         Scale(self,  from_=0, to=60, orient="vertical", tickinterval=30, state=estado_escale,
               length=250, variable=self.tiempo_agua_var).place(x=10, y=10)
 
