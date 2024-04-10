@@ -83,8 +83,17 @@ class Inicio(Frame):
         self.dash_board2 = DashBoard(self, imagen_agua, imagen_comida)
         self.dash_board2.place(x=10, y=310, width=600, height=300)
 
+        self.dash_board3 = DashBoard(self, imagen_agua, imagen_comida)
+        self.dash_board3.place(x=10, y=610, width=600, height=300)
 
-class Tiempo(Frame):
+        self.dash_board4 = DashBoard(self, imagen_agua, imagen_comida)
+        self.dash_board4.place(x=610, y=10, width=600, height=300)
+
+        self.dash_board5 = DashBoard(self, imagen_agua, imagen_comida)
+        self.dash_board5.place(x=610, y=310, width=600, height=300)
+
+
+class DashBoardTiempo(LabelFrame):
     def __init__(self, master=None, imagen_agua=None, imagen_comida=None, name="Tiempo para dispensar"):
         super().__init__(master)
         self.master = master
@@ -97,7 +106,7 @@ class Tiempo(Frame):
         self.interfaz()
 
     def interfaz(self):
-        Label(self, text=f"..:: {self.name} ::..").place(x=300, y=10)
+        Label(self, text=f"..:: {self.name} ::..").place(x=250, y=10)
         self.labels()
         self.scales()
         self.imagenes()
@@ -106,48 +115,48 @@ class Tiempo(Frame):
 
     def labels(self):
         self.lbl_estado_aguaT = Label(
-            self, fg="blue", font=("Courier New", 14, "bold"))
-        self.lbl_estado_aguaT.place(x=90, y=70)
+            self, fg="blue", font=("Courier New", 12, "bold"))
+        self.lbl_estado_aguaT.place(x=90, y=30)
 
         self.lbl_estado_comidaT = Label(
-            self, fg="green", font=("Courier New", 14, "bold"))
-        self.lbl_estado_comidaT.place(x=400, y=70)
+            self, fg="green", font=("Courier New", 12, "bold"))
+        self.lbl_estado_comidaT.place(x=350, y=30)
 
         self.lbl_resultado_aguaT = Label(
-            self, fg="blue", font=("Courier New", 14, "bold"))
-        self.lbl_resultado_aguaT.place(x=20, y=450)
+            self, fg="blue", font=("Courier New", 10, "bold"))
+        self.lbl_resultado_aguaT.place(x=170, y=180)
 
         self.lbl_resultado_comidaT = Label(
-            self, fg="green", font=("Courier New", 14, "bold"))
-        self.lbl_resultado_comidaT.place(x=400, y=450)
+            self, fg="green", font=("Courier New", 10, "bold"))
+        self.lbl_resultado_comidaT.place(x=170, y=200)
 
     def scales(self):
         Scale(self,  from_=0, to=60, orient="vertical", tickinterval=30,
-              length=400, variable=self.tiempo_agua_var).place(x=10, y=10)
-        Scale(self, from_=0, to=60, orient="vertical", tickinterval=30, length=400,
-              variable=self.tiempo_comida_var).place(x=720, y=10)
+              length=250, variable=self.tiempo_agua_var).place(x=10, y=10)
+        Scale(self, from_=0, to=60, orient="vertical", tickinterval=30, length=250,
+              variable=self.tiempo_comida_var).place(x=520, y=10)
 
     def imagenes(self):
         # imagen de agua
-        Label(self, image=self.imagen_agua).place(x=90, y=100)
+        Label(self, image=self.imagen_agua).place(x=90, y=50)
 
         # imagen de comida
-        Label(self, image=self.imagen_comida).place(x=400, y=100)
+        Label(self, image=self.imagen_comida).place(x=350, y=50)
 
     def selects(self):
         self.select_agua = Combobox(self, values=["Minutos", "Segundos"])
         self.select_agua.set("Minutos")
-        self.select_agua.place(x=150, y=350)
+        self.select_agua.place(x=90, y=250, width=80)
 
         self.select_comida = Combobox(self, values=["Minutos", "Segundos"])
         self.select_comida.set("Minutos")
-        self.select_comida.place(x=450, y=350)
+        self.select_comida.place(x=350, y=250, width=80)
 
     def buttons(self):
         self.btn_enviar_agua = Button(self, width=8, text="Enviar")
-        self.btn_enviar_agua.place(x=150, y=400)
+        self.btn_enviar_agua.place(x=180, y=250)
         self.btn_enviar_comida = Button(self, width=8, text="Enviar")
-        self.btn_enviar_comida.place(x=450, y=400)
+        self.btn_enviar_comida.place(x=440, y=250)
 
     def set_estado_aguaT(self, tiempo, unidad, msg):
         self.tiempo_agua_var.set(tiempo)
@@ -168,6 +177,30 @@ class Tiempo(Frame):
 
     def set_resultado_comidaT(self, msg):
         self.lbl_resultado_comidaT.config(text=msg)
+
+
+class Tiempo(Frame):
+    def __init__(self, master=None, imagen_agua=None, imagen_comida=None):
+        super().__init__(master)
+        self.dash_board_tiempo1 = DashBoardTiempo(
+            self, imagen_agua, imagen_comida, "Dispensador 1")
+        self.dash_board_tiempo1.place(x=10, y=10, width=600, height=300)
+
+        self.dash_board_tiempo2 = DashBoardTiempo(
+            self, imagen_agua, imagen_comida, "Dispensador 2")
+        self.dash_board_tiempo2.place(x=10, y=310, width=600, height=300)
+
+        self.dash_board_tiempo3 = DashBoardTiempo(
+            self, imagen_agua, imagen_comida, "Dispensador 3")
+        self.dash_board_tiempo3.place(x=10, y=610, width=600, height=300)
+
+        self.dash_board_tiempo4 = DashBoardTiempo(
+            self, imagen_agua, imagen_comida, "Dispensador 4")
+        self.dash_board_tiempo4.place(x=610, y=10, width=600, height=300)
+
+        self.dash_board_tiempo5 = DashBoardTiempo(
+            self, imagen_agua, imagen_comida, "Dispensador 5")
+        self.dash_board_tiempo5.place(x=610, y=310, width=600, height=300)
 
 
 class Tablas(LabelFrame):
@@ -236,15 +269,24 @@ class Registro(Frame):
         self.registro1 = Tablas(self, "Dispensador 1")
         self.registro1.place(x=10, y=10, width=600, height=300)
 
-        self.registro2 = Tablas(self, "Dispensador 1")
+        self.registro2 = Tablas(self, "Dispensador 2")
         self.registro2.place(x=10, y=310, width=600, height=300)
+
+        self.register3 = Tablas(self, "Dispensador 3")
+        self.register3.place(x=10, y=610, width=600, height=300)
+
+        self.register4 = Tablas(self, "Dispensador 4")
+        self.register4.place(x=610, y=10, width=600, height=300)
+
+        self.register5 = Tablas(self, "Dispensador 5")
+        self.register5.place(x=610, y=310, width=600, height=300)
 
 
 class Ventana(Tk):
     def __init__(self):
         super().__init__()
         self.title("Monitor de dispensador")
-        self.geometry("1200x900")
+        self.geometry("1220x940")
         # self.resizable(0, 0)
         self.imagen_agua = PhotoImage(file="imagen/agua.png")
         self.imagen_comida = PhotoImage(file="imagen/comida.png")

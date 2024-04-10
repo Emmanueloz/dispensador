@@ -12,7 +12,9 @@ class ConnectionArduino:
 
     def conectar(self):
         try:
-            self.arduino = serial.Serial(self.puerto, self.velocidad)
+            self.arduino = serial.Serial(
+                self.puerto, self.velocidad, timeout=2)
+
             time.sleep(1)
             return None
         except serial.SerialException as e:

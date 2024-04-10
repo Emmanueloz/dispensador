@@ -20,7 +20,7 @@ class ControllerVista:
     def __init__(self, vista, name_id) -> None:
         self.vista: Ventana = vista
         self.inicio: DashBoard = self.vista.inicio.dash_board
-        self.tiempo: Tiempo = self.vista.tiempo
+        self.tiempo: DashBoardTiempo = self.vista.tiempo.dash_board_tiempo1
         self.registros: Tablas = self.vista.registro.registro1
         self.db = CrudFirebase(name_id=name_id)
         self.arduino = ConnectionArduino(puerto="COM2")
