@@ -283,8 +283,14 @@ class Tablas(LabelFrame):
         # Actualizar tabla de agua
         for registro in registros:
             # Modificar la columna "id" con "Servo1"
+            name_dis = ""
+            if registro[0] == 1:
+                name_dis = "agua"
+            elif registro[0] == 2:
+                name_dis = "alimento"
+
             registro = list(registro)
-            registro[0] = "agua" if registro[0] == 1 else "alimento"
+            registro[0] = name_dis
             self.tabla.insert("", "end", values=registro)
 
 

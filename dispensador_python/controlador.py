@@ -267,16 +267,59 @@ class ControllerVista:
         except Exception as e:
             print(f"Error al enviar el tiempo de comida: {e}")
 
-    def filtrar(self):
-        self.filtro_estado = self.registros.filtro_estado.get()
-        self.filtro_tipo = self.registros.filtro_tipo.get()
-        self.actualizar_registros()
+    def filtrar(self, dis):
+
+        match dis:
+            case "dis1":
+                self.filtro_estado = self.registros1.filtro_estado.get()
+                self.filtro_tipo = self.registros1.filtro_tipo.get()
+
+            case "dis2":
+                self.filtro_estado = self.registros2.filtro_estado.get()
+                self.filtro_tipo = self.registros2.filtro_tipo.get()
+
+            case "dis3":
+                self.filtro_estado = self.registros3.filtro_estado.get()
+                self.filtro_tipo = self.registros3.filtro_tipo.get()
+
+            case "dis4":
+                self.filtro_estado = self.registros4.filtro_estado.get()
+                self.filtro_tipo = self.registros4.filtro_tipo.get()
+
+            case "dis5":
+                self.filtro_estado = self.registros5.filtro_estado.get()
+                self.filtro_tipo = self.registros5.filtro_tipo.get()
+
+        self.actualizar_registros(dis)
 
     def activar_botones(self):
         self.tiempo.btn_enviar_agua.config(command=self.enviar_tiempo_agua)
         self.tiempo.btn_enviar_comida.config(command=self.enviar_tiempo_comida)
-        self.registros.btn_actualizar.config(command=self.actualizar_registros)
-        self.registros.btn_enviar_filtro.config(command=self.filtrar)
+
+        self.registros1.btn_actualizar.config(
+            command=lambda: self.actualizar_registros("dis1"))
+        self.registros1.btn_enviar_filtro.config(
+            command=lambda: self.filtrar("dis1"))
+
+        self.registros2.btn_actualizar.config(
+            command=lambda: self.actualizar_registros("dis2"))
+        self.registros2.btn_enviar_filtro.config(
+            command=lambda: self.filtrar("dis2"))
+
+        self.registros3.btn_actualizar.config(
+            command=lambda: self.actualizar_registros("dis3"))
+        self.registros3.btn_enviar_filtro.config(
+            command=lambda: self.filtrar("dis3"))
+
+        self.registros4.btn_actualizar.config(
+            command=lambda: self.actualizar_registros("dis4"))
+        self.registros4.btn_enviar_filtro.config(
+            command=lambda: self.filtrar("dis4"))
+
+        self.registros5.btn_actualizar.config(
+            command=lambda: self.actualizar_registros("dis5"))
+        self.registros5.btn_enviar_filtro.config(
+            command=lambda: self.filtrar("dis5"))
 
     def iniciar_estados(self):
         try:
@@ -541,42 +584,68 @@ class ControllerVista:
             except Exception as error:
                 print(f"Error al leer el puerto serial: {error}")
 
-    def actualizar_registros(self):
+    def actualizar_registros(self, dis):
         registro = None
         error = None
         if self.filtro_tipo == "Todo" and self.filtro_estado == "Todo":
-            registro, error = self.db.consultar_registro()
+            registro, error = self.db.consultar_registro(dis=dis)
         elif self.filtro_tipo == "Agua" and self.filtro_estado == "Abierto":
             registro, error = self.db.consultar_registro(
-                idComponente=1, estado="ABIERTO")
+                idComponente=1, estado="ABIERTO", dis=dis)
         elif self.filtro_tipo == "Agua" and self.filtro_estado == "Cerrado":
             registro, error = self.db.consultar_registro(
-                idComponente=1, estado="CERRADO")
+                idComponente=1, estado="CERRADO", dis=dis)
         elif self.filtro_tipo == "Alimento" and self.filtro_estado == "Abierto":
             registro, error = self.db.consultar_registro(
-                idComponente=2, estado="ABIERTO")
+                idComponente=2, estado="ABIERTO", dis=dis)
         elif self.filtro_tipo == "Alimento" and self.filtro_estado == "Cerrado":
             registro, error = self.db.consultar_registro(
-                idComponente=2, estado="CERRADO")
+                idComponente=2, estado="CERRADO", dis=dis)
 
         elif self.filtro_tipo == "Agua":
-            registro, error = self.db.consultar_registro(idComponente=1)
+            registro, error = self.db.consultar_registro(
+                idComponente=1, dis=dis)
         elif self.filtro_tipo == "Alimento":
-            registro, error = self.db.consultar_registro(idComponente=2)
+            registro, error = self.db.consultar_registro(
+                idComponente=2, dis=dis)
         elif self.filtro_estado == "Abierto":
-            registro, error = self.db.consultar_registro(estado="ABIERTO")
+            registro, error = self.db.consultar_registro(
+                estado="ABIERTO", dis=dis)
         elif self.filtro_estado == "Cerrado":
-            registro, error = self.db.consultar_registro(estado="CERRADO")
+            registro, error = self.db.consultar_registro(
+                estado="CERRADO", dis=dis)
 
-        if error is None:
-            self.registros.actualizar_tabla(registro)
+        if error is not None:
+            print(error)
+            return
+
+        match dis:
+            case "dis1":
+                self.registros1.actualizar_tabla(registro)
+
+            case "dis2":
+                self.registros2.actualizar_tabla(registro)
+
+            case "dis3":
+                self.registros3.actualizar_tabla(registro)
+
+            case "dis4":
+                self.registros4.actualizar_tabla(registro)
+
+            case "dis5":
+                self.registros5.actualizar_tabla(registro)
 
     def iniciar(self):
         self.conectar_todo()
         self.iniciar_estados()
         self.activar_check_button()
         self.activar_botones()
-        self.actualizar_registros()
+        self.actualizar_registros("dis1")
+        self.actualizar_registros("dis2")
+        self.actualizar_registros("dis3")
+        self.actualizar_registros("dis4")
+        self.actualizar_registros("dis5")
+
         self.hilo_lectura.start()
         self.db.set_stream_handler(self.actualizar_vista)
         self.vista.mainloop()

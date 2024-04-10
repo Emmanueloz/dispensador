@@ -158,12 +158,12 @@ class CrudFirebase:
         except Exception as error:
             raise RuntimeError(f"Error al insertar el registro: {error}")
 
-    def consulta_filtrado(self, idComponente, estado):
+    def consulta_filtrado(self, idComponente, estado, dis=None):
         try:
             db = self.connection.database()
 
             registros = db.child(
-                f"dispensador/registros/{self.name_id}").order_by_key().limit_to_last(5).order_by_child("estado").equal_to(estado).get()
+                f"dispensador/registros/{dis}").order_by_key().limit_to_last(5).order_by_child("estado").equal_to(estado).get()
 
             lista_registros = []
             for registro in registros.each():
@@ -194,7 +194,7 @@ class CrudFirebase:
             if idComponente is not None and estado is not None:
 
                 lista_registros, error = self.consulta_filtrado(
-                    idComponente, estado)
+                    idComponente, estado, dis)
 
                 if error is not None:
                     raise Exception(error)
@@ -212,7 +212,7 @@ class CrudFirebase:
                     f"dispensador/registros/{dis}").limit_to_last(5).order_by_key().get()
 
             if registros.val() is None or len(registros.val()) == 0:
-                raise Exception("No se encontraron resultados.")
+                return [("", "", "", "")], None
 
             lista_registros = []
             for registro in registros.each():
