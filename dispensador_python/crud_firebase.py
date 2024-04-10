@@ -17,6 +17,29 @@ class CrudFirebase:
             raise RuntimeError(
                 f"Error al conectar a la base de datos: {error}")
 
+    def cerrar(self):
+        self.stream.close()
+
+    def consultar_estados_all(self):
+        try:
+            db = self.connection.database()
+            estados = db.child("dispensador/estados/").get()
+
+            estados_dic = {e.key(): e.val() for e in estados.each()}
+
+            return estados_dic, None
+        except Exception as e:
+            return {}, str(e)
+
+    def set_stream_handler(self, stream_handler):
+        try:
+            db = self.connection.database()
+            self.stream = db.child(
+                "dispensador/estados/").stream(stream_handler)
+            return None
+        except Exception as e:
+            return str(e)
+
     def update_estado(self, idComponente, estado):
         try:
             db = self.connection.database()
@@ -45,7 +68,6 @@ class CrudFirebase:
                     {
                         "estado": estado,
                         "fecha": fecha,
-                        "dispensador": self.nombre,
                         "hora": hora,
                     }
             )
@@ -54,7 +76,25 @@ class CrudFirebase:
         except Exception as error:
             return None, str(error)
 
-    def update_estado_tiempo(self, idComponente, estado):
+    def update_estado_recipiente(self, idComponente, estado):
+        try:
+            db = self.connection.database()
+            fecha = datetime.now().strftime('%Y-%m-%d')
+            hora = datetime.now().strftime('%H:%M:%S')
+            result = db.child(
+                f"dispensador/estados/{self.name_id}").child(f"contenedor{idComponente}").update(
+                    {
+                        "estado": estado,
+                        "fecha": fecha,
+                        "hora": hora,
+                    }
+            )
+
+            return result, None
+        except Exception as error:
+            return None, str(error)
+
+    def update_estado_tiempo(self, idComponente, intervalo, tipo):
         try:
             db = self.connection.database()
             fecha = datetime.now().strftime('%Y-%m-%d')
@@ -62,9 +102,9 @@ class CrudFirebase:
             result = db.child(
                 f"dispensador/estados/{self.name_id}").child(f"tiempo{idComponente}").update(
                     {
-                        "estado": estado,
+                        "intervalo": intervalo,
+                        "tipo": tipo,
                         "fecha": fecha,
-                        "dispensador": self.nombre,
                         "hora": hora,
                     }
             )
@@ -73,18 +113,39 @@ class CrudFirebase:
         except Exception as error:
             return None, str(error)
 
-    def insertar_registro(self, idComponente, estado):
+    def update_estado_tiempo_resultado(self, idComponente, estado):
+        try:
+            db = self.connection.database()
+            fecha = datetime.now().strftime('%Y-%m-%d')
+            hora = datetime.now().strftime('%H:%M:%S')
+            result = db.child(
+                f"dispensador/estados/{self.name_id}").child(f"tResultado{idComponente}").update(
+                    {
+                        "estado": estado,
+                        "fecha": fecha,
+                        "hora": hora,
+                    }
+            )
+
+            return result, None
+        except Exception as error:
+            return None, str(error)
+
+    def insertar_registro(self, idComponente, estado, id_update=True):
         try:
             db = self.connection.database()
             idComponente = int(idComponente)
             fecha = datetime.now().strftime('%Y-%m-%d')
             hora = datetime.now().strftime('%H:%M:%S')
 
-            upd, error = self.update_estado(
-                idComponente=idComponente, estado=estado)
+            if id_update:
+                upd_estado = 1 if estado == "ABIERTO" else 0
 
-            if error is not None:
-                raise Exception(error)
+                upd, error = self.update_estado(
+                    idComponente=idComponente, estado=upd_estado)
+
+                if error is not None:
+                    raise Exception(error)
 
             db.child(f"dispensador/registros/{self.name_id}").push({
                 "idComponente": idComponente,
@@ -97,12 +158,12 @@ class CrudFirebase:
         except Exception as error:
             raise RuntimeError(f"Error al insertar el registro: {error}")
 
-    def consulta_filtrado(self, idComponente, estado):
+    def consulta_filtrado(self, idComponente, estado, dis=None):
         try:
             db = self.connection.database()
 
             registros = db.child(
-                f"dispensador/registros/{self.name_id}").order_by_key().limit_to_last(5).order_by_child("estado").equal_to(estado).get()
+                f"dispensador/registros/{dis}").order_by_key().limit_to_last(5).order_by_child("estado").equal_to(estado).get()
 
             lista_registros = []
             for registro in registros.each():
@@ -120,17 +181,20 @@ class CrudFirebase:
         except Exception as error:
             return None, str(error)
 
-    def consultar_registro(self, idComponente=None, estado=None):
+    def consultar_registro(self, idComponente=None, estado=None, dis=None):
         try:
             idComponente = int(
                 idComponente) if idComponente is not None else None
+
+            if not dis:
+                dis = self.name_id
 
             db = self.connection.database()
             registros = None
             if idComponente is not None and estado is not None:
 
                 lista_registros, error = self.consulta_filtrado(
-                    idComponente, estado)
+                    idComponente, estado, dis)
 
                 if error is not None:
                     raise Exception(error)
@@ -138,17 +202,17 @@ class CrudFirebase:
                 return lista_registros, None
 
             elif idComponente is not None:
-                registros = db.child(f"dispensador/registros/{self.name_id}").order_by_key().limit_to_last(5).order_by_child(
+                registros = db.child(f"dispensador/registros/{dis}").order_by_key().limit_to_last(5).order_by_child(
                     "idComponente").equal_to(idComponente).get()
             elif estado is not None:
-                registros = db.child(f"dispensador/registros/{self.name_id}").order_by_key().limit_to_last(5).order_by_child(
+                registros = db.child(f"dispensador/registros/{dis}").order_by_key().limit_to_last(5).order_by_child(
                     "estado").equal_to(estado).get()
             else:
                 registros = db.child(
-                    f"dispensador/registros/{self.name_id}").limit_to_last(5).order_by_key().get()
+                    f"dispensador/registros/{dis}").limit_to_last(5).order_by_key().get()
 
             if registros.val() is None or len(registros.val()) == 0:
-                raise Exception("No se encontraron resultados.")
+                return [("", "", "", "")], None
 
             lista_registros = []
             for registro in registros.each():
@@ -178,6 +242,7 @@ class CrudFirebase:
 
             lista_registros = []
             for registro in registros.each():
+
                 lista_registros.append(
                     (
                         int(registro.val()["idComponente"]),
@@ -193,7 +258,7 @@ class CrudFirebase:
 
 
 """
-crudPrueba = CrudFirebase()
+crudPrueba = CrudFirebase("dis1")
 
 crudPrueba.conectar_BD({
     'apiKey': "AIzaSyD3l2W0fhM7QfF3PhvSK3dU5Sghsn7ORBs",
@@ -209,14 +274,15 @@ crudPrueba.conectar_BD({
 # crudPrueba.insertar_registro(2, "CERRADO")
 
 
-result, error = crudPrueba.update_estado(idComponente=1, estado="ABIERTO")
+estados_dic, error = crudPrueba.consultar_estados_all()
 
-print(result, error)
-error = None
+print(error)
+print(estados_dic)
 
-consulta, error = crudPrueba.consultar_registro(
-    idComponente=1, estado="CERRADO"
-)
 
-print(consulta)
+def example(message):
+    print(message)
+
+
+crudPrueba.set_stream_handler(example)
 """

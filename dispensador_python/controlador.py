@@ -4,6 +4,7 @@ from time import sleep
 from re import match
 from .vista import *
 from threading import Thread
+from json import loads
 
 
 def validar_string(prefijo, valor):
@@ -16,12 +17,90 @@ def validar_string(prefijo, valor):
         return False
 
 
+class Contenedor:
+    def __init__(self, data_json):
+        self.estado = data_json["estado"]
+        self.fecha = data_json["fecha"]
+        self.hora = data_json["hora"]
+
+
+class Dispensador(Contenedor):
+    def __init__(self, data_json):
+        super().__init__(data_json)
+
+
+class TiempoResultado(Contenedor):
+    def __init__(self, data_json):
+        super().__init__(data_json)
+
+
+class Tiempo:
+    def __init__(self, data_json):
+        self.fecha = data_json["fecha"]
+        self.hora = data_json["hora"]
+        self.intervalo = data_json["intervalo"]
+        self.tipo = data_json["tipo"]
+
+
+class DisModel:
+    def __init__(self, data_json) -> None:
+        self.contenedor1 = Contenedor(data_json=data_json['contenedor1'])
+        self.contenedor2 = Contenedor(data_json=data_json['contenedor2'])
+
+        self.dispensador1 = Dispensador(data_json=data_json["dispensador1"])
+        self.dispensador2 = Dispensador(data_json=data_json["dispensador2"])
+
+        self.tiempo1 = Tiempo(data_json=data_json['tiempo1'])
+        self.tiempo2 = Tiempo(data_json=data_json['tiempo2'])
+
+        self.tiempo_resultado1 = TiempoResultado(
+            data_json=data_json['tResultado1'])
+
+        self.tiempo_resultado2 = TiempoResultado(
+            data_json=data_json['tResultado2'])
+
+
 class ControllerVista:
     def __init__(self, vista, name_id) -> None:
         self.vista: Ventana = vista
-        self.inicio: DashBoard = self.vista.inicio.dash_board
-        self.tiempo: Tiempo = self.vista.tiempo
-        self.registros: Tablas = self.vista.registro.registro1
+        self.name_id = name_id
+
+        inicio = None
+        tiempo = None
+        registros = None
+
+        self.vistas()
+
+        inicio = None
+        tiempo = None
+        registros = None
+
+        match name_id:
+            case "dis1":
+                inicio = self.inicio1
+                tiempo = self.tiempo1
+                registros = self.registros1
+            case "dis2":
+                inicio = self.inicio2
+                tiempo = self.tiempo2
+                registros = self.registros2
+            case "dis3":
+                inicio = self.inicio3
+                tiempo = self.tiempo3
+                registros = self.vista.registro.registro3
+            case "dis4":
+                inicio = self.inicio4
+                tiempo = self.tiempo4
+                registros = self.vista.registro.registro4
+            case "dis5":
+                inicio = self.inicio5
+                tiempo = self.tiempo5
+                registros = self.vista.registro.registro5
+
+        self.inicio: DashBoard = inicio
+        self.tiempo: DashBoardTiempo = tiempo
+        self.registros: Tablas = registros
+
         self.db = CrudFirebase(name_id=name_id)
         self.arduino = ConnectionArduino(puerto="COM2")
         self.estado_agua = 0
@@ -32,6 +111,29 @@ class ControllerVista:
         self.error_bd = False
         self.filtro_tipo = "Todo"
         self.filtro_estado = "Todo"
+
+    def vistas(self):
+        self.inicio1: DashBoard = self.vista.inicio.dash_board1
+        self.tiempo1: DashBoardTiempo = self.vista.tiempo.dash_board_tiempo1
+        self.registros1: Tablas = self.vista.registro.registro1
+
+        self.inicio2: DashBoard = self.vista.inicio.dash_board2
+        self.tiempo2: DashBoardTiempo = self.vista.tiempo.dash_board_tiempo2
+        self.registros2: Tablas = self.vista.registro.registro2
+
+        self.inicio3: DashBoard = self.vista.inicio.dash_board3
+        self.tiempo3: DashBoardTiempo = self.vista.tiempo.dash_board_tiempo3
+        self.registros3: Tablas = self.vista.registro.registro3
+
+        self.inicio4: DashBoard = self.vista.inicio.dash_board4
+        self.tiempo4: DashBoardTiempo = self.vista.tiempo.dash_board_tiempo4
+        self.registros4: Tablas = self.vista.registro.registro4
+
+        self.inicio5: DashBoard = self.vista.inicio.dash_board5
+        self.tiempo5: DashBoardTiempo = self.vista.tiempo.dash_board_tiempo5
+        self.registros5: Tablas = self.vista.registro.registro5
+
+        print(self.inicio4.var_dispensar_agua.get())
 
     def conectar_todo(self):
         try:
@@ -60,11 +162,60 @@ class ControllerVista:
         except Exception as e:
             messagebox.showerror("Error", f"Error al conectar: {e}")
 
+    def set_estados_inicio(self, vista: DashBoard, dis: DisModel):
+        vista.set_estado_agua(dis.dispensador1.estado,
+                              self.procesar_resultado(dis.dispensador1.estado))
+
+        vista.set_estado_comida(dis.dispensador2.estado,
+                                self.procesar_resultado(dis.dispensador2.estado))
+
+        vista.set_contenedor_agua(dis.contenedor1.estado)
+        vista.set_contenedor_comida(dis.contenedor2.estado)
+
+    def set_estados_tiempo(self, vista: DashBoardTiempo, dis: DisModel):
+        msg_agua = f"Intervalo: {dis.tiempo1.intervalo}{dis.tiempo1.tipo}"
+        vista.set_estado_aguaT(dis.tiempo1.intervalo,
+                               dis.tiempo1.tipo, msg_agua)
+
+        msg_alimento = f"Intervalo: {dis.tiempo2.intervalo}{dis.tiempo2.tipo}"
+
+        vista.set_resultado_aguaT(dis.tiempo_resultado1.estado)
+
+        vista.set_estado_comidaT(dis.tiempo2.intervalo,
+                                 dis.tiempo2.tipo, msg_alimento)
+
+        vista.set_resultado_comidaT(dis.tiempo_resultado2.estado)
+
+    def actualizar_vista(self, data):
+        estados, error = self.db.consultar_estados_all()
+        if error is not None:
+            messagebox.showerror("Error", error)
+            return
+
+        dis1 = DisModel(estados['dis1'])
+        dis2 = DisModel(estados['dis2'])
+        dis3 = DisModel(estados['dis3'])
+        dis4 = DisModel(estados['dis4'])
+        dis5 = DisModel(estados['dis5'])
+
+        self.set_estados_inicio(self.inicio1, dis1)
+        self.set_estados_inicio(self.inicio2, dis2)
+        self.set_estados_inicio(self.inicio3, dis3)
+        self.set_estados_inicio(self.inicio4, dis4)
+        self.set_estados_inicio(self.inicio5, dis5)
+
+        self.set_estados_tiempo(self.tiempo1, dis1)
+        self.set_estados_tiempo(self.tiempo2, dis2)
+        self.set_estados_tiempo(self.tiempo3, dis3)
+        self.set_estados_tiempo(self.tiempo4, dis4)
+        self.set_estados_tiempo(self.tiempo5, dis5)
+
     def finalizar(self):
         self.corriendo = False
         self.hilo_lectura.join(0.1)
         self.vista.quit()
         self.vista.destroy()
+        self.db.cerrar()
         # self.db.cerrar_conexion()
         self.arduino.cerrar_arduino()
 
@@ -116,16 +267,59 @@ class ControllerVista:
         except Exception as e:
             print(f"Error al enviar el tiempo de comida: {e}")
 
-    def filtrar(self):
-        self.filtro_estado = self.registros.filtro_estado.get()
-        self.filtro_tipo = self.registros.filtro_tipo.get()
-        self.actualizar_registros()
+    def filtrar(self, dis):
+
+        match dis:
+            case "dis1":
+                self.filtro_estado = self.registros1.filtro_estado.get()
+                self.filtro_tipo = self.registros1.filtro_tipo.get()
+
+            case "dis2":
+                self.filtro_estado = self.registros2.filtro_estado.get()
+                self.filtro_tipo = self.registros2.filtro_tipo.get()
+
+            case "dis3":
+                self.filtro_estado = self.registros3.filtro_estado.get()
+                self.filtro_tipo = self.registros3.filtro_tipo.get()
+
+            case "dis4":
+                self.filtro_estado = self.registros4.filtro_estado.get()
+                self.filtro_tipo = self.registros4.filtro_tipo.get()
+
+            case "dis5":
+                self.filtro_estado = self.registros5.filtro_estado.get()
+                self.filtro_tipo = self.registros5.filtro_tipo.get()
+
+        self.actualizar_registros(dis)
 
     def activar_botones(self):
         self.tiempo.btn_enviar_agua.config(command=self.enviar_tiempo_agua)
         self.tiempo.btn_enviar_comida.config(command=self.enviar_tiempo_comida)
-        self.registros.btn_actualizar.config(command=self.actualizar_registros)
-        self.registros.btn_enviar_filtro.config(command=self.filtrar)
+
+        self.registros1.btn_actualizar.config(
+            command=lambda: self.actualizar_registros("dis1"))
+        self.registros1.btn_enviar_filtro.config(
+            command=lambda: self.filtrar("dis1"))
+
+        self.registros2.btn_actualizar.config(
+            command=lambda: self.actualizar_registros("dis2"))
+        self.registros2.btn_enviar_filtro.config(
+            command=lambda: self.filtrar("dis2"))
+
+        self.registros3.btn_actualizar.config(
+            command=lambda: self.actualizar_registros("dis3"))
+        self.registros3.btn_enviar_filtro.config(
+            command=lambda: self.filtrar("dis3"))
+
+        self.registros4.btn_actualizar.config(
+            command=lambda: self.actualizar_registros("dis4"))
+        self.registros4.btn_enviar_filtro.config(
+            command=lambda: self.filtrar("dis4"))
+
+        self.registros5.btn_actualizar.config(
+            command=lambda: self.actualizar_registros("dis5"))
+        self.registros5.btn_enviar_filtro.config(
+            command=lambda: self.filtrar("dis5"))
 
     def iniciar_estados(self):
         try:
@@ -135,28 +329,32 @@ class ControllerVista:
             result = result.replace("\r", "")
             # orden de los estados:
             # wdP:0,fdP:0,wdSIs:0,fdSIs:0,wdTget:90m,fdTget:90m
+
             result = result.split(",")
+
             es_agua = int(result[0])
-            msg_agua = self.procesar_resultado(es_agua)
-            self.inicio.set_estado_agua(es_agua, msg_agua)
+
+            self.db.update_estado(1, es_agua)
+
             es_alimento = int(result[1])
-            msg_alimento = self.procesar_resultado(es_alimento)
-            self.inicio.set_estado_comida(es_alimento, msg_alimento)
 
-            msg_contenedor_agua = "El contenedor de agua esta lleno" if int(
-                result[2]) == 0 else "El contenedor de agua esta vacío."
+            self.db.update_estado(2, es_alimento)
 
-            msg_contenedor_alimento = "El contenedor de alimento esta lleno" if int(
-                result[3]) == 0 else "El contenedor de alimento esta vacío."
-            self.inicio.set_contenedor_agua(msg_contenedor_agua)
-            self.inicio.set_contenedor_comida(msg_contenedor_alimento)
+            estado_con_agua = "El contenedor de agua esta vacío." if result[
+                2] == 1 else "El contenedor de agua esta lleno"
 
-            msgT_agua = "Intervalo:"+result[4]
-            self.tiempo.set_estado_aguaT(
-                int(result[4].strip("mhs")), result[4][-1], msgT_agua)
+            self.db.update_estado_contenedores(1, estado_con_agua)
+
+            estado_con_alimento = "El contenedor de alimento esta vacío." if result[
+                2] == 1 else "El contenedor de alimento esta lleno"
+
+            self.db.update_estado_contenedores(2, estado_con_alimento)
+
+            self.db.update_estado_tiempo(
+                1, int(result[4].strip("mhs")), result[4][-1])
 
             self.tiempo.set_estado_comidaT(
-                int(result[5].strip("mhs")), result[5][-1], "Intervalo:"+result[5])
+                2, int(result[5].strip("mhs")), result[5][-1])
 
             print(result)
 
@@ -186,41 +384,55 @@ class ControllerVista:
                     result = int(mensaje.split(":")[1])
                     msg = self.procesar_resultado(result)
 
-                    self.inicio.set_estado_agua(result, msg)
+                    # self.inicio.set_estado_agua(result, msg)
+
+                    if result in [-2, -3]:
+                        self.db.update_estado(1, result)
 
                     if result == -2:
-                        self.inicio.set_contenedor_agua(
-                            "El contenedor de agua esta vacío.")
+
+                        self.db.update_estado_contenedores(
+                            1, "El contenedor de agua esta vacío.")
+
                     elif result == 1 or result == 0:
                         estado_actual = "ABIERTO" if result == 1 else "CERRADO"
+
                         if estado_anterior_bd_agua != estado_actual:
                             self.db.insertar_registro(1, estado_actual)
-                        self.inicio.set_contenedor_agua(
-                            "El contenedor de agua esta lleno")
+                        self.db.update_estado_contenedores(1,
+                                                           "El contenedor de agua esta lleno")
 
                 elif mensaje.startswith("fdP:") or mensaje.startswith("fdR:"):
                     result = int(mensaje.split(":")[1])
                     msg = self.procesar_resultado(result)
 
-                    self.inicio.set_estado_comida(result, msg)
+                    # self.inicio.set_estado_comida(result, msg)
+
+                    if result in [-2, -3]:
+                        self.db.update_estado(2, result)
 
                     if result == -2:
-                        self.inicio.set_contenedor_comida(
-                            "El contenedor de alimento esta vació.")
+                        self.db.update_estado_contenedores(2,
+                                                           "El contenedor de alimento esta vació.")
                     elif result == 1 or result == 0:
                         estado_actual = "ABIERTO" if result == 1 else "CERRADO"
-                        print(estado_anterior_bd_alimento, estado_actual)
+
                         if estado_anterior_bd_alimento != estado_actual:
                             self.db.insertar_registro(2, estado_actual)
 
-                        self.inicio.set_contenedor_comida(
-                            "El contenedor de alimento esta lleno")
+                        self.db.update_estado_contenedores(2,
+                                                           "El contenedor de alimento esta lleno")
+
                 elif mensaje.startswith("wdACon:0"):
 
                     self.inicio.set_contenedor_agua(
                         "El contenedor de agua esta vacío.")
                     self.inicio.set_estado_agua(0, "Cerrado")
+
                     if estado_anterior_bd_agua != "CERRADO":
+                        self.db.update_estado_contenedores(
+                            1, "El contenedor de agua esta vacío.")
+
                         self.db.insertar_registro(1, "CERRADO")
 
                 elif mensaje.startswith("fdACon:0"):
@@ -228,6 +440,8 @@ class ControllerVista:
                         "El contenedor de alimento esta vació.")
                     self.inicio.set_estado_comida(0, "Cerrado")
                     if estado_anterior_bd_alimento != "CERRADO":
+                        self.db.update_estado_contenedores(
+                            1, "El contenedor de alimento esta vació.")
                         self.db.insertar_registro(2, "CERRADO")
 
                 elif mensaje.startswith("wdARes:0"):
@@ -235,26 +449,37 @@ class ControllerVista:
                         0, "El recipiente esta lleno.")
 
                     if estado_anterior_bd_agua != "CERRADO":
-                        self.db.insertar_registro(1, "CERRADO")
+                        self.db.insertar_registro(1, "CERRADO", False)
+
+                    self.db.update_estado(1, -3)
+
                 elif mensaje.startswith("fdARes:0"):
                     self.inicio.set_estado_comida(
                         0, "El recipiente esta lleno.")
 
                     if estado_anterior_bd_alimento != "CERRADO":
-                        self.db.insertar_registro(2, "CERRADO")
+                        self.db.insertar_registro(2, "CERRADO", False)
 
+                    self.db.update_estado(2, -3)
                 elif mensaje.startswith("wdTset:"):
                     mensaje = mensaje.replace("\r", "")
                     result = mensaje.split(":")[1]
                     msg = "Intervalo:"+result
-                    self.tiempo.set_estado_aguaT(
-                        int(result.strip("mhs")), result[-1], msg)
+                    intervalo = int(result.strip("mhs"))
+                    tipo = result[-1]
+                    # self.tiempo.set_estado_aguaT(intervalo, tipo, msg)
+
+                    self.db.update_estado_tiempo(1, intervalo, tipo)
+
                 elif mensaje.startswith("fdTset:"):
                     mensaje = mensaje.replace("\r", "")
                     result = mensaje.split(":")[1]
                     msg = "Intervalo:"+result
-                    self.tiempo.set_estado_comidaT(
-                        int(result.strip("mhs")), result[-1], msg)
+                    intervalo = int(result.strip("mhs"))
+                    tipo = result[-1]
+                    # self.tiempo.set_estado_comidaT(intervalo, tipo, msg)
+                    self.db.update_estado_tiempo(2, intervalo, tipo)
+
                 elif mensaje.startswith("wdTR:"):
                     mensaje = mensaje.replace("\r", "")
                     result = mensaje.split(":")[1]
@@ -264,8 +489,11 @@ class ControllerVista:
                         self.inicio.set_estado_agua(result, "Abierto")
                         self.tiempo.set_resultado_aguaT(
                             "El dispensador se abrió")
+                        self.db.update_estado_tiempo_resultado(
+                            1, "El dispensador se abrió")
+
                         if estado_anterior_bd_agua != "ABIERTO":
-                            self.db.insertar_registro(1, "ABIERTO")
+                            self.db.insertar_registro(1, "ABIERTO", False)
 
                     elif result == -1:
                         estado = self.inicio.var_dispensar_agua.get()
@@ -273,20 +501,36 @@ class ControllerVista:
                         self.inicio.set_estado_agua(estado, msg)
                         self.tiempo.set_resultado_aguaT(
                             "El dispensador ya esta abierto.")
+
+                        self.db.update_estado_tiempo_resultado(
+                            1, "El dispensador ya esta abierto.")
+
                     elif result == -2:
                         self.inicio.set_contenedor_agua(
                             "El contenedor de agua esta vacío.")
                         self.tiempo.set_resultado_aguaT(
                             "No se abrió. El contenedor de agua esta vacío.")
+
+                        self.db.update_estado_tiempo_resultado(
+                            1, "No se abrió. El contenedor de agua esta vacío.")
                         if estado_anterior_bd_agua != "CERRADO":
-                            self.db.insertar_registro(1, "CERRADO")
+                            self.db.insertar_registro(1, "CERRADO", False)
+
                     elif result == -3:
                         self.inicio.set_estado_agua(0, msg)
                         self.tiempo.set_resultado_aguaT(
                             "No se abrió. El recipiente esta lleno."
                         )
+
+                        self.db.update_estado_tiempo_resultado(
+                            1, "No se abrió. El recipiente esta lleno.")
+
                         if estado_anterior_bd_agua != "CERRADO":
-                            self.db.insertar_registro(1, "CERRADO")
+                            self.db.insertar_registro(1, "CERRADO", False)
+
+                    if result != -1:
+                        self.db.update_estado(1, result)
+
                 elif mensaje.startswith("fdTR:"):
                     mensaje = mensaje.replace("\r", "")
                     result = mensaje.split(":")[1]
@@ -296,66 +540,112 @@ class ControllerVista:
                         self.inicio.set_estado_comida(result, "Abierto")
                         self.tiempo.set_resultado_comidaT(
                             "El dispensador se abrió")
+                        self.db.update_estado_tiempo_resultado(
+                            2, "El dispensador se abrió")
+
                         if estado_anterior_bd_alimento != "ABIERTO":
-                            self.db.insertar_registro(2, "ABIERTO")
+                            self.db.insertar_registro(2, "ABIERTO", False)
+
                     elif result == -1:
                         estado = self.inicio.var_dispensar_comida.get()
                         msg = "Abierto" if estado == 1 else "Cerrado"
                         self.inicio.set_estado_comida(estado, msg)
                         self.tiempo.set_resultado_comidaT(
                             "El dispensador ya esta abierto.")
+
+                        self.db.update_estado_tiempo_resultado(
+                            2, "El dispensador ya esta abierto.")
+
                     elif result == -2:
                         self.inicio.set_contenedor_comida(
                             "El contenedor de alimento esta vacío.")
                         self.tiempo.set_resultado_comidaT(
                             "No se abrió. El contenedor de alimento esta vacío.")
+
+                        self.db.update_estado_tiempo_resultado(
+                            2, "No se abrió. El contenedor de alimento esta vacío.")
+
                         if estado_anterior_bd_alimento != "CERRADO":
-                            self.db.insertar_registro(2, "CERRADO")
+                            self.db.insertar_registro(2, "CERRADO", False)
+
                     elif result == -3:
                         self.inicio.set_estado_comida(0, msg)
                         self.tiempo.set_resultado_comidaT(
                             "No se abrió. El recipiente esta lleno.")
+                        self.db.update_estado_tiempo_resultado(
+                            2, "No se abrió. El recipiente esta lleno.")
+
                         if estado_anterior_bd_alimento != "CERRADO":
-                            self.db.insertar_registro(2, "CERRADO")
+                            self.db.insertar_registro(2, "CERRADO", False)
+
+                    if result != -1:
+                        self.db.update_estado(2, result)
 
             except Exception as error:
                 print(f"Error al leer el puerto serial: {error}")
 
-    def actualizar_registros(self):
+    def actualizar_registros(self, dis):
         registro = None
         error = None
         if self.filtro_tipo == "Todo" and self.filtro_estado == "Todo":
-            registro, error = self.db.consultar_registro()
+            registro, error = self.db.consultar_registro(dis=dis)
         elif self.filtro_tipo == "Agua" and self.filtro_estado == "Abierto":
             registro, error = self.db.consultar_registro(
-                idComponente=1, estado="ABIERTO")
+                idComponente=1, estado="ABIERTO", dis=dis)
         elif self.filtro_tipo == "Agua" and self.filtro_estado == "Cerrado":
             registro, error = self.db.consultar_registro(
-                idComponente=1, estado="CERRADO")
+                idComponente=1, estado="CERRADO", dis=dis)
         elif self.filtro_tipo == "Alimento" and self.filtro_estado == "Abierto":
             registro, error = self.db.consultar_registro(
-                idComponente=2, estado="ABIERTO")
+                idComponente=2, estado="ABIERTO", dis=dis)
         elif self.filtro_tipo == "Alimento" and self.filtro_estado == "Cerrado":
             registro, error = self.db.consultar_registro(
-                idComponente=2, estado="CERRADO")
+                idComponente=2, estado="CERRADO", dis=dis)
 
         elif self.filtro_tipo == "Agua":
-            registro, error = self.db.consultar_registro(idComponente=1)
+            registro, error = self.db.consultar_registro(
+                idComponente=1, dis=dis)
         elif self.filtro_tipo == "Alimento":
-            registro, error = self.db.consultar_registro(idComponente=2)
+            registro, error = self.db.consultar_registro(
+                idComponente=2, dis=dis)
         elif self.filtro_estado == "Abierto":
-            registro, error = self.db.consultar_registro(estado="ABIERTO")
+            registro, error = self.db.consultar_registro(
+                estado="ABIERTO", dis=dis)
         elif self.filtro_estado == "Cerrado":
-            registro, error = self.db.consultar_registro(estado="CERRADO")
+            registro, error = self.db.consultar_registro(
+                estado="CERRADO", dis=dis)
 
-        if error is None:
-            self.registros.actualizar_tabla(registro)
+        if error is not None:
+            print(error)
+            return
+
+        match dis:
+            case "dis1":
+                self.registros1.actualizar_tabla(registro)
+
+            case "dis2":
+                self.registros2.actualizar_tabla(registro)
+
+            case "dis3":
+                self.registros3.actualizar_tabla(registro)
+
+            case "dis4":
+                self.registros4.actualizar_tabla(registro)
+
+            case "dis5":
+                self.registros5.actualizar_tabla(registro)
 
     def iniciar(self):
         self.conectar_todo()
         self.iniciar_estados()
         self.activar_check_button()
         self.activar_botones()
-        self.actualizar_registros()
+        self.actualizar_registros("dis1")
+        self.actualizar_registros("dis2")
+        self.actualizar_registros("dis3")
+        self.actualizar_registros("dis4")
+        self.actualizar_registros("dis5")
+
         self.hilo_lectura.start()
+        self.db.set_stream_handler(self.actualizar_vista)
         self.vista.mainloop()
