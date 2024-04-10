@@ -18,10 +18,38 @@ def validar_string(prefijo, valor):
 
 class ControllerVista:
     def __init__(self, vista, name_id) -> None:
+
         self.vista: Ventana = vista
-        self.inicio: DashBoard = self.vista.inicio.dash_board
-        self.tiempo: DashBoardTiempo = self.vista.tiempo.dash_board_tiempo1
-        self.registros: Tablas = self.vista.registro.registro1
+
+        inicio = None
+        tiempo = None
+        registros = None
+
+        match name_id:
+            case "dis1":
+                inicio = self.vista.inicio.dash_board1
+                tiempo = self.vista.tiempo.dash_board_tiempo1
+                registros = self.vista.registro.registro1
+            case "dis2":
+                inicio = self.vista.inicio.dash_board2
+                tiempo = self.vista.tiempo.dash_board_tiempo2
+                registros = self.vista.registro.registro2
+            case "dis3":
+                inicio = self.vista.inicio.dash_board3
+                tiempo = self.vista.tiempo.dash_board_tiempo3
+                registros = self.vista.registro.registro3
+            case "dis4":
+                inicio = self.vista.inicio.dash_board4
+                tiempo = self.vista.tiempo.dash_board_tiempo4
+                registros = self.vista.registro.registro4
+            case "dis5":
+                inicio = self.vista.inicio.dash_board5
+                tiempo = self.vista.tiempo.dash_board_tiempo5
+                registros = self.vista.registro.registro5
+
+        self.inicio: DashBoard = inicio
+        self.tiempo: DashBoardTiempo = tiempo
+        self.registros: Tablas = registros
         self.db = CrudFirebase(name_id=name_id)
         self.arduino = ConnectionArduino(puerto="COM2")
         self.estado_agua = 0
