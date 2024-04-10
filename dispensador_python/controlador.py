@@ -29,6 +29,11 @@ class Dispensador(Contenedor):
         super().__init__(data_json)
 
 
+class TiempoResultado(Contenedor):
+    def __init__(self, data_json):
+        super().__init__(data_json)
+
+
 class Tiempo:
     def __init__(self, data_json):
         self.fecha = data_json["fecha"]
@@ -47,6 +52,12 @@ class DisModel:
 
         self.tiempo1 = Tiempo(data_json=data_json['tiempo1'])
         self.tiempo2 = Tiempo(data_json=data_json['tiempo2'])
+
+        self.tiempo_resultado1 = TiempoResultado(
+            data_json=data_json['tResultado1'])
+
+        self.tiempo_resultado2 = TiempoResultado(
+            data_json=data_json['tResultado2'])
 
 
 class ControllerVista:
@@ -168,8 +179,12 @@ class ControllerVista:
 
         msg_alimento = f"Intervalo: {dis.tiempo2.intervalo}{dis.tiempo2.tipo}"
 
+        vista.set_resultado_aguaT(dis.tiempo_resultado1.estado)
+
         vista.set_estado_comidaT(dis.tiempo2.intervalo,
                                  dis.tiempo2.tipo, msg_alimento)
+
+        vista.set_resultado_comidaT(dis.tiempo_resultado2.estado)
 
     def actualizar_vista(self, data):
         estados, error = self.db.consultar_estados_all()
