@@ -146,9 +146,12 @@ class DashBoardTiempo(LabelFrame):
         self.lbl_resultado_comidaT.place(x=170, y=200)
 
     def scales(self):
-        Scale(self,  from_=0, to=60, orient="vertical", tickinterval=30,
+
+        estado_escale = "disabled" if self.is_readonly else "normal"
+        Scale(self,  from_=0, to=60, orient="vertical", tickinterval=30, state=estado_escale,
               length=250, variable=self.tiempo_agua_var).place(x=10, y=10)
-        Scale(self, from_=0, to=60, orient="vertical", tickinterval=30, length=250,
+
+        Scale(self, from_=0, to=60, orient="vertical", tickinterval=30, length=250, state=estado_escale,
               variable=self.tiempo_comida_var).place(x=520, y=10)
 
     def imagenes(self):
