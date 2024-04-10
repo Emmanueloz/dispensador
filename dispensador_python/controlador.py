@@ -51,7 +51,6 @@ class DisModel:
 
 class ControllerVista:
     def __init__(self, vista, name_id) -> None:
-
         self.vista: Ventana = vista
         self.name_id = name_id
 
@@ -59,26 +58,32 @@ class ControllerVista:
         tiempo = None
         registros = None
 
+        self.vistas()
+
+        inicio = None
+        tiempo = None
+        registros = None
+
         match name_id:
             case "dis1":
-                inicio = self.vista.inicio.dash_board1
-                tiempo = self.vista.tiempo.dash_board_tiempo1
-                registros = self.vista.registro.registro1
+                inicio = self.inicio1
+                tiempo = self.tiempo1
+                registros = self.registros1
             case "dis2":
-                inicio = self.vista.inicio.dash_board2
-                tiempo = self.vista.tiempo.dash_board_tiempo2
-                registros = self.vista.registro.registro2
+                inicio = self.inicio2
+                tiempo = self.tiempo2
+                registros = self.registros2
             case "dis3":
-                inicio = self.vista.inicio.dash_board3
-                tiempo = self.vista.tiempo.dash_board_tiempo3
+                inicio = self.inicio3
+                tiempo = self.tiempo3
                 registros = self.vista.registro.registro3
             case "dis4":
-                inicio = self.vista.inicio.dash_board4
-                tiempo = self.vista.tiempo.dash_board_tiempo4
+                inicio = self.inicio4
+                tiempo = self.tiempo4
                 registros = self.vista.registro.registro4
             case "dis5":
-                inicio = self.vista.inicio.dash_board5
-                tiempo = self.vista.tiempo.dash_board_tiempo5
+                inicio = self.inicio5
+                tiempo = self.tiempo5
                 registros = self.vista.registro.registro5
 
         self.inicio: DashBoard = inicio
@@ -117,6 +122,8 @@ class ControllerVista:
         self.tiempo5: DashBoardTiempo = self.vista.tiempo.dash_board_tiempo5
         self.registros5: Tablas = self.vista.registro.registro5
 
+        print(self.inicio4.var_dispensar_agua.get())
+
     def conectar_todo(self):
         try:
             # Conectar a la base de datos
@@ -129,8 +136,6 @@ class ControllerVista:
                 'messagingSenderId': "801264676158",
                 'appId': "1:801264676158:web:b39b19991c7167cc89106f"
             })
-
-            self.db.set_stream_handler(self.actualizar_vista)
 
             print("Conexión exitosa a la base de datos y Arduino.")
             messagebox.showinfo(
@@ -158,7 +163,35 @@ class ControllerVista:
         dis4 = DisModel(estados['dis4'])
         dis5 = DisModel(estados['dis5'])
 
-        print(dis1.contenedor1.estado)
+        self.inicio1.set_estado_agua(dis1.dispensador1.estado,
+                                     self.procesar_resultado(dis1.dispensador1.estado))
+
+        self.inicio1.set_estado_comida(dis1.dispensador2.estado,
+                                       self.procesar_resultado(dis1.dispensador2.estado))
+
+        self.inicio2.set_estado_agua(dis2.dispensador1.estado,
+                                     self.procesar_resultado(dis2.dispensador2.estado))
+
+        self.inicio2.set_estado_comida(dis2.dispensador2.estado,
+                                       self.procesar_resultado(dis2.dispensador2.estado))
+
+        self.inicio3.set_estado_agua(dis3.dispensador1.estado,
+                                     self.procesar_resultado(dis3.dispensador1.estado))
+
+        self.inicio3.set_estado_comida(dis3.dispensador2.estado,
+                                       self.procesar_resultado(dis3.dispensador2.estado))
+
+        self.inicio4.set_estado_agua(dis3.dispensador1.estado,
+                                     self.procesar_resultado(dis4.dispensador1.estado))
+
+        self.inicio4.set_estado_comida(dis3.dispensador2.estado,
+                                       self.procesar_resultado(dis4.dispensador2.estado))
+
+        self.inicio5.set_estado_agua(dis5.dispensador1.estado,
+                                     self.procesar_resultado(dis5.dispensador1.estado))
+
+        self.inicio5.set_estado_comida(dis5.dispensador2.estado,
+                                       self.procesar_resultado(dis5.dispensador2.estado))
 
     def finalizar(self):
         self.corriendo = False
@@ -526,4 +559,5 @@ class ControllerVista:
         self.activar_botones()
         self.actualizar_registros()
         self.hilo_lectura.start()
+        self.db.set_stream_handler(self.actualizar_vista)
         self.vista.mainloop()
