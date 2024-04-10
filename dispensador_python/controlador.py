@@ -174,38 +174,10 @@ class ControllerVista:
         dis5 = DisModel(estados['dis5'])
 
         self.set_estados_inicio(self.inicio1, dis1)
-
-        self.inicio2.set_estado_agua(dis2.dispensador1.estado,
-                                     self.procesar_resultado(dis2.dispensador2.estado))
-        self.inicio2.set_estado_comida(dis2.dispensador2.estado,
-                                       self.procesar_resultado(dis2.dispensador2.estado))
-
-        self.inicio2.set_contenedor_agua(dis2.contenedor1.estado)
-        self.inicio2.set_contenedor_comida(dis2.contenedor2.estado)
-
-        self.inicio3.set_estado_agua(dis3.dispensador1.estado,
-                                     self.procesar_resultado(dis3.dispensador1.estado))
-        self.inicio3.set_estado_comida(dis3.dispensador2.estado,
-                                       self.procesar_resultado(dis3.dispensador2.estado))
-
-        self.inicio3.set_contenedor_agua(dis3.contenedor1.estado)
-        self.inicio3.set_contenedor_comida(dis3.contenedor2.estado)
-
-        self.inicio4.set_estado_agua(dis3.dispensador1.estado,
-                                     self.procesar_resultado(dis4.dispensador1.estado))
-        self.inicio4.set_estado_comida(dis3.dispensador2.estado,
-                                       self.procesar_resultado(dis4.dispensador2.estado))
-
-        self.inicio4.set_contenedor_agua(dis4.contenedor1.estado)
-        self.inicio4.set_contenedor_comida(dis5.contenedor2.estado)
-
-        self.inicio5.set_estado_agua(dis5.dispensador1.estado,
-                                     self.procesar_resultado(dis5.dispensador1.estado))
-        self.inicio5.set_estado_comida(dis5.dispensador2.estado,
-                                       self.procesar_resultado(dis5.dispensador2.estado))
-
-        self.inicio5.set_contenedor_agua(dis5.contenedor1.estado)
-        self.inicio5.set_contenedor_comida(dis5.contenedor2.estado)
+        self.set_estados_inicio(self.inicio2, dis2)
+        self.set_estados_inicio(self.inicio3, dis3)
+        self.set_estados_inicio(self.inicio4, dis4)
+        self.set_estados_inicio(self.inicio5, dis5)
 
     def finalizar(self):
         self.corriendo = False
