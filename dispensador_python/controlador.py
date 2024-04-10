@@ -190,6 +190,10 @@ class ControllerVista:
         self.set_estados_inicio(self.inicio5, dis5)
 
         self.set_estados_tiempo(self.tiempo1, dis1)
+        self.set_estados_tiempo(self.tiempo2, dis2)
+        self.set_estados_tiempo(self.tiempo3, dis3)
+        self.set_estados_tiempo(self.tiempo4, dis4)
+        self.set_estados_tiempo(self.tiempo5, dis5)
 
     def finalizar(self):
         self.corriendo = False

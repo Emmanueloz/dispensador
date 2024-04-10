@@ -119,7 +119,7 @@ class CrudFirebase:
             fecha = datetime.now().strftime('%Y-%m-%d')
             hora = datetime.now().strftime('%H:%M:%S')
             result = db.child(
-                f"dispensador/estados/{self.name_id}").child(f"contenedor{idComponente}").update(
+                f"dispensador/estados/{self.name_id}").child(f"tResultado{idComponente}").update(
                     {
                         "estado": estado,
                         "fecha": fecha,

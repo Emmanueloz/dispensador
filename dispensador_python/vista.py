@@ -176,14 +176,18 @@ class DashBoardTiempo(LabelFrame):
     def set_estado_aguaT(self, tiempo, unidad, msg):
         self.tiempo_agua_var.set(tiempo)
         unidad = "Minutos" if unidad == "m" else "Segundos"
-        self.select_agua.set(unidad)
+
+        if not self.is_readonly:
+            self.select_agua.set(unidad)
+
         self.lbl_estado_aguaT.config(text=msg)
         self.lbl_resultado_aguaT.config(text="")
 
     def set_estado_comidaT(self, tiempo, unidad, msg):
         self.tiempo_comida_var.set(tiempo)
         unidad = "Minutos" if unidad == "m" else "Segundos"
-        self.select_comida.set(unidad)
+        if not self.is_readonly:
+            self.select_comida.set(unidad)
         self.lbl_estado_comidaT.config(text=msg)
         self.lbl_resultado_comidaT.config(text="")
 
