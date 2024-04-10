@@ -45,7 +45,24 @@ class CrudFirebase:
                     {
                         "estado": estado,
                         "fecha": fecha,
-                        "dispensador": self.nombre,
+                        "hora": hora,
+                    }
+            )
+
+            return result, None
+        except Exception as error:
+            return None, str(error)
+
+    def update_estado_recipiente(self, idComponente, estado):
+        try:
+            db = self.connection.database()
+            fecha = datetime.now().strftime('%Y-%m-%d')
+            hora = datetime.now().strftime('%H:%M:%S')
+            result = db.child(
+                f"dispensador/estados/{self.name_id}").child(f"contenedor{idComponente}").update(
+                    {
+                        "estado": estado,
+                        "fecha": fecha,
                         "hora": hora,
                     }
             )
@@ -73,18 +90,39 @@ class CrudFirebase:
         except Exception as error:
             return None, str(error)
 
-    def insertar_registro(self, idComponente, estado):
+    def update_estado_tiempo_resultado(self, idComponente, estado):
+        try:
+            db = self.connection.database()
+            fecha = datetime.now().strftime('%Y-%m-%d')
+            hora = datetime.now().strftime('%H:%M:%S')
+            result = db.child(
+                f"dispensador/estados/{self.name_id}").child(f"contenedor{idComponente}").update(
+                    {
+                        "estado": estado,
+                        "fecha": fecha,
+                        "hora": hora,
+                    }
+            )
+
+            return result, None
+        except Exception as error:
+            return None, str(error)
+
+    def insertar_registro(self, idComponente, estado, id_update=True):
         try:
             db = self.connection.database()
             idComponente = int(idComponente)
             fecha = datetime.now().strftime('%Y-%m-%d')
             hora = datetime.now().strftime('%H:%M:%S')
 
-            upd, error = self.update_estado(
-                idComponente=idComponente, estado=estado)
+            if id_update:
+                upd_estado = 1 if estado == "ABIERTO" else 0
 
-            if error is not None:
-                raise Exception(error)
+                upd, error = self.update_estado(
+                    idComponente=idComponente, estado=upd_estado)
+
+                if error is not None:
+                    raise Exception(error)
 
             db.child(f"dispensador/registros/{self.name_id}").push({
                 "idComponente": idComponente,
