@@ -247,14 +247,21 @@ class ControllerVista:
                     mensaje = mensaje.replace("\r", "")
                     result = mensaje.split(":")[1]
                     msg = "Intervalo:"+result
-                    self.tiempo.set_estado_aguaT(
-                        int(result.strip("mhs")), result[-1], msg)
+                    intervalo = int(result.strip("mhs"))
+                    tipo = result[-1]
+                    self.tiempo.set_estado_aguaT(intervalo, tipo, msg)
+
+                    self.db.update_estado_tiempo(1, intervalo, tipo)
+
                 elif mensaje.startswith("fdTset:"):
                     mensaje = mensaje.replace("\r", "")
                     result = mensaje.split(":")[1]
                     msg = "Intervalo:"+result
-                    self.tiempo.set_estado_comidaT(
-                        int(result.strip("mhs")), result[-1], msg)
+                    intervalo = int(result.strip("mhs"))
+                    tipo = result[-1]
+                    self.tiempo.set_estado_comidaT(intervalo, tipo, msg)
+                    self.db.update_estado_tiempo(2, intervalo, tipo)
+
                 elif mensaje.startswith("wdTR:"):
                     mensaje = mensaje.replace("\r", "")
                     result = mensaje.split(":")[1]

@@ -54,7 +54,7 @@ class CrudFirebase:
         except Exception as error:
             return None, str(error)
 
-    def update_estado_tiempo(self, idComponente, estado):
+    def update_estado_tiempo(self, idComponente, intervalo, tipo):
         try:
             db = self.connection.database()
             fecha = datetime.now().strftime('%Y-%m-%d')
@@ -62,9 +62,9 @@ class CrudFirebase:
             result = db.child(
                 f"dispensador/estados/{self.name_id}").child(f"tiempo{idComponente}").update(
                     {
-                        "estado": estado,
+                        "intervalo": intervalo,
+                        "tipo": tipo,
                         "fecha": fecha,
-                        "dispensador": self.nombre,
                         "hora": hora,
                     }
             )
