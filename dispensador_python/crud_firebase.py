@@ -181,10 +181,13 @@ class CrudFirebase:
         except Exception as error:
             return None, str(error)
 
-    def consultar_registro(self, idComponente=None, estado=None):
+    def consultar_registro(self, idComponente=None, estado=None, dis=None):
         try:
             idComponente = int(
                 idComponente) if idComponente is not None else None
+
+            if not dis:
+                dis = self.name_id
 
             db = self.connection.database()
             registros = None
@@ -199,14 +202,14 @@ class CrudFirebase:
                 return lista_registros, None
 
             elif idComponente is not None:
-                registros = db.child(f"dispensador/registros/{self.name_id}").order_by_key().limit_to_last(5).order_by_child(
+                registros = db.child(f"dispensador/registros/{dis}").order_by_key().limit_to_last(5).order_by_child(
                     "idComponente").equal_to(idComponente).get()
             elif estado is not None:
-                registros = db.child(f"dispensador/registros/{self.name_id}").order_by_key().limit_to_last(5).order_by_child(
+                registros = db.child(f"dispensador/registros/{dis}").order_by_key().limit_to_last(5).order_by_child(
                     "estado").equal_to(estado).get()
             else:
                 registros = db.child(
-                    f"dispensador/registros/{self.name_id}").limit_to_last(5).order_by_key().get()
+                    f"dispensador/registros/{dis}").limit_to_last(5).order_by_key().get()
 
             if registros.val() is None or len(registros.val()) == 0:
                 raise Exception("No se encontraron resultados.")
