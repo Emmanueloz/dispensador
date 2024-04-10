@@ -169,29 +169,40 @@ class ControllerVista:
         self.inicio1.set_estado_comida(dis1.dispensador2.estado,
                                        self.procesar_resultado(dis1.dispensador2.estado))
 
+        self.inicio1.set_contenedor_agua(dis1.contenedor1.estado)
+        self.inicio1.set_contenedor_comida(dis1.contenedor2.estado)
+
         self.inicio2.set_estado_agua(dis2.dispensador1.estado,
                                      self.procesar_resultado(dis2.dispensador2.estado))
-
         self.inicio2.set_estado_comida(dis2.dispensador2.estado,
                                        self.procesar_resultado(dis2.dispensador2.estado))
 
+        self.inicio2.set_contenedor_agua(dis2.contenedor1.estado)
+        self.inicio2.set_contenedor_comida(dis2.contenedor2.estado)
+
         self.inicio3.set_estado_agua(dis3.dispensador1.estado,
                                      self.procesar_resultado(dis3.dispensador1.estado))
-
         self.inicio3.set_estado_comida(dis3.dispensador2.estado,
                                        self.procesar_resultado(dis3.dispensador2.estado))
 
+        self.inicio3.set_contenedor_agua(dis3.contenedor1.estado)
+        self.inicio3.set_contenedor_comida(dis3.contenedor2.estado)
+
         self.inicio4.set_estado_agua(dis3.dispensador1.estado,
                                      self.procesar_resultado(dis4.dispensador1.estado))
-
         self.inicio4.set_estado_comida(dis3.dispensador2.estado,
                                        self.procesar_resultado(dis4.dispensador2.estado))
 
+        self.inicio4.set_contenedor_agua(dis4.contenedor1.estado)
+        self.inicio4.set_contenedor_comida(dis5.contenedor2.estado)
+
         self.inicio5.set_estado_agua(dis5.dispensador1.estado,
                                      self.procesar_resultado(dis5.dispensador1.estado))
-
         self.inicio5.set_estado_comida(dis5.dispensador2.estado,
                                        self.procesar_resultado(dis5.dispensador2.estado))
+
+        self.inicio5.set_contenedor_agua(dis5.contenedor1.estado)
+        self.inicio5.set_contenedor_comida(dis5.contenedor2.estado)
 
     def finalizar(self):
         self.corriendo = False
@@ -280,12 +291,13 @@ class ControllerVista:
 
             self.db.update_estado(2, es_alimento)
 
-            estado_con_agua = "El contenedor de agua esta vacío." if result[2] == 1 else ""
+            estado_con_agua = "El contenedor de agua esta vacío." if result[
+                2] == 1 else "El contenedor de agua esta lleno"
 
             self.db.update_estado_contenedores(1, estado_con_agua)
 
             estado_con_alimento = "El contenedor de alimento esta vacío." if result[
-                2] == 1 else ""
+                2] == 1 else "El contenedor de alimento esta lleno"
 
             self.db.update_estado_contenedores(2, estado_con_alimento)
 
@@ -323,43 +335,44 @@ class ControllerVista:
                     result = int(mensaje.split(":")[1])
                     msg = self.procesar_resultado(result)
 
-                    self.inicio.set_estado_agua(result, msg)
+                    # self.inicio.set_estado_agua(result, msg)
 
                     if result in [-2, -3]:
                         self.db.update_estado(1, result)
 
                     if result == -2:
-                        self.inicio.set_contenedor_agua(
-                            "El contenedor de agua esta vacío.")
+
+                        self.db.update_estado_contenedores(
+                            1, "El contenedor de agua esta vacío.")
 
                     elif result == 1 or result == 0:
                         estado_actual = "ABIERTO" if result == 1 else "CERRADO"
 
                         if estado_anterior_bd_agua != estado_actual:
                             self.db.insertar_registro(1, estado_actual)
-                        self.inicio.set_contenedor_agua(
-                            "El contenedor de agua esta lleno")
+                        self.db.update_estado_contenedores(1,
+                                                           "El contenedor de agua esta lleno")
 
                 elif mensaje.startswith("fdP:") or mensaje.startswith("fdR:"):
                     result = int(mensaje.split(":")[1])
                     msg = self.procesar_resultado(result)
 
-                    self.inicio.set_estado_comida(result, msg)
+                    # self.inicio.set_estado_comida(result, msg)
 
                     if result in [-2, -3]:
-                        self.db.update_estado(1, result)
+                        self.db.update_estado(2, result)
 
                     if result == -2:
-                        self.inicio.set_contenedor_comida(
-                            "El contenedor de alimento esta vació.")
+                        self.db.update_estado_contenedores(2,
+                                                           "El contenedor de alimento esta vació.")
                     elif result == 1 or result == 0:
                         estado_actual = "ABIERTO" if result == 1 else "CERRADO"
 
                         if estado_anterior_bd_alimento != estado_actual:
                             self.db.insertar_registro(2, estado_actual)
 
-                        self.inicio.set_contenedor_comida(
-                            "El contenedor de alimento esta lleno")
+                        self.db.update_estado_contenedores(2,
+                                                           "El contenedor de alimento esta lleno")
 
                 elif mensaje.startswith("wdACon:0"):
 

@@ -35,12 +35,12 @@ class DashBoard(LabelFrame):
         self.lb_estado_dis_alimento.place(x=360, y=40)
 
         self.lb_estado_con_agua = Label(
-            self, fg="blue", font=("Courier New", 14, "bold"))
+            self, fg="blue", font=("Courier New", 12, "bold"))
 
         self.lb_estado_con_agua.place(x=30, y=240)
 
         self.lb_estado_con_alimento = Label(self, fg="green", font=(
-            "Courier New", 14, "bold"))
+            "Courier New", 12, "bold"))
 
         self.lb_estado_con_alimento.place(x=30, y=260)
 
