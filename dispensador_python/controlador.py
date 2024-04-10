@@ -4,6 +4,7 @@ from time import sleep
 from re import match
 from .vista import *
 from threading import Thread
+from json import loads
 
 
 def validar_string(prefijo, valor):
@@ -14,6 +15,38 @@ def validar_string(prefijo, valor):
         return True
     else:
         return False
+
+
+class Contenedor:
+    def __init__(self, data_json):
+        self.estado = data_json["estado"]
+        self.fecha = data_json["fecha"]
+        self.hora = data_json["hora"]
+
+
+class Dispensador(Contenedor):
+    def __init__(self, data_json):
+        super().__init__(data_json)
+
+
+class Tiempo:
+    def __init__(self, data_json):
+        self.fecha = data_json["fecha"]
+        self.hora = data_json["hora"]
+        self.intervalo = data_json["intervalo"]
+        self.tipo = data_json["tipo"]
+
+
+class DisModel:
+    def __init__(self, data_json) -> None:
+        self.contenedor1 = Contenedor(data_json=data_json['contenedor1'])
+        self.contenedor2 = Contenedor(data_json=data_json['contenedor2'])
+
+        self.dispensador1 = Dispensador(data_json=data_json["dispensador1"])
+        self.dispensador2 = Dispensador(data_json=data_json["dispensador2"])
+
+        self.tiempo1 = Tiempo(data_json=data_json['tiempo1'])
+        self.tiempo2 = Tiempo(data_json=data_json['tiempo2'])
 
 
 class ControllerVista:
@@ -119,7 +152,13 @@ class ControllerVista:
             messagebox.showerror("Error", error)
             return
 
-        print(estados)
+        dis1 = DisModel(estados['dis1'])
+        dis2 = DisModel(estados['dis2'])
+        dis3 = DisModel(estados['dis3'])
+        dis4 = DisModel(estados['dis4'])
+        dis5 = DisModel(estados['dis5'])
+
+        print(dis1.contenedor1.estado)
 
     def finalizar(self):
         self.corriendo = False
@@ -208,9 +247,14 @@ class ControllerVista:
 
             self.db.update_estado(2, es_alimento)
 
-            self.db.update_estado_contenedores(1, result[2])
+            estado_con_agua = "El contenedor de agua esta vacío." if result[2] == 1 else ""
 
-            self.db.update_estado_contenedores(1, result[3])
+            self.db.update_estado_contenedores(1, estado_con_agua)
+
+            estado_con_alimento = "El contenedor de alimento esta vacío." if result[
+                2] == 1 else ""
+
+            self.db.update_estado_contenedores(2, estado_con_alimento)
 
             self.db.update_estado_tiempo(
                 1, int(result[4].strip("mhs")), result[4][-1])
@@ -289,7 +333,11 @@ class ControllerVista:
                     self.inicio.set_contenedor_agua(
                         "El contenedor de agua esta vacío.")
                     self.inicio.set_estado_agua(0, "Cerrado")
+
                     if estado_anterior_bd_agua != "CERRADO":
+                        self.db.update_estado_contenedores(
+                            1, "El contenedor de agua esta vacío.")
+
                         self.db.insertar_registro(1, "CERRADO")
 
                 elif mensaje.startswith("fdACon:0"):
@@ -297,6 +345,8 @@ class ControllerVista:
                         "El contenedor de alimento esta vació.")
                     self.inicio.set_estado_comida(0, "Cerrado")
                     if estado_anterior_bd_alimento != "CERRADO":
+                        self.db.update_estado_contenedores(
+                            1, "El contenedor de alimento esta vació.")
                         self.db.insertar_registro(2, "CERRADO")
 
                 elif mensaje.startswith("wdARes:0"):
@@ -304,15 +354,18 @@ class ControllerVista:
                         0, "El recipiente esta lleno.")
 
                     if estado_anterior_bd_agua != "CERRADO":
-                        self.db.insertar_registro(1, "CERRADO")
+                        self.db.insertar_registro(1, "CERRADO", False)
+
+                    self.db.update_estado(1, -3)
 
                 elif mensaje.startswith("fdARes:0"):
                     self.inicio.set_estado_comida(
                         0, "El recipiente esta lleno.")
 
                     if estado_anterior_bd_alimento != "CERRADO":
-                        self.db.insertar_registro(2, "CERRADO")
+                        self.db.insertar_registro(2, "CERRADO", False)
 
+                    self.db.update_estado(2, -3)
                 elif mensaje.startswith("wdTset:"):
                     mensaje = mensaje.replace("\r", "")
                     result = mensaje.split(":")[1]
