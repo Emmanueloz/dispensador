@@ -161,6 +161,16 @@ class ControllerVista:
         vista.set_contenedor_agua(dis.contenedor1.estado)
         vista.set_contenedor_comida(dis.contenedor2.estado)
 
+    def set_estados_tiempo(self, vista: DashBoardTiempo, dis: DisModel):
+        msg_agua = f"Intervalo: {dis.tiempo1.intervalo}{dis.tiempo1.tipo}"
+        vista.set_estado_aguaT(dis.tiempo1.intervalo,
+                               dis.tiempo1.tipo, msg_agua)
+
+        msg_alimento = f"Intervalo: {dis.tiempo2.intervalo}{dis.tiempo2.tipo}"
+
+        vista.set_estado_comidaT(dis.tiempo2.intervalo,
+                                 dis.tiempo2.tipo, msg_alimento)
+
     def actualizar_vista(self, data):
         estados, error = self.db.consultar_estados_all()
         if error is not None:
@@ -178,6 +188,8 @@ class ControllerVista:
         self.set_estados_inicio(self.inicio3, dis3)
         self.set_estados_inicio(self.inicio4, dis4)
         self.set_estados_inicio(self.inicio5, dis5)
+
+        self.set_estados_tiempo(self.tiempo1, dis1)
 
     def finalizar(self):
         self.corriendo = False
@@ -393,7 +405,7 @@ class ControllerVista:
                     msg = "Intervalo:"+result
                     intervalo = int(result.strip("mhs"))
                     tipo = result[-1]
-                    self.tiempo.set_estado_aguaT(intervalo, tipo, msg)
+                    # self.tiempo.set_estado_aguaT(intervalo, tipo, msg)
 
                     self.db.update_estado_tiempo(1, intervalo, tipo)
 
@@ -403,7 +415,7 @@ class ControllerVista:
                     msg = "Intervalo:"+result
                     intervalo = int(result.strip("mhs"))
                     tipo = result[-1]
-                    self.tiempo.set_estado_comidaT(intervalo, tipo, msg)
+                    # self.tiempo.set_estado_comidaT(intervalo, tipo, msg)
                     self.db.update_estado_tiempo(2, intervalo, tipo)
 
                 elif mensaje.startswith("wdTR:"):
