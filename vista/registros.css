@@ -5,7 +5,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
+    /* align-items: center; */ /* Eliminamos esta línea */
     height: 100vh;
 }
 table {
@@ -47,29 +47,11 @@ div {
 .button {
     margin-right: 5px; /* Solo establecemos margen a la derecha */
     padding: 10px 20px;
-    background-color: #4CAF50;
+    background-color: #158e96;
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s ease;
-}
-
-/* Estilo para el primer botón, no se necesita margen a la izquierda */
-.button:first-child {
-    margin-left: 0;
-}
-
-.button:hover {
-    background-color: #45a049;
-}
-.titulo{
-    display: flex;
-    justify-content: flex-start;
-    justify-content: center;
-    align-items: flex-start;
-    width: 100%;
-    margin-bottom: 20px;
-    padding-left: 10px;
 }
