@@ -6,6 +6,7 @@ body {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+    height: 100vh;
 }
 
 .dashboard {
@@ -13,14 +14,15 @@ body {
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    width: 400px; /* Ancho fijo */
-    height: 400px; /* Altura fija */
+    width: 600px;
+    height: 600px;
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 10px; /* Agregamos un margen entre los div */
+    margin: 10px;
+    padding-bottom: 100px;
 }
 
 .dashboard h2 {
@@ -105,33 +107,46 @@ body {
 .checkbox input:checked + label:after {
     display: block;
 }
-
-.button-container {
+.input-container {
+    width: 100%;
     display: flex;
-    justify-content: flex-start; /* Alinear a la izquierda */
-    align-items: flex-start; /* Alinear arriba */
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+input[type="range"] {
+    transform: rotate(270deg);
+    height: 100px;
+    width: 100px;
+    margin: 0 20px;
+}
+
+.images-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
     margin-bottom: 20px;
-    padding-left: 10px; /* Añadir un padding izquierdo para separación */
 }
 
-.button {
-    margin-right: 5px; /* Solo establecemos margen a la derecha */
-    padding: 10px 20px;
-    background-color: #158e96;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
+.image-wrapper {
+    text-align: center;
+    flex-grow: 1;
+    position: relative;
 }
 
-/* Estilo para el primer botón, no se necesita margen a la izquierda */
-.button:first-child {
-    margin-left: 0;
+.image-wrapper img {
+    display: block;
+    margin: 0 auto;
 }
 
-.button:hover {
-    background-color: #45a049;
+.image-wrapper input[type="range"] {
+    transform: rotate(0deg); /* Rotamos a 0 grados para que esté horizontal */
+    width: calc(100% - 10px); /* Ancho al 100% para ocupar todo el espacio disponible */
+    margin: 0; /* Eliminamos el margen para un mejor ajuste */
 }
+.container-table {
+    width: 100%;
+}
+

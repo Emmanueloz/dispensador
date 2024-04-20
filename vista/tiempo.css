@@ -151,3 +151,29 @@ input[type="range"] {
     width: 100px; /* Definimos un ancho adecuado */
     margin: 0 20px; /* Ajustamos el margen para separarlos de las imágenes */
 }
+.images-container {
+    display: flex;
+    justify-content: space-between; /* Alinea los elementos en los extremos */
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.image-wrapper {
+    text-align: center; /* Centra el contenido dentro del wrapper */
+    flex-grow: 1; /* Permite que el wrapper crezca para ocupar todo el espacio disponible */
+    position: relative; /* Permite posicionar los elementos hijos relativamente */
+}
+
+.image-wrapper img {
+    display: block; /* Asegura que la imagen ocupe todo el ancho del wrapper */
+    margin: 0 auto; /* Centra la imagen horizontalmente */
+}
+
+.image-wrapper input[type="range"] {
+    position: absolute; /* Posiciona el input de forma absoluta */
+    bottom: 10px; /* Lo coloca en la parte inferior */
+    width: calc(100% - 20px); /* Ajusta el ancho para dejar un pequeño espacio a cada lado */
+    left: 50%; /* Lo centra horizontalmente */
+    transform: rotate(270deg); /* Lo ajusta para centrarlo completamente */
+}
