@@ -1,13 +1,43 @@
-<html>
-    <head>  
-        <title>Demo Firebase</title>
-    </head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="vista.css">
+</head>
+<body>
+    <div class="button-container">
+        <a href="vista.html" class="button">Inicio</a>
+        <a href="tiempo.html" class="button">Tiempo</a>
+        <a href="registros.html" class="button">Registros</a>
+    </div>
+    
+    <div class="dashboard">
+        <h2>Dashboard 1</h2>
+        <div class="images-container">
+            <img src="../imagen/agua.png" alt="Water Image">
+            <div style="width: 20px;"></div>
+            <img src="../imagen/comida.png" alt="Food Image">
+        </div>
+        <div class="checkbox-container">
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="dispense_water_1">
+                <label class="form-check-label" for="dispense_water_1">Dispense Water</label>
+            </div>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="dispense_food_1">
+                <label class="form-check-label" for="dispense_food_1">Dispense Food</label>
+            </div>
+        </div>
+    </div>
 
-    <body>
-        <h1>Hola mundo</h1>
-    </body>
 
-   <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
-    <script src="./conexion.js"></script>
+</body>
+<script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
+<script  src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
+<script  src="./conexion.js"></script>
+
+
+
 </html>

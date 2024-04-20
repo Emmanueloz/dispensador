@@ -10,11 +10,45 @@ const firebaseConfig = {
   messagingSenderId: "609939820038",
   appId: "1:609939820038:web:7179c8066dc7d28e97bd87"
 };
-try {
+function initializeFirebase() {
+  try {
     firebase.initializeApp(firebaseConfig);
-    console.log("Firebase connected successfully!");
-    alert("¡Conexión exitosa a Firebase!");
-} catch (error) {
-    console.error("Error connecting to Firebase:", error);
+    console.log("¡Conexión exitosa a Firebase!");
+  } catch (error) {
+    console.error("Error al conectar a Firebase:", error);
     alert("¡Error al conectar a Firebase!");
+  }
 }
+
+// Función para consultar registros desde la base de datos
+function consultarRegistros() {
+  firebase.database().ref('articles').once('value')
+    .then((snapshot) => {
+      const articles = snapshot.val();
+      if (articles) {
+        const articleKeys = Object.keys(articles);
+        const articleList = articleKeys.map((key) => {
+          return `${key}: ${articles[key].title}`;
+        });
+        mostrarListaArticulos(articleList);
+      } else {
+        mostrarMensaje("No hay artículos en la base de datos.");
+      }
+    })
+    .catch((error) => {
+      console.error("Error al obtener datos de Firebase:", error);
+      mostrarMensaje("¡Error al obtener datos de Firebase!");
+    });
+}
+
+function mostrarListaArticulos(articleList) {
+  alert(`Artículos en la base de datos:\n\n${articleList.join('\n')}`);
+}
+
+function mostrarMensaje(message) {
+  alert(message);
+}
+
+initializeFirebase();
+
+consultarRegistros();
