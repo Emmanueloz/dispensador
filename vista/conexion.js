@@ -2,13 +2,13 @@
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA3akoe2nlqOhW5zE0rTc2Elbvv7_Ygx1g",
-  authDomain: "applot-ac1bf.firebaseapp.com",
-  databaseURL: "https://applot-ac1bf-default-rtdb.firebaseio.com",
-  projectId: "applot-ac1bf",
-  storageBucket: "applot-ac1bf.appspot.com",
-  messagingSenderId: "609939820038",
-  appId: "1:609939820038:web:7179c8066dc7d28e97bd87"
+  apiKey: "AIzaSyD3l2W0fhM7QfF3PhvSK3dU5Sghsn7ORBs",
+  authDomain: "aplicacionesiot-1622a.firebaseapp.com",
+  databaseURL: "https://aplicacionesiot-1622a-default-rtdb.firebaseio.com",
+  projectId: "aplicacionesiot-1622a",
+  storageBucket: "aplicacionesiot-1622a.appspot.com",
+  messagingSenderId: "801264676158",
+  appId: "1:801264676158:web:b39b19991c7167cc89106f"
 };
 function initializeFirebase() {
   try {
@@ -22,17 +22,22 @@ function initializeFirebase() {
 
 // Función para consultar registros desde la base de datos
 function consultarRegistros() {
-  firebase.database().ref('articles').once('value')
+  firebase.database().ref('test/estados').once('value')
     .then((snapshot) => {
-      const articles = snapshot.val();
-      if (articles) {
-        const articleKeys = Object.keys(articles);
-        const articleList = articleKeys.map((key) => {
-          return `${key}: ${articles[key].title}`;
+      const estados = snapshot.val();
+      if (estados) {
+        const registros = Object.keys(estados).filter((key) => {
+          // Verificar si el nombre del registro comienza con "contenedor", "dispensador" o "recipiente"
+          return key.startsWith('contenedor') || 
+                 key.startsWith('dispensador') || 
+                 key.startsWith('recipiente');
+        }).map((key) => {
+          const estado = estados[key];
+          return `${key} - Estado: ${estado.estado}`;
         });
-        mostrarListaArticulos(articleList);
+        mostrarListaRegistros(registros);
       } else {
-        mostrarMensaje("No hay artículos en la base de datos.");
+        mostrarMensaje("No hay registros de estados en la base de datos.");
       }
     })
     .catch((error) => {
@@ -41,9 +46,23 @@ function consultarRegistros() {
     });
 }
 
-function mostrarListaArticulos(articleList) {
-  alert(`Artículos en la base de datos:\n\n${articleList.join('\n')}`);
+
+// Función para mostrar registros en la vista HTML
+function mostrarListaRegistros(registros) {
+    // Obtener el contenedor donde se mostrarán los registros
+    const registrosContainer = document.getElementById('registrosContainer');
+    
+    // Limpiar el contenedor antes de agregar los nuevos registros
+    registrosContainer.innerHTML = '';
+
+    // Crear un elemento para cada registro y agregarlo al contenedor
+    registros.forEach(registro => {
+        const registroElement = document.createElement('div');
+        registroElement.textContent = registro;
+        registrosContainer.appendChild(registroElement);
+    });
 }
+
 
 function mostrarMensaje(message) {
   alert(message);
