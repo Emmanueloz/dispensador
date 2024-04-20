@@ -1,0 +1,122 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.dashboard {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 400px; /* Ancho fijo */
+    height: 400px; /* Altura fija */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px; /* Agregamos un margen entre los div */
+}
+.dashboard h2 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #333;
+}
+.dashboard label {
+    display: block;
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #666;
+}
+.dashboard img {
+    width: 100px;
+    height: 100px;
+}
+.images-container {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+.checkbox-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+.checkbox {
+    margin-bottom: 20px;
+}
+.checkbox input {
+    display: none;
+}
+.checkbox label {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    padding-left: 25px;
+}
+.checkbox label:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 2px;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #fff;
+}
+.checkbox input:checked + label:before {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+.checkbox label:after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 7px;
+    width: 5px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+    display: none;
+}
+.checkbox input:checked + label:after {
+    display: block;
+}
+.button-container {
+    display: flex;
+    justify-content: flex-start; /* Alinear a la izquierda */
+    align-items: flex-start; /* Alinear arriba */
+    width: 100%;
+    margin-bottom: 20px;
+    padding-left: 10px; /* Añadir un padding izquierdo para separación */
+}
+.button {
+    margin-right: 5px; /* Solo establecemos margen a la derecha */
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+/* Estilo para el primer botón, no se necesita margen a la izquierda */
+.button:first-child {
+    margin-left: 0;
+}
+
+.button:hover {
+    background-color: #45a049;
+}
