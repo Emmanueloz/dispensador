@@ -20,17 +20,16 @@ function initializeFirebase() {
   }
 }
 
-// Función para consultar registros desde la base de datos
 function consultarRegistros() {
   firebase.database().ref('test/estados').once('value')
     .then((snapshot) => {
       const estados = snapshot.val();
       if (estados) {
         const registros = Object.keys(estados).filter((key) => {
-          // Verificar si el nombre del registro comienza con "contenedor", "dispensador" o "recipiente"
           return key.startsWith('contenedor') || 
                  key.startsWith('dispensador') || 
-                 key.startsWith('recipiente');
+                 key.startsWith('recipiente') ||
+                 key.startsWith('tResultado');
         }).map((key) => {
           const estado = estados[key];
           return `${key} - Estado: ${estado.estado}`;
@@ -47,26 +46,40 @@ function consultarRegistros() {
 }
 
 
-// Función para mostrar registros en la vista HTML
 function mostrarListaRegistros(registros) {
-    // Obtener el contenedor donde se mostrarán los registros
-    const registrosContainer = document.getElementById('registrosContainer');
-    
-    // Limpiar el contenedor antes de agregar los nuevos registros
-    registrosContainer.innerHTML = '';
-
-    // Crear un elemento para cada registro y agregarlo al contenedor
-    registros.forEach(registro => {
-        const registroElement = document.createElement('div');
-        registroElement.textContent = registro;
-        registrosContainer.appendChild(registroElement);
-    });
+  registros.forEach((registro) => {
+    const [tipo, estado] = registro.split(' - Estado: ');
+    switch (tipo) {
+      case 'contenedor1':
+        document.getElementById('ContenedorAgua').textContent = `Contenedor de agua: ${estado}`;
+        break;
+      case 'contenedor2':
+        document.getElementById('ContenedorComida').textContent = `Contenedor de comida: ${estado}`;
+        break;
+      case 'dispensador1':
+        document.getElementById('DispensadorAgua').textContent = `Dispensador de agua: ${estado}`;
+        break;
+      case 'dispensador2':
+        document.getElementById('DispensadorComida').textContent = `Dispensador de comida: ${estado}`;
+        break;
+      case 'recipiente1':
+        document.getElementById('RecienteAgua').textContent = `Recipiente de agua: ${estado}`;
+        break;
+      case 'recipiente2':
+        document.getElementById('RecienteComida').textContent = `Recipiente de comida: ${estado}`;
+        break;
+      case 'tResultado1':
+        document.getElementById('Resultado1').textContent = `El dispensador de agua: ${estado}`;
+        break;
+      case 'tResultado2':
+        document.getElementById('Resultado2').textContent = `El dispensador de comida: ${estado}`;
+        break;
+      default:
+        break;
+    }
+  });
 }
 
-
-function mostrarMensaje(message) {
-  alert(message);
-}
 
 initializeFirebase();
 
