@@ -55,7 +55,7 @@ firebase
       } else if (estado == 1) {
         mensaje = "Abierto";
       } else {
-        mensaje = estado; 
+        mensaje = "Cerrado"; 
       }
       switch (tipo) {
         case "contenedor1":
@@ -72,11 +72,19 @@ firebase
           document.getElementById(
             "DispensadorAgua"
           ).textContent = `${mensaje}`;
+          const checkboxAgua = document.getElementById("dispensarAgua");
+          if (checkboxAgua && checkboxAgua.checked !== (estado == 1)) {
+            checkboxAgua.checked = (estado == 1);
+          }
           break;
         case "dispensador2":
           document.getElementById(
             "DispensadorComida"
           ).textContent = `${mensaje}`;
+          const checkboxComida = document.getElementById("dispensarComida");
+          if (checkboxComida && checkboxComida.checked !== (estado == 1)) {
+            checkboxComida.checked = (estado == 1);
+          }
           break;
         case "recipiente1":
           document.getElementById(
@@ -179,30 +187,6 @@ function actualizarComando(comando) {
     });
 }
 
-function inicializarEstadoDesdeFirebase() {
-  firebase.database().ref('test/registros').on('value', (snapshot) => {
-    const registros = snapshot.val();
-
-    if (registros) {
-      Object.keys(registros).forEach((key) => {
-        const registro = registros[key];
-        if (registro.idComponente === 1) {
-          // Actualizar checkbox de dispensarAgua
-          const checkboxAgua = document.getElementById('dispensarAgua');
-          if (checkboxAgua) {
-            checkboxAgua.checked = registro.estado === 'ABIERTO';
-          }
-        } else if (registro.idComponente === 2) {
-          const checkboxComida = document.getElementById('dispensarComida');
-          if (checkboxComida) {
-            checkboxComida.checked = registro.estado === 'ABIERTO';
-          }
-        }
-      });
-    }
-  });
-}
-
 
 
 /* muetra el valor el valor que que se seleciona en le rango de valor */
@@ -250,22 +234,17 @@ function actualizarTiempo(coleccionTiempo) {
     return; 
   }
 
-  // Construir el comando según el tipo de componente (agua o comida)
   let comando;
   if (coleccionTiempo === 'tiempo1') {
-    // Comando para componente de agua
     comando = `wdT:${intervalo}${tipo}`;
   } else if (coleccionTiempo === 'tiempo2') {
-    // Comando para componente de comida
     comando = `fdT:${intervalo}${tipo}`;
   }
 
-  // Actualizar el comando en Firebase
   actualizarComando(comando);
 }
 
 function actualizarComando(comando) {
-  // Actualizar solo el comando en la ubicación 'test/comando' de Firebase
   firebase.database().ref('test/comando').set(comando)
     .then(() => {
       console.log(`Comando actualizado a "${comando}" exitosamente.`);
@@ -275,7 +254,6 @@ function actualizarComando(comando) {
     });
 }
 
-// Esta función se encarga de mostrar el valor seleccionado del rango
 function updateRangeValue(inputRange, spanId) {
   const rangeValue = inputRange.value;
   document.getElementById(spanId).textContent = rangeValue;
