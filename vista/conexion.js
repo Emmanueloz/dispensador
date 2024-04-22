@@ -151,41 +151,22 @@ function mostrarRegistrosDeTiempo(registrosDeTiempo) {
 
 
 function actualizarEstado(id, abierto) {
-  let idComponente;
   let comando;
 
   if (id === 'dispensarAgua') {
-    idComponente = 1;
     comando = abierto ? 'wd:1' : 'wd:0'; 
   } else if (id === 'dispensarComida') {
-    idComponente = 2;
     comando = abierto ? 'fd:1' : 'fd:0'; 
   } else {
     return;
   }
 
-  insertarNuevoRegistro(idComponente, abierto ? 'ABIERTO' : 'CERRADO');
   actualizarComando(comando);
 
   const checkbox = document.getElementById(id);
   if (checkbox) {
     checkbox.checked = abierto;
   }
-}
-
-function insertarNuevoRegistro(idComponente, estado) {
-  const nuevoRegistroRef = firebase.database().ref('test/registros').push();
-  
-  nuevoRegistroRef.set({
-    idComponente: idComponente,
-    estado: estado
-  })
-  .then(() => {
-    console.log('Nuevo registro agregado exitosamente.');
-  })
-  .catch((error) => {
-    console.error('Error al agregar nuevo registro:', error);
-  });
 }
 
 function actualizarComando(comando) {
@@ -255,10 +236,6 @@ inicializarYActualizarRango('tiempoComida', 'rangeValue2', 'test/estados/tiempo2
 
 /* ACTAULIZAR O INGRESA EL ESTADO DE TIEMPO AGUA*/
 
-function updateRangeValue(inputRange, spanId) {
-  const rangeValue = inputRange.value;
-  document.getElementById(spanId).textContent = rangeValue;
-}
 function actualizarTiempo(coleccionTiempo) {
   let intervalo;
   let tipo;
@@ -273,19 +250,37 @@ function actualizarTiempo(coleccionTiempo) {
     return; 
   }
 
-  const tiempoUpdate = {
-    intervalo: parseInt(intervalo),
-    tipo: tipo
-  };
+  // Construir el comando según el tipo de componente (agua o comida)
+  let comando;
+  if (coleccionTiempo === 'tiempo1') {
+    // Comando para componente de agua
+    comando = `wdT:${intervalo}${tipo}`;
+  } else if (coleccionTiempo === 'tiempo2') {
+    // Comando para componente de comida
+    comando = `fdT:${intervalo}${tipo}`;
+  }
 
-  firebase.database().ref('test/estados/' + coleccionTiempo).set(tiempoUpdate)
+  // Actualizar el comando en Firebase
+  actualizarComando(comando);
+}
+
+function actualizarComando(comando) {
+  // Actualizar solo el comando en la ubicación 'test/comando' de Firebase
+  firebase.database().ref('test/comando').set(comando)
     .then(() => {
-      console.log(`Colección de tiempo "${coleccionTiempo}" actualizada exitosamente.`);
+      console.log(`Comando actualizado a "${comando}" exitosamente.`);
     })
     .catch((error) => {
-      console.error('Error al actualizar la colección de tiempo:', error);
+      console.error('Error al actualizar el comando:', error);
     });
 }
+
+// Esta función se encarga de mostrar el valor seleccionado del rango
+function updateRangeValue(inputRange, spanId) {
+  const rangeValue = inputRange.value;
+  document.getElementById(spanId).textContent = rangeValue;
+}
+
 
 /* consulta y filtrados */
 function mostrarDatosEnTabla() {
@@ -296,7 +291,7 @@ function mostrarDatosEnTabla() {
 
     snapshot.forEach((childSnapshot) => {
       const registro = childSnapshot.val();
-      const { idComponente, estado } = registro;
+      const { idComponente, estado,tiempo } = registro;
 
       let nombre = "";
       if (idComponente === 1) {
@@ -311,7 +306,7 @@ function mostrarDatosEnTabla() {
 
       newRow.innerHTML = `
         <td>${nombre}</td>
-        <td>${idComponente}</td>
+        <td>${tiempo}</td>
         <td>${estado}</td>
       `;
 
@@ -333,7 +328,7 @@ document.getElementById("filter-button").addEventListener("click", () => {
 
     snapshot.forEach((childSnapshot) => {
       const registro = childSnapshot.val();
-      const { idComponente, estado } = registro;
+      const { idComponente, estado,tiempo } = registro;
 
       let nombre = "";
       if (idComponente === 1) {
@@ -349,7 +344,7 @@ document.getElementById("filter-button").addEventListener("click", () => {
         const newRow = document.createElement("tr");
         newRow.innerHTML = `
           <td>${nombre}</td>
-          <td>${idComponente}</td>
+          <td>${tiempo}</td>
           <td>${estado}</td>
         `;
         tableBody.appendChild(newRow);
