@@ -149,4 +149,27 @@ input[type="range"] {
 .container-table {
     width: 100%;
 }
-
+/* Estilos específicos para los botones */
+.button-agua {
+    background-color: blue;
+    color: white;
+    padding: 10px;
+  }
+  
+  .button-comida {
+    background-color: green;
+    color: white;
+    padding: 10px;
+  }
+  
+  /* Estilos para el hover de los botones */
+  .button-agua:hover,
+  .button-comida:hover {
+    opacity: 0.8;
+  }
+  
+  /* Estilos para el clic de los botones */
+  .button-agua:active,
+  .button-comida:active {
+    transform: translateY(1px);
+  }

@@ -60,46 +60,45 @@
     </article>
 
     <article class="dashboard">
-      <h2>..::Dispensador::..</h2>
-      <article class="images-container">
-        <div class="image-wrapper">
-          <p id="Tiempo1"></p>
-          <img src="../imagen/agua.png" alt="Water Image" />
-          <p id="Resultado1"></p>
-          <input type="range" id="tiempoAgua" min="1" max="60" onchange="updateRangeValue(this, 'rangeValue1')" />
-          <p>Valor seleccionado para Agua: <span id="rangeValue1"></span></p>       
-         </div>
-        <div class="image-wrapper">
-          <p id="Tiempo2"></p>
-          <img src="../imagen/comida.png" alt="Food Image" />
-          <p id="Resultado2"></p>
-          <input type="range" id="tiempoComida" min="0" max="60" value="30" onchange="updateRangeValue(this, 'rangeValue2')" />
-          <p>Valor seleccionado para Comida: <span id="rangeValue2"></span></p>
-        </div>
+        <h2>..::Dispensador::..</h2>
+        <article class="images-container">
+          <div class="image-wrapper">
+            <p id="Tiempo1"></p>
+            <img src="../imagen/agua.png" alt="Water Image" />
+            <p id="Resultado1"></p>
+            <input type="range" id="tiempoAgua" min="1" max="60" onchange="updateRangeValue(this, 'rangeValue1')" />
+            <p>Valor seleccionado para Agua: <span id="rangeValue1"></span></p>       
+          </div>
+          <div class="image-wrapper">
+            <p id="Tiempo2"></p>
+            <img src="../imagen/comida.png" alt="Food Image" />
+            <p id="Resultado2"></p>
+            <input type="range" id="tiempoComida" min="0" max="60" value="30" onchange="updateRangeValue(this, 'rangeValue2')" />
+            <p>Valor seleccionado para Comida: <span id="rangeValue2"></span></p>
+          </div>
+        </article>
+        <aside class="checkbox-container">
+          <div class="form-check form-switch">
+            <select class="form-select" aria-label="Dispensar agua" id="tipoTiempoAgua">
+              <option selected>Tiempo agua</option>
+              <option value="m">Minuto</option>
+              <option value="s">Segundo</option>
+            </select>
+            <br>
+            <button id="InAgua" class="button-agua" onclick="actualizarTiempo('tiempo1')">Dispensar agua</button>
+          </div>
+          <div class="form-check form-switch">
+            <select class="form-select" aria-label="Dispensar comida"   id="tipoTiempoComida">
+              <option selected>Tiempo comida</option>
+              <option value="m">Minuto</option>
+              <option value="s">Segundo</option>
+            </select>
+            <br>
+            <button id="InComida" class="button-comida" onclick="actualizarTiempo('tiempo2')">Dispensar comida</button>
+          </div>
+        </aside>  
       </article>
-      <aside class="checkbox-container">
-        <div class="form-check form-switch">
-          <select class="form-select" aria-label="Dispensar agua" id="tipoTiempoAgua">
-            <option selected>Tiempo agua</option>
-            <option value="m">Minuto</option>
-            <option value="s">Segundo</option>
-          </select>
-          <br>
-          <button id="InAgua" style="background-color: blue; color: white; padding: 10px;" onclick="actualizarTiempo('tiempo1')">Dispensar agua</button>
-
-        </div>
-        <div class="form-check form-switch">
-          <select class="form-select" aria-label="Dispensar comida"   id="tipoTiempoComida">
-            <option selected>Tiempo comida</option>
-            <option value="m">Minuto</option>
-            <option value="s">Segundo</option>
-          </select>
-          <br>
-          <button id="InComida" style="background-color: blue; color: white; padding: 10px;" onclick="actualizarTiempo('tiempo2')">Dispensar comida</button>
-
-        </div>
-      </aside>  
-    </article>
+      
 
     <footer class="container">
       <div class="container">
