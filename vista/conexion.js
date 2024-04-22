@@ -230,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function updateRangeValue(inputRange, spanId) {
-  var rangeValue = inputRange.value;
+  let rangeValue = inputRange.value;
   document.getElementById(spanId).textContent = rangeValue;
 }
 
@@ -256,12 +256,12 @@ inicializarYActualizarRango('tiempoComida', 'rangeValue2', 'test/estados/tiempo2
 /* ACTAULIZAR O INGRESA EL ESTADO DE TIEMPO AGUA*/
 
 function updateRangeValue(inputRange, spanId) {
-  var rangeValue = inputRange.value;
+  const rangeValue = inputRange.value;
   document.getElementById(spanId).textContent = rangeValue;
 }
 function actualizarTiempo(coleccionTiempo) {
-  var intervalo;
-  var tipo;
+  let intervalo;
+  let tipo;
 
   if (coleccionTiempo === 'tiempo1') {
     intervalo = document.getElementById('tiempoAgua').value;
@@ -273,7 +273,7 @@ function actualizarTiempo(coleccionTiempo) {
     return; 
   }
 
-  var tiempoUpdate = {
+  const tiempoUpdate = {
     intervalo: parseInt(intervalo),
     tipo: tipo
   };
@@ -286,3 +286,74 @@ function actualizarTiempo(coleccionTiempo) {
       console.error('Error al actualizar la colección de tiempo:', error);
     });
 }
+
+/* consulta y filtrados */
+function mostrarDatosEnTabla() {
+  const ref = firebase.database().ref("test/registros");
+  ref.on("value", (snapshot) => {
+    const tableBody = document.getElementById("tablaRegistros");
+    tableBody.innerHTML = ""; 
+
+    snapshot.forEach((childSnapshot) => {
+      const registro = childSnapshot.val();
+      const { idComponente, estado } = registro;
+
+      let nombre = "";
+      if (idComponente === 1) {
+        nombre = "Agua";
+      } else if (idComponente === 2) {
+        nombre = "Comida";
+      } else {
+        nombre = "Desconocido";
+      }
+
+      const newRow = document.createElement("tr");
+
+      newRow.innerHTML = `
+        <td>${nombre}</td>
+        <td>${idComponente}</td>
+        <td>${estado}</td>
+      `;
+
+      tableBody.appendChild(newRow);
+    });
+  });
+}
+
+mostrarDatosEnTabla();
+
+document.getElementById("filter-button").addEventListener("click", () => {
+  const categoryFilter = document.getElementById("filter-category").value;
+  const statusFilter = document.getElementById("filter-status").value;
+
+  const ref = firebase.database().ref("test/registros");
+  ref.on("value", (snapshot) => {
+    const tableBody = document.getElementById("tablaRegistros");
+    tableBody.innerHTML = ""; 
+
+    snapshot.forEach((childSnapshot) => {
+      const registro = childSnapshot.val();
+      const { idComponente, estado } = registro;
+
+      let nombre = "";
+      if (idComponente === 1) {
+        nombre = "Agua";
+      } else if (idComponente === 2) {
+        nombre = "Comida";
+      } else {
+        nombre = "Desconocido";
+      }
+
+      if ((categoryFilter === "all" || nombre.toLowerCase() === categoryFilter) &&
+          (statusFilter === "all" || estado.toLowerCase() === statusFilter)) {
+        const newRow = document.createElement("tr");
+        newRow.innerHTML = `
+          <td>${nombre}</td>
+          <td>${idComponente}</td>
+          <td>${estado}</td>
+        `;
+        tableBody.appendChild(newRow);
+      }
+    });
+  });
+});

@@ -116,38 +116,25 @@
           </select>
           <button id="filter-button">Filtrar</button>
         </div>
-
+    
         <table class="container-table">
           <thead>
             <tr>
               <th>Nombre</th>
               <th>Identificador</th>
               <th>Estado</th>
-              <th>Fecha</th>
-              <th>Hora</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>Agua</td>
-              <td>1</td>
-              <td>Abierto</td>
-              <td>2024-04-16</td>
-              <td>10:00:00</td>
-            </tr>
-            <tr>
-              <td>Alimento</td>
-              <td>2</td>
-              <td>Cerrado</td>
-              <td>2024-04-16</td>
-              <td>11:00:56</td>
-            </tr>
+          <tbody id="tablaRegistros">
+            <!-- Aquí se agregarán dinámicamente las filas de la tabla -->
           </tbody>
         </table>
       </div>
     </footer>
+    
   </body>
   <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
   <script  src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
   <script  src="./conexion.js"></script>
+
 </html>
