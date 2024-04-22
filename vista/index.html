@@ -17,36 +17,41 @@
       <h2>..::Dispensador::..</h2>
       <article class="images-container">
         <div class="image-wrapper">
-          <header>Cerrado</header>
+          <p id="DispensadorAgua"></p>
           <img src="../imagen/agua.png" alt="Water Image" />
-          <footer>El contenedor está lleno</footer>
+          <p id="ContenedorAgua"></p>
+          <p id="RecienteAgua"></p>
         </div>
         <div style="width: 20px"></div>
         <div class="image-wrapper">
-          <header>Cerrado</header>
+          <p id="DispensadorComida"></p>
           <img src="../imagen/comida.png" alt="Food Image" />
-          <footer>El contenedor está lleno</footer>
+          <p id="ContenedorComida"> </p>
+          <p id="RecienteComida"></p>
         </div>
       </article>
       <aside class="checkbox-container">
         <div class="form-check form-switch">
           <input
-            class="form-check-input"
-            type="checkbox"
-            role="switch"
-            id="flexSwitchCheckDefault"
-          />
+          class="form-check-input"
+          type="checkbox"
+          role="switch"
+          id="dispensarAgua"
+          onchange="actualizarEstado('dispensarAgua', this.checked)"
+        />
+        
           <label class="form-check-label" for="flexSwitchCheckDefault"
             >Dispensar agua</label
           >
         </div>
         <div class="form-check form-switch">
           <input
-            class="form-check-input"
-            type="checkbox"
-            role="switch"
-            id="flexSwitchCheckDefault"
-          />
+          class="form-check-input"
+          type="checkbox"
+          role="switch"
+          id="dispensarComida"
+          onchange="actualizarEstado('dispensarComida', this.checked)"
+        />
           <label class="form-check-label" for="flexSwitchCheckDefault"
             >Dispensar comida</label
           >
@@ -58,32 +63,42 @@
       <h2>..::Dispensador::..</h2>
       <article class="images-container">
         <div class="image-wrapper">
+          <p id="Tiempo1"></p>
           <img src="../imagen/agua.png" alt="Water Image" />
-          <div class="message">El dispensador se abrió</div>
-          <input type="range" name="" id="myRange1" />
-        </div>
+          <p id="Resultado1"></p>
+          <input type="range" id="tiempoAgua" min="1" max="60" onchange="updateRangeValue(this, 'rangeValue1')" />
+          <p>Valor seleccionado para Agua: <span id="rangeValue1"></span></p>       
+         </div>
         <div class="image-wrapper">
+          <p id="Tiempo2"></p>
           <img src="../imagen/comida.png" alt="Food Image" />
-          <h6>El dispensador se abrio</h6>
-          <input type="range" name="" id="myRange2" />
+          <p id="Resultado2"></p>
+          <input type="range" id="tiempoComida" min="0" max="60" value="30" onchange="updateRangeValue(this, 'rangeValue2')" />
+          <p>Valor seleccionado para Comida: <span id="rangeValue2"></span></p>
         </div>
       </article>
       <aside class="checkbox-container">
         <div class="form-check form-switch">
-          <select class="form-select" aria-label="Dispensar agua">
+          <select class="form-select" aria-label="Dispensar agua" id="tipoTiempoAgua">
             <option selected>Tiempo agua</option>
-            <option value="1">Minutos</option>
-            <option value="0">Segundos</option>
+            <option value="m">Minuto</option>
+            <option value="s">Segundo</option>
           </select>
+          <br>
+          <button id="InAgua" style="background-color: blue; color: white; padding: 10px;" onclick="actualizarTiempo('tiempo1')">Dispensar agua</button>
+
         </div>
         <div class="form-check form-switch">
-          <select class="form-select" aria-label="Dispensar comida">
+          <select class="form-select" aria-label="Dispensar comida"   id="tipoTiempoComida">
             <option selected>Tiempo comida</option>
-            <option value="1">Minutos</option>
-            <option value="0">Segundos</option>
+            <option value="m">Minuto</option>
+            <option value="s">Segundo</option>
           </select>
+          <br>
+          <button id="InComida" style="background-color: blue; color: white; padding: 10px;" onclick="actualizarTiempo('tiempo2')">Dispensar comida</button>
+
         </div>
-      </aside>
+      </aside>  
     </article>
 
     <footer class="container">
@@ -132,4 +147,7 @@
       </div>
     </footer>
   </body>
+  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
+  <script  src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
+  <script  src="./conexion.js"></script>
 </html>

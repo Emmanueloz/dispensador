@@ -20,6 +20,8 @@ function initializeFirebase() {
 }
 initializeFirebase();
 
+  /* mustra los estados de agua y comida, haci como tambien esta pendiente de cualquier cambio */
+
 firebase
   .database()
   .ref("test/estados")
@@ -32,7 +34,7 @@ firebase
             key.startsWith("contenedor") ||
             key.startsWith("dispensador") ||
             key.startsWith("recipiente") ||
-            key.startsWith("tResultado")
+            key.startsWith("tResultado") 
           );
         })
         .map((key) => {
@@ -44,53 +46,243 @@ firebase
       mostrarMensaje("No hay registros de estados en la base de datos.");
     }
   });
+  function mostrarListaRegistros(registros) {
+    registros.forEach((registro) => {
+      const [tipo, estado] = registro.split(" - Estado: ");
+      let mensaje;
+      if (estado == 0) {
+        mensaje = "Cerrado";
+      } else if (estado == 1) {
+        mensaje = "Abierto";
+      } else {
+        mensaje = estado; 
+      }
+      switch (tipo) {
+        case "contenedor1":
+          document.getElementById(
+            "ContenedorAgua"
+          ).textContent = `${estado}`;
+          break;
+        case "contenedor2":
+          document.getElementById(
+            "ContenedorComida"
+          ).textContent = `${estado}`;
+          break;
+        case "dispensador1":
+          document.getElementById(
+            "DispensadorAgua"
+          ).textContent = `${mensaje}`;
+          break;
+        case "dispensador2":
+          document.getElementById(
+            "DispensadorComida"
+          ).textContent = `${mensaje}`;
+          break;
+        case "recipiente1":
+          document.getElementById(
+            "RecienteAgua"
+          ).textContent = `${estado}`;
+          break;
+        case "recipiente2":
+          document.getElementById(
+            "RecienteComida"
+          ).textContent = ` ${estado}`;
+          break;
+        case "tResultado1":
+          document.getElementById(
+            "Resultado1"
+          ).textContent = `${estado}`;
+          break;
+        case "tResultado2":
+          document.getElementById(
+            "Resultado2"
+          ).textContent = `${estado}`;
+          break;
+        default:
+          break;
+      }
+    });
+  }
 
-function mostrarListaRegistros(registros) {
-  registros.forEach((registro) => {
-    const [tipo, estado] = registro.split(" - Estado: ");
-    switch (tipo) {
-      case "contenedor1":
-        document.getElementById(
-          "ContenedorAgua"
-        ).textContent = `Contenedor de agua: ${estado}`;
-        break;
-      case "contenedor2":
-        document.getElementById(
-          "ContenedorComida"
-        ).textContent = `Contenedor de comida: ${estado}`;
-        break;
-      case "dispensador1":
-        document.getElementById(
-          "DispensadorAgua"
-        ).textContent = `Dispensador de agua: ${estado}`;
-        break;
-      case "dispensador2":
-        document.getElementById(
-          "DispensadorComida"
-        ).textContent = `Dispensador de comida: ${estado}`;
-        break;
-      case "recipiente1":
-        document.getElementById(
-          "RecienteAgua"
-        ).textContent = `Recipiente de agua: ${estado}`;
-        break;
-      case "recipiente2":
-        document.getElementById(
-          "RecienteComida"
-        ).textContent = `Recipiente de comida: ${estado}`;
-        break;
-      case "tResultado1":
-        document.getElementById(
-          "Resultado1"
-        ).textContent = `El dispensador de agua: ${estado}`;
-        break;
-      case "tResultado2":
-        document.getElementById(
-          "Resultado2"
-        ).textContent = `El dispensador de comida: ${estado}`;
-        break;
-      default:
-        break;
+
+
+  /* mustra el el tipo y intervalo, haci como tambien esta pendiente de cualquier cambio */
+
+  firebase.database().ref('test/estados').on('value', (snapshot) => {
+    const estados = snapshot.val();
+    if (estados) {
+        const registrosDeTiempo = {};
+        Object.keys(estados).forEach((key) => {
+            if (key.startsWith("tiempo")) {
+                const tiempo = estados[key];
+                registrosDeTiempo[key] = {
+                    intervalo: tiempo.intervalo,
+                    tipo: tiempo.tipo
+                };
+            }
+        });
+
+        mostrarRegistrosDeTiempo(registrosDeTiempo);
+    } else {
+        mostrarMensaje("No hay registros de tiempo en la base de datos.");
+    }
+});
+
+function mostrarRegistrosDeTiempo(registrosDeTiempo) {
+    const tiempo1 = registrosDeTiempo["tiempo1"];
+    const tiempo2 = registrosDeTiempo["tiempo2"];
+
+    if (tiempo1) {
+        const tipoTiempo1 = tiempo1.tipo === 'm' ? 'minuto' : tiempo1.tipo === 's' ? 'segundo' : 'desconocido';
+        document.getElementById('Tiempo1').textContent = `${tiempo1.intervalo} ${tipoTiempo1}`;
+    } else {
+        document.getElementById('Tiempo1').textContent = `Tiempo 1: No hay información disponible`;
+    }
+    if (tiempo2) {
+        const tipoTiempo2 = tiempo2.tipo === 'm' ? 'minuto' : tiempo2.tipo === 's' ? 'segundo' : 'desconocido';
+        document.getElementById('Tiempo2').textContent = `${tiempo2.intervalo} ${tipoTiempo2}`;
+    } else {
+        document.getElementById('Tiempo2').textContent = `Tiempo 2: No hay información disponible`;
+    }
+}
+      
+
+/* agrega y mantiene el valor de tiempo de agua y comida */
+
+
+function actualizarEstado(id, abierto) {
+  let idComponente;
+  let comando;
+
+  if (id === 'dispensarAgua') {
+    idComponente = 1;
+    comando = abierto ? 'wd:1' : 'wd:0'; 
+  } else if (id === 'dispensarComida') {
+    idComponente = 2;
+    comando = abierto ? 'fd:1' : 'fd:0'; 
+  } else {
+    return;
+  }
+
+  insertarNuevoRegistro(idComponente, abierto ? 'ABIERTO' : 'CERRADO');
+  actualizarComando(comando);
+
+  const checkbox = document.getElementById(id);
+  if (checkbox) {
+    checkbox.checked = abierto;
+  }
+}
+
+function insertarNuevoRegistro(idComponente, estado) {
+  const nuevoRegistroRef = firebase.database().ref('test/registros').push();
+  
+  nuevoRegistroRef.set({
+    idComponente: idComponente,
+    estado: estado
+  })
+  .then(() => {
+    console.log('Nuevo registro agregado exitosamente.');
+  })
+  .catch((error) => {
+    console.error('Error al agregar nuevo registro:', error);
+  });
+}
+
+function actualizarComando(comando) {
+  firebase.database().ref('test/comando').set(comando)
+    .then(() => {
+      console.log(`Comando actualizado a "${comando}" exitosamente.`);
+    })
+    .catch((error) => {
+      console.error('Error al actualizar el comando:', error);
+    });
+}
+
+function inicializarEstadoDesdeFirebase() {
+  firebase.database().ref('test/registros').on('value', (snapshot) => {
+    const registros = snapshot.val();
+
+    if (registros) {
+      Object.keys(registros).forEach((key) => {
+        const registro = registros[key];
+        if (registro.idComponente === 1) {
+          // Actualizar checkbox de dispensarAgua
+          const checkboxAgua = document.getElementById('dispensarAgua');
+          if (checkboxAgua) {
+            checkboxAgua.checked = registro.estado === 'ABIERTO';
+          }
+        } else if (registro.idComponente === 2) {
+          const checkboxComida = document.getElementById('dispensarComida');
+          if (checkboxComida) {
+            checkboxComida.checked = registro.estado === 'ABIERTO';
+          }
+        }
+      });
     }
   });
+}
+
+
+
+/* muetra el valor el valor que que se seleciona en le rango de valor */
+document.addEventListener('DOMContentLoaded', () => {
+  inicializarEstadoDesdeFirebase();
+});
+
+function updateRangeValue(inputRange, spanId) {
+  var rangeValue = inputRange.value;
+  document.getElementById(spanId).textContent = rangeValue;
+}
+
+function inicializarYActualizarRango(idInput, idSpan, referenciaFirebase) {
+  const inputRange = document.getElementById(idInput);
+  const spanValue = document.getElementById(idSpan);
+
+  firebase.database().ref(referenciaFirebase).on('value', (snapshot) => {
+    const valorFirebase = snapshot.val();
+    if (valorFirebase !== null && !isNaN(valorFirebase)) {
+      inputRange.value = valorFirebase;
+      spanValue.textContent = valorFirebase; 
+    }
+  });
+}
+inicializarYActualizarRango('tiempoAgua', 'rangeValue1', 'test/estados/tiempo1/intervalo');
+
+inicializarYActualizarRango('tiempoComida', 'rangeValue2', 'test/estados/tiempo2/intervalo');
+
+
+
+
+/* ACTAULIZAR O INGRESA EL ESTADO DE TIEMPO AGUA*/
+
+function updateRangeValue(inputRange, spanId) {
+  var rangeValue = inputRange.value;
+  document.getElementById(spanId).textContent = rangeValue;
+}
+function actualizarTiempo(coleccionTiempo) {
+  var intervalo;
+  var tipo;
+
+  if (coleccionTiempo === 'tiempo1') {
+    intervalo = document.getElementById('tiempoAgua').value;
+    tipo = document.getElementById('tipoTiempoAgua').value;
+  } else if (coleccionTiempo === 'tiempo2') {
+    intervalo = document.getElementById('tiempoComida').value;
+    tipo = document.getElementById('tipoTiempoComida').value;
+  } else {
+    return; 
+  }
+
+  var tiempoUpdate = {
+    intervalo: parseInt(intervalo),
+    tipo: tipo
+  };
+
+  firebase.database().ref('test/estados/' + coleccionTiempo).set(tiempoUpdate)
+    .then(() => {
+      console.log(`Colección de tiempo "${coleccionTiempo}" actualizada exitosamente.`);
+    })
+    .catch((error) => {
+      console.error('Error al actualizar la colección de tiempo:', error);
+    });
 }
