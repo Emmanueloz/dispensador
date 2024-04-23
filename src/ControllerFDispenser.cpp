@@ -27,7 +27,6 @@ int ControllerFDispenser::open()
     }
     else if (this->sonar.isDistanceLimit())
     {
-        Serial.println(this->sonar.isDistanceLimit());
         return -2;
     }
     else if (!this->sonarLevel.isDistanceLimit())

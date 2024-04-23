@@ -28,7 +28,7 @@ const int limitWaterRecipient = 350;
 const int limitWaterDispenser = 20;
 
 const int limitFoodRecipient = 1;
-const int limitFoodDispenser = 25;
+const int limitFoodDispenser = 20;
 
 // Constantes de tiempos por defecto
 const long defaultTimeOpenWater = 3600000;
