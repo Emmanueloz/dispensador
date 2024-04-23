@@ -173,3 +173,11 @@ input[type="range"] {
   .button-comida:active {
     transform: translateY(1px);
   }
+  .mensaje-cerrado {
+    color: red;
+  }
+  
+  .mensaje-abierto {
+    color: green;
+  }
+  
