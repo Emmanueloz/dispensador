@@ -1,183 +1,184 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 .dashboard {
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    width: 600px;
-    height: 600px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 10px;
-    padding-bottom: 100px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 600px;
+  height: 600px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  padding-bottom: 100px;
 }
 
 .dashboard h2 {
-    margin-top: 0;
-    font-size: 30px;
-    color: #333;
+  margin-top: 0;
+  font-size: 30px;
+  color: #333;
 }
 
 .dashboard label {
-    display: block;
-    margin-bottom: 15px;
-    font-size: 16px;
-    color: #666;
+  display: block;
+  margin-bottom: 15px;
+  font-size: 16px;
+  color: #666;
 }
 
 .dashboard img {
-    width: 100px;
-    height: 100px;
+  width: 100px;
+  height: 100px;
 }
 
 .images-container {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
 .checkbox-container {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
 .checkbox {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .checkbox input {
-    display: none;
+  display: none;
 }
 
 .checkbox label {
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-    padding-left: 25px;
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  padding-left: 25px;
 }
 
 .checkbox label:before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 2px;
-    width: 16px;
-    height: 16px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    background-color: #fff;
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background-color: #fff;
 }
 
 .checkbox input:checked + label:before {
-    background-color: #4CAF50;
-    border-color: #4CAF50;
+  background-color: #4caf50;
+  border-color: #4caf50;
 }
 
 .checkbox label:after {
-    content: '';
-    position: absolute;
-    left: 5px;
-    top: 7px;
-    width: 5px;
-    height: 10px;
-    border: solid #fff;
-    border-width: 0 3px 3px 0;
-    transform: rotate(45deg);
-    display: none;
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 7px;
+  width: 5px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+  display: none;
 }
 
 .checkbox input:checked + label:after {
-    display: block;
+  display: block;
 }
 .input-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
 }
 
 input[type="range"] {
-    transform: rotate(270deg);
-    height: 100px;
-    width: 100px;
-    margin: 0 20px;
+  transform: rotate(270deg);
+  height: 100px;
+  width: 100px;
+  margin: 0 20px;
 }
 
 .images-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
 .image-wrapper {
-    text-align: center;
-    flex-grow: 1;
-    position: relative;
+  text-align: center;
+  flex-grow: 1;
+  position: relative;
 }
 
 .image-wrapper img {
-    display: block;
-    margin: 0 auto;
+  display: block;
+  margin: 0 auto;
 }
 
 .image-wrapper input[type="range"] {
-    transform: rotate(0deg); /* Rotamos a 0 grados para que esté horizontal */
-    width: calc(100% - 10px); /* Ancho al 100% para ocupar todo el espacio disponible */
-    margin: 0; /* Eliminamos el margen para un mejor ajuste */
+  transform: rotate(0deg); /* Rotamos a 0 grados para que esté horizontal */
+  width: calc(
+    100% - 10px
+  ); /* Ancho al 100% para ocupar todo el espacio disponible */
+  margin: 0; /* Eliminamos el margen para un mejor ajuste */
 }
 .container-table {
-    width: 100%;
+  width: 100%;
 }
 /* Estilos específicos para los botones */
 .button-agua {
-    background-color: blue;
-    color: white;
-    padding: 10px;
-  }
-  
-  .button-comida {
-    background-color: green;
-    color: white;
-    padding: 10px;
-  }
-  
-  /* Estilos para el hover de los botones */
-  .button-agua:hover,
-  .button-comida:hover {
-    opacity: 0.8;
-  }
-  
-  /* Estilos para el clic de los botones */
-  .button-agua:active,
-  .button-comida:active {
-    transform: translateY(1px);
-  }
-  .mensaje-cerrado {
-    color: red;
-  }
-  
-  .mensaje-abierto {
-    color: green;
-  }
-  
+  background-color: blue;
+  color: white;
+  padding: 10px;
+}
+
+.button-comida {
+  background-color: green;
+  color: white;
+  padding: 10px;
+}
+
+/* Estilos para el hover de los botones */
+.button-agua:hover,
+.button-comida:hover {
+  opacity: 0.8;
+}
+
+/* Estilos para el clic de los botones */
+.button-agua:active,
+.button-comida:active {
+  transform: translateY(1px);
+}
+.mensaje-cerrado {
+  color: red;
+}
+
+.mensaje-abierto {
+  color: green;
+}

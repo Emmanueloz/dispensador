@@ -66,18 +66,18 @@ function mostrarListaRegistros(registros) {
       case "dispensador1":
         document.getElementById("DispensadorAgua").textContent = `${mensaje}`;
         const checkboxAgua = document.getElementById("dispensarAgua");
-        if (estado == 1) {
+        if (estado == 1 || estado == -1) {
           checkboxAgua.checked = true;
-        } else if (estado != -1) {
+        } else {
           checkboxAgua.checked = false;
         }
         break;
       case "dispensador2":
         document.getElementById("DispensadorComida").textContent = `${mensaje}`;
         const checkboxComida = document.getElementById("dispensarComida");
-        if (estado == 1) {
+        if (estado == 1 || estado == -1) {
           checkboxComida.checked = true;
-        } else if (estado != -1) {
+        } else {
           checkboxComida.checked = false;
         }
         break;
